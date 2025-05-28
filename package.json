@@ -5,8 +5,8 @@
   "scripts": {
     "start": "npx nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "mk:migrate": "knex migrate:make --knexfile ./src/db/knexfile.js --env development",
-    "migrate:latest": "ctc-backend % npx knex migrate:latest --knexfile knexfile.cjs --env development"
+    "mk:migrate": "knex migrate:make --knexfile knexfile.cjs --env development",
+    "migrate:latest": "npx knex migrate:latest --knexfile knexfile.cjs --env development"
   },
   "keywords": [],
   "author": "",
