@@ -1,12 +1,12 @@
 import { db } from "../../configs/db";
-import { CreateUserDTO } from "../../dtos/user";
-import { User } from "../../entities/user";
+import { CreateUser } from "../../interfaces/user";
+import { User } from "../../interfaces/user";
 import { IUserRepository } from "../user";
 
 export class UserRepository implements IUserRepository {
     private tableName = 'users';
 
-    async create(user: CreateUserDTO) : Promise<User> {
+    async create(user: CreateUser) : Promise<User> {
         const [newUser] = await db(this.tableName).insert({
             name: user.name,
             email: user.email,

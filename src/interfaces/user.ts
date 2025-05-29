@@ -15,3 +15,11 @@ export interface User {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export interface CreateUser {
+    name: string;
+    email: string;
+    password: string;
+}
+
+export type UserResponse = Omit<User, "password">;
