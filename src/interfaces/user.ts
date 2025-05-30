@@ -23,3 +23,10 @@ export interface CreateUser {
 }
 
 export type UserResponse = Omit<User, "password">;
+
+export interface UpdateUser {
+    name?: string;
+    role?: Role;
+    displayPicture?: string;
+    bio?: string;
+}

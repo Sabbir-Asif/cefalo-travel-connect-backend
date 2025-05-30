@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 
+export const getUserById = async (req: Request, res: Response, next: NextFunction) => {
+    res.json('get user by id called');
+}
+
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     res.json('get all users called');
 }
