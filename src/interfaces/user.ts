@@ -1,3 +1,6 @@
+import { UserUpdateSchema } from "../schemas/user";
+import { z } from 'zod'
+
 export enum Role {
     ADMIN = "ADMIN",
     TRAVELER = "TRAVELER",
@@ -24,9 +27,5 @@ export interface CreateUser {
 
 export type UserResponse = Omit<User, "password">;
 
-export interface UpdateUser {
-    name?: string;
-    role?: Role;
-    displayPicture?: string;
-    bio?: string;
-}
+
+export type UpdateUser = z.infer<typeof UserUpdateSchema>;

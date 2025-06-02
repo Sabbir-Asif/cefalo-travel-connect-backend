@@ -1,4 +1,3 @@
-import { strict } from 'assert'
 import { z } from 'zod'
 
 export const CreateUserSchema = z.object({
@@ -15,12 +14,10 @@ export const LoginSchema = z.object({
 export const UserUpdateSchema = z.object({
     name: z.string().optional(),
     role: z.enum(['ADMIN', 'EXPLORER', 'TRAVELER']).optional(),
-    displayPicture: z.string().optional(),
-    bio: z.string().optional()
-}).refine((data) => {
-    Object.keys(data).length > 0, {
-        message: 'At least one field must be provided for update.'
-    }
+    displayPicture: z.string().nullable().optional(),
+    bio: z.string().nullable().optional()
+}).refine((data) => Object.keys(data).length > 0, {
+    message: 'At least one field must be provided for update.'
 });
 
 // export interface User {

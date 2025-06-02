@@ -1,5 +1,5 @@
 import { db } from "../../configs/db";
-import { CreateUser } from "../../interfaces/user";
+import { CreateUser, UpdateUser } from "../../interfaces/user";
 import { User } from "../../interfaces/user";
 import { IUserRepository } from "../user";
 
@@ -41,6 +41,21 @@ export class UserRepository implements IUserRepository {
 
     async findById(id: number): Promise<User | null> {
         const user: User = await db(this.tableName).where({id}).first();
+        const result = user ? {
+            ...user,
+            createdAt: new Date(user.createdAt),
+            updatedAt: new Date(user.updatedAt)
+        } : null;
+
+        return result;
+    }
+
+    async update(id: number, data: UpdateUser): Promise<User> {
+        const [user] = await db(this.tableName)
+        .where({id})
+        .update({...data, updatedAt: new Date()})
+        .returning('*');
+
         const result = user ? {
             ...user,
             createdAt: new Date(user.createdAt),

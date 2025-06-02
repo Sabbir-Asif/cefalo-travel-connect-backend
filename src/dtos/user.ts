@@ -1,4 +1,4 @@
-import { CreateUser, Role, User } from '../interfaces/user';
+import { CreateUser, Role, UpdateUser, User } from '../interfaces/user';
 
 export class CreateUserDto {
     name: string;
@@ -10,6 +10,20 @@ export class CreateUserDto {
         this.email = data.email;
         this.password = data.password;
     };
+}
+
+export class UpdateUserDto {
+    name?: string;
+    role?: Role;
+    displayPicture?: string | null;
+    bio?: string | null;
+
+    constructor(data: UpdateUser) {
+        this.name = data.name;
+        this.role = data.role !== undefined ? data.role as Role : undefined;
+        this.displayPicture = data.displayPicture ?? null;
+        this.bio = data.bio ?? null;
+    }
 }
 
 export class UserResponseDto {
