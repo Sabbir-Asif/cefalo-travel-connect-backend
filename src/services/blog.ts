@@ -18,4 +18,22 @@ export class BlogService {
         const blog = await this.blogRepository.create(userId, blogData);
         return new BlogResponseDto(blog)
     }
+
+    async getAllusers() : Promise<Blog[]> {
+
+        const blogs = await this.blogRepository.getAll();
+
+        return blogs.map(blog => new BlogResponseDto(blog));
+    }
+
+    async getBlogById(id: number): Promise<Blog> {
+        const blog = await this.blogRepository.getById(id);
+
+        if(!blog) {
+            throw new NotFoundException(`No user found with id ${id}`, ErrorCode.BLOG_NOT_FOUND)
+        }
+
+        return new BlogResponseDto(blog);
+    }
+
 }

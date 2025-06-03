@@ -21,4 +21,6 @@ export enum ErrorCode {
     INTERNAL_EXCEPTION = 3001,
     UNAUTHORIZED = 4001,
     FORBIDDEN = 4002,
+    INVALID_BLOG_ID = 5001,
+    BLOG_NOT_FOUND = 5002
 }

@@ -1,23 +1,3 @@
-// await knex.schema.createTable('blogs', (table) => {
-//     table.increments('id').primary();
-//     table.string('title').notNullable();
-//     table.integer('userId').unsigned().notNullable()
-//         .references('id').inTable('users').onDelete('CASCADE');
-//     table.string('locationName').notNullable();
-//     table.specificType('location_points', 'geometry(Point, 4326)').notNullable();
-//     table.text('description').notNullable();
-//     table.string('cover_image');
-//     table.enu('status', ['DRAFT', 'PUBLISHED', 'ARCHIVED'], {
-//         useNative: true,
-//         enumName: 'Blog_Status',
-//     }).notNullable().defaultTo('DRAFT');
-//     table.jsonb('tags').defaultTo('[]');
-//     table.jsonb('images').defaultTo('[]');
-//     table.jsonb('videos').defaultTo('[]');
-//     table.timestamp('created_at').defaultTo(knex.fn.now());
-//     table.timestamp('updated_at').defaultTo(knex.fn.now());
-// });
-
 export enum Blog_Status {
     DRAFT = "DRAFT",
     PUBLISHED = "PUBLISHED",

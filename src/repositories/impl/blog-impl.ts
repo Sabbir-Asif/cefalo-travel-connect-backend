@@ -32,4 +32,43 @@ export class BlogRepository implements IBlogRepository {
         };
     }
 
+    async getAll(): Promise<Blog[]> {
+        const blogs = await db(this.tableName).select(
+            '*',
+            db.raw(`ST_X(location_points::geometry) as long`),
+            db.raw(`ST_Y(location_points::geometry) as lat`)
+        );
+        
+        return blogs.map((blog) => ({
+            ...blog,
+            location_points: {
+                lat: parseFloat(blog.lat),
+                long: parseFloat(blog.long),
+            },
+            created_at: new Date(blog.created_at),
+            updated_at: new Date(blog.updated_at)
+        }));
+    }
+
+    async getById(id: number): Promise<Blog | null> {
+        const blog = await db(this.tableName)
+            .select(
+                '*',
+                db.raw(`ST_X(location_points::geometry) as long`),
+                db.raw(`ST_Y(location_points::geometry) as lat`)
+            )
+            .where({ id })
+            .first();
+    
+        return blog? {
+            ...blog,
+            location_points: {
+                lat: parseFloat(blog.lat),
+                long: parseFloat(blog.long),
+            },
+            created_at: new Date(blog.created_at),
+            updated_at: new Date(blog.updated_at)
+        } : null;
+    }
+
 }

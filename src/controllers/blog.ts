@@ -28,3 +28,20 @@ export const createBlog = async (req: Request, res: Response, next: NextFunction
 
     res.status(201).json(blog);
 }
+
+export const getAllBlogs = async (req: Request, res: Response, next: NextFunction) => {
+    const blogs: Blog[] = await blogService.getAllusers();
+
+    res.status(200).json(blogs);
+}
+
+export const getBlogById = async (req: Request, res: Response, next: NextFunction) => {
+    const blogId = parseInt(req.params.id);
+    if (isNaN(blogId)) {
+        throw new BadRequestException('Invalid blog id!',ErrorCode.INVALID_BLOG_ID);
+    }
+
+    const blog = await blogService.getBlogById(blogId);
+
+    res.status(200).json(blog);
+};

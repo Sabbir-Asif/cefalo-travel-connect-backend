@@ -1,4 +1,3 @@
-import express from "express";
 import { UserResponse } from "../../interfaces/user";
 
 declare global {
