@@ -1,7 +1,7 @@
 import { Blog, CreateBlog } from "../interfaces/blog";
 
-interface IBlogRepository {
-    create(blog: CreateBlog) : Promise<Blog>
+export interface IBlogRepository {
+    create(userId:number, blog: CreateBlog) : Promise<Blog>
 }
 
 // create(user: CreateUser) : Promise<User>;

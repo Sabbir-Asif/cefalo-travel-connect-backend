@@ -2,6 +2,7 @@ import { Blog, Blog_Status, CreateBlog } from "../interfaces/blog";
 
 export class CreateBlogDto {
     title: string;
+    userId: number;
     locationName: string;
     locationPoints: {
         lat: number;
@@ -10,8 +11,9 @@ export class CreateBlogDto {
     description: string;
     tags: string[];
 
-    constructor(blogData: CreateBlog) {
+    constructor(userId: number, blogData: CreateBlog) {
         this.title = blogData.title;
+        this.userId = userId;
         this.locationName = blogData.locationName;
         this.locationPoints = {
             lat: blogData.locationPoints.lat,

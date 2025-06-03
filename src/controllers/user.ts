@@ -8,7 +8,7 @@ import { ErrorCode } from '../exceptions/root';
 import { UpdateUserDto } from '../dtos/user';
 
 const userRepository = new UserRepository();
-const userService = new UserService(userRepository);
+export const userService = new UserService(userRepository);
 
 
 export const getUserById = async (req: Request, res: Response, next: NextFunction) => {

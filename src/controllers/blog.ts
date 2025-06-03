@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express"
+import { CreateBlogSchema } from "../schemas/blog"
 
 export const createBlog = async (req: Request, res: Response, next: NextFunction) => {
-    res.json('create blog called');
+    const parsed = CreateBlogSchema.safeParse(req.body)
 }

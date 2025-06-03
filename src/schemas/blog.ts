@@ -4,7 +4,6 @@ export const BlogStatusEnum = z.enum(['DRAFT', 'PUBLISHED', 'ARCHIVED']);
 
 export const CreateBlogSchema = z.object({
   title: z.string(),
-  userId: z.number(),
   locationName: z.string(),
   locationPoints: z.object({
     lat: z.number(),
