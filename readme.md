@@ -1,0 +1,2 @@
+References:
+- <a href="https://www.codedaily.io/tutorials/Query-GPS-Coordinates-within-a-Radius-using-KnexJS-Postgres-and-the-PostGIS-Extension">Query GPS Coordinates within a Radius using KnexJS, Postgres and the PostGIS Extension</a>
