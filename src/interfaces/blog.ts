@@ -24,14 +24,14 @@ export enum Blog_Status {
     ARCHIVED = "ARCHIVED"
 }
 
-export interface BlogResponse {
+export interface Blog {
     id: number;
     title: string;
     userId: number;
     locationName: string;
     locationPoints: {
-        type: 'Point';
-        coordinates: [number, number];
+        lat: number;
+        long: number;
     };
     description: string;
     cover_image: string | null;
