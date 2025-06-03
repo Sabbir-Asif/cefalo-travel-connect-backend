@@ -8,13 +8,13 @@ export class BlogRepository implements IBlogRepository {
         const [newBlog] = await db(this.tableName).insert({
             ...blog,
             userId,
-            locationPoints: db.raw(`ST_GeographyFromText('SRID=4326;POINT(? ?)')`,
+            location_points: db.raw(`ST_GeographyFromText('SRID=4326;POINT(? ?)')`,
                 [blog.locationPoints.long, blog.locationPoints.lat]
             )
         }).returning([
             '*',
-            db.raw(`ST_X(locationPoints::geometry) as long`),
-            db.raw(`ST_Y(locationPoints::geometry) as lat`)
+            db.raw(`ST_X(location_points::geometry) as long`),
+            db.raw(`ST_Y(location_points::geometry) as lat`)
         ]);
 
         return {

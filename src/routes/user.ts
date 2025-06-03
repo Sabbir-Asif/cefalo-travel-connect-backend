@@ -1,10 +1,11 @@
+import { authMiddleware } from './../middlewares/auth';
 import { errorHandler } from './../global-error-handler';
 import { Router } from "express";
 import { deleteUser, getAllUsers, getUserById, updateUser } from "../controllers/user";
 
 export const userRouter : Router = Router();
 
-userRouter.get('/',errorHandler(getAllUsers));
-userRouter.get('/:id',errorHandler(getUserById))
-userRouter.put('/:id',errorHandler(updateUser));
-userRouter.delete('/:id',errorHandler(deleteUser));
+userRouter.get('/',authMiddleware, errorHandler(getAllUsers));
+userRouter.get('/:id',authMiddleware, errorHandler(getUserById))
+userRouter.put('/:id',authMiddleware, errorHandler(updateUser));
+userRouter.delete('/:id',authMiddleware, errorHandler(deleteUser));
