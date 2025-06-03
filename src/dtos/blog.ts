@@ -3,22 +3,26 @@ import { Blog, Blog_Status, CreateBlog } from "../interfaces/blog";
 export class CreateBlogDto {
     title: string;
     locationName: string;
-    locationPoints: {
+    location_points: {
         lat: number;
         long: number;
     };
     description: string;
-    tags: string[];
+    tags?: string[];
+    images?: string[];
+    videos?: string[]
 
     constructor(blogData: CreateBlog) {
         this.title = blogData.title;
         this.locationName = blogData.locationName;
-        this.locationPoints = {
-            lat: blogData.locationPoints.lat,
-            long: blogData.locationPoints.long
+        this.location_points = {
+            lat: blogData.location_points.lat,
+            long: blogData.location_points.long
         }
         this.description = blogData.description,
         this.tags = blogData.tags
+        this.images = blogData.images
+        this.videos = blogData.videos
     }
 }
 
@@ -27,7 +31,7 @@ export class BlogResponseDto {
     title: string;
     userId: number;
     locationName: string;
-    locationPoints: {
+    location_points: {
         lat: number;
         long: number;
     };
@@ -45,9 +49,9 @@ export class BlogResponseDto {
         this.userId = blogData.userId;
         this.title = blogData.title;
         this.locationName = blogData.locationName;
-        this.locationPoints = {
-            lat: blogData.locationPoints.lat,
-            long: blogData.locationPoints.long
+        this.location_points = {
+            lat: blogData.location_points.lat,
+            long: blogData.location_points.long
         }
         this.description = blogData.description,
         this.cover_image = blogData.cover_image,

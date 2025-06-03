@@ -4,7 +4,7 @@
 //     table.integer('userId').unsigned().notNullable()
 //         .references('id').inTable('users').onDelete('CASCADE');
 //     table.string('locationName').notNullable();
-//     table.specificType('locationPoints', 'geometry(Point, 4326)').notNullable();
+//     table.specificType('location_points', 'geometry(Point, 4326)').notNullable();
 //     table.text('description').notNullable();
 //     table.string('cover_image');
 //     table.enu('status', ['DRAFT', 'PUBLISHED', 'ARCHIVED'], {
@@ -29,7 +29,7 @@ export interface Blog {
     title: string;
     userId: number;
     locationName: string;
-    locationPoints: {
+    location_points: {
         lat: number;
         long: number;
     };
@@ -46,10 +46,12 @@ export interface Blog {
 export interface CreateBlog {
     title: string;
     locationName: string;
-    locationPoints: {
+    location_points: {
         lat: number;
         long: number;
     };
     description: string;
-    tags: string[];
+    tags?: string[];
+    images?: string[];
+    videos?: string[];
 }

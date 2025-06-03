@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from "express"
 import { CreateBlogSchema } from "../schemas/blog"
 import { UnprocessableEntityException } from "../exceptions/validation"
 import { ErrorCode } from "../exceptions/root"
-import { BlogResponseDto, CreateBlogDto } from "../dtos/blog"
+import {  CreateBlogDto } from "../dtos/blog"
 import { BadRequestException } from "../exceptions/bad-request"
-import { Blog } from "../interfaces/blog"
+import { Blog, CreateBlog } from "../interfaces/blog"
 import { BlogRepository } from "../repositories/impl/blog-impl"
 import { BlogService } from "../services/blog"
 
@@ -22,7 +22,7 @@ export const createBlog = async (req: Request, res: Response, next: NextFunction
     if(!userId) {
         throw new BadRequestException('User not found!', ErrorCode.USER_NOTFOUND)
     }
-    const blogCreateDto = new CreateBlogDto(req.body)
+    const blogCreateDto: CreateBlog = new CreateBlogDto(parsed.data)
     
     const blog: Blog = await blogService.createBlog(userId,blogCreateDto);
 

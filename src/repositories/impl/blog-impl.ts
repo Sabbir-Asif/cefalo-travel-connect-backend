@@ -8,9 +8,13 @@ export class BlogRepository implements IBlogRepository {
         const [newBlog] = await db(this.tableName).insert({
             ...blog,
             userId,
-            location_points: db.raw(`ST_GeographyFromText('SRID=4326;POINT(? ?)')`,
-                [blog.locationPoints.long, blog.locationPoints.lat]
-            )
+            location_points: db.raw(
+                `ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography`,
+                [blog.location_points.long, blog.location_points.lat]
+            ),
+            tags: JSON.stringify(blog.tags),
+            images: JSON.stringify(blog.images),
+            videos: JSON.stringify(blog.videos)
         }).returning([
             '*',
             db.raw(`ST_X(location_points::geometry) as long`),
@@ -19,12 +23,13 @@ export class BlogRepository implements IBlogRepository {
 
         return {
             ...newBlog,
-            locationPoints: {
+            location_points: {
                 lat: parseFloat(newBlog.lat),
                 long: parseFloat(newBlog.long),
             },
             created_at: new Date(newBlog.created_at),
             updated_at: new Date(newBlog.updated_at)
-        }
+        };
     }
+
 }
