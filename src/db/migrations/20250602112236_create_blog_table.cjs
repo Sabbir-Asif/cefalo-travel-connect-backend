@@ -23,6 +23,7 @@ exports.up = async function (knex) {
     });
 };
 
-exports.down = function (knex) {
-
+exports.down = async function (knex) {
+    await knex.schema.dropTable('blogs');
+    await knex.raw('DROP EXTENSION IF EXISTS postgis');
 };
