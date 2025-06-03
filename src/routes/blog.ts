@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { createBlog } from "../controllers/blog";
 import { errorHandler } from "../global-error-handler";
+import { authMiddleware } from "../middlewares/auth";
 
 export const blogRouter: Router = Router();
 
-blogRouter.post('/',errorHandler(createBlog));
+blogRouter.post('/', authMiddleware, errorHandler(createBlog));
