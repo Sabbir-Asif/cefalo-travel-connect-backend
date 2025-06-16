@@ -1,5 +1,5 @@
 import { db } from "../../configs/db";
-import { CreateTransport, Transport, UpdateTransport } from "../../interfaces/transport";
+import { CreateTransport, Transport, TransportLocation, UpdateTransport } from "../../interfaces/transport";
 import { ITransportRepository } from "../transport";
 
 export class TransportRepository implements ITransportRepository {
@@ -71,8 +71,8 @@ export class TransportRepository implements ITransportRepository {
             db.raw(`ST_X(destination_point::geometry) as des_long`),
             db.raw(`ST_Y(destination_point::geometry) as des_lat`)
         )
-        .where({id})
-        .first();
+            .where({ id })
+            .first();
 
         return transport ? {
             ...transport,
@@ -139,4 +139,105 @@ export class TransportRepository implements ITransportRepository {
         const count = await db(this.tableName).where({ id }).del();
         return count;
     }
+
+    async allStratingLocations(): Promise<TransportLocation[]> {
+        const rows = await db(this.tableName)
+            .distinct('starting_location as name')
+            .select(
+                db.raw(`ST_Y(starting_point::geometry) as lat`),
+                db.raw(`ST_X(starting_point::geometry) as long`)
+            );
+
+        return rows.map((row) => ({
+            name: row.name,
+            location_point: {
+                lat: parseFloat(row.lat),
+                long: parseFloat(row.long),
+            },
+        }));
+    }
+
+    async allDestinationLocations(): Promise<TransportLocation[]> {
+        const rows = await db(this.tableName)
+            .distinct('destination as name')
+            .select(
+                db.raw(`ST_Y(destination_point::geometry) as lat`),
+                db.raw(`ST_X(destination_point::geometry) as long`)
+            );
+
+        return rows.map((row) => ({
+            name: row.name,
+            location_point: {
+                lat: parseFloat(row.lat),
+                long: parseFloat(row.long),
+            },
+        }));
+    }
+
+    async search(params: {
+        startingLocationName?: string;
+        destinationLocationName?: string;
+        type?: string;
+        name?: string;
+        sortBy?: 'fare';
+        order?: 'asc' | 'desc';
+      }): Promise<Transport[]> {
+        const {
+          startingLocationName,
+          destinationLocationName,
+          type,
+          name,
+          sortBy,
+          order = 'asc'
+        } = params;
+      
+        const query = db('transports')
+          .select(
+            '*',
+            db.raw(`ST_X(starting_point::geometry) as start_long`),
+            db.raw(`ST_Y(starting_point::geometry) as start_lat`),
+            db.raw(`ST_X(destination_point::geometry) as dest_long`),
+            db.raw(`ST_Y(destination_point::geometry) as dest_lat`)
+          );
+      
+        // Search filters
+        if (startingLocationName) {
+          query.whereILike('starting_location', `%${startingLocationName}%`);
+        }
+      
+        if (destinationLocationName) {
+          query.whereILike('destination', `%${destinationLocationName}%`);
+        }
+      
+        if (type) {
+          const upper = type.toUpperCase();
+          if (['BUS', 'TRAIN', 'FLIGHT', 'BOAT', 'OTHER'].includes(upper)) {
+            query.where('type', upper);
+          }
+        }
+      
+        if (name) {
+          query.whereILike('name', `%${name}%`);
+        }
+      
+        // Sorting
+        if (sortBy === 'fare') {
+          query.orderByRaw(`fare::numeric ${order === 'desc' ? 'desc' : 'asc'}`);
+        } else {
+          query.orderBy('created_at', 'desc');
+        }
+      
+        const transports = await query;
+      
+        // Map lat/long and convert timestamps
+        return transports.map(t => ({
+          ...t,
+          starting_point: { lat: parseFloat(t.start_lat), long: parseFloat(t.start_long) },
+          destination_point: { lat: parseFloat(t.dest_lat), long: parseFloat(t.dest_long) },
+          created_at: new Date(t.created_at),
+          updated_at: new Date(t.updated_at),
+        }));
+      }
+          
+
 }

@@ -6,6 +6,7 @@ export interface ITransportRepository {
     getById(id: number): Promise<Transport | null>;
     update(id: number, data: UpdateTransport) : Promise<Transport>;
     delete(id: number): Promise<number>;
-    // allStratingLocations(): Promise<TransportLocation[]>;
-    // allDestinationLocations() : Promise<TransportLocation[]>;
+    search(params: Record<string, any>): Promise<Transport[]>;
+    allStratingLocations(): Promise<TransportLocation[]>;
+    allDestinationLocations() : Promise<TransportLocation[]>;
 }

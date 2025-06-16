@@ -14,7 +14,7 @@ const transportService = new TransportService(transportRepository);
 
 export const getTransportById = async (req: Request, res: Response) => {
     const transportId = parseInt(req.params.id);
-    if(isNaN(transportId)) {
+    if (isNaN(transportId)) {
         throw new BadRequestException('Invalid transport id!', ErrorCode.INVALID_TRANSPORT_ID);
     }
 
@@ -30,19 +30,19 @@ export const getAllTransports = async (req: Request, res: Response) => {
 }
 
 export const createTransport = async (req: Request, res: Response) => {
-   const parsed = CreateTransportSchema.safeParse(req.body);
-   if(!parsed.success) {
-    throw new UnprocessableEntityException(parsed.error, "Validation Error!", ErrorCode.UNPROCESSABLE_ENTITY);
-   }
+    const parsed = CreateTransportSchema.safeParse(req.body);
+    if (!parsed.success) {
+        throw new UnprocessableEntityException(parsed.error, "Validation Error!", ErrorCode.UNPROCESSABLE_ENTITY);
+    }
 
-   const transportCreateDto: CreateTransport = new CreateTransportDto({
-       ...parsed.data,
-       type: parsed.data.type as TransportType
-   });
+    const transportCreateDto: CreateTransport = new CreateTransportDto({
+        ...parsed.data,
+        type: parsed.data.type as TransportType
+    });
 
-   const transport: Transport = await transportService.createTransport(transportCreateDto);
+    const transport: Transport = await transportService.createTransport(transportCreateDto);
 
-   res.status(201).json(transport);
+    res.status(201).json(transport);
 }
 
 export const updateTransport = async (req: Request, res: Response) => {
@@ -59,7 +59,7 @@ export const updateTransport = async (req: Request, res: Response) => {
 
     const transportUpdateDto = new UpdateTransportDto({
         ...parsed.data,
-        type: parsed.data.type as TransportType | undefined 
+        type: parsed.data.type as TransportType | undefined
     });
 
     const transport: Transport = await transportService.updateTransport(transportId, transportUpdateDto as UpdateTransport);
@@ -79,10 +79,20 @@ export const deleteTransport = async (req: Request, res: Response) => {
 }
 
 export const getAllStartingLocations = async (req: Request, res: Response) => {
-    res.send('get all starting locations called');
-}
+    const locations = await transportService.getAllStartingLocations();
+    res.status(200).json(locations);
+};
 
 export const getAllDestinationLocations = async (req: Request, res: Response) => {
-    res.send('get all destination locations called');
-}
+    const locations = await transportService.getAllDestinationLocations();
+    res.status(200).json(locations);
+};
+
+export const searchTransports = async (req: Request, res: Response) => {
+    const queryParams = req.query;
+
+    const results = await transportService.searchTransports(queryParams);
+
+    res.status(200).json(results);
+};
 
