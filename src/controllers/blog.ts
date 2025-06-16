@@ -31,7 +31,7 @@ export const createBlog = async (req: Request, res: Response, next: NextFunction
 }
 
 export const getAllBlogs = async (req: Request, res: Response, next: NextFunction) => {
-    const blogs: Blog[] = await blogService.getAllusers();
+    const blogs: Blog[] = await blogService.getAllBlogs();
 
     res.status(200).json(blogs);
 }
@@ -64,9 +64,33 @@ export const updateBlog = async (req: Request, res: Response, next: NextFunction
         throw new UnauthorizedException('User not found!', ErrorCode.USER_NOTFOUND)
     }
 
-    const blogUpdateDto : UpdateBlog = new UpdateBlogDto(req.body);
+    const blogUpdateDto: UpdateBlog = new UpdateBlogDto(req.body);
 
-    const blog : Blog = await blogService.updateBlog(blogId, userId, blogUpdateDto);
+    const blog: Blog = await blogService.updateBlog(blogId, userId, blogUpdateDto);
 
     res.status(200).json(blog);
 }
+
+export const deleteBlog = async (req: Request, res: Response, next: NextFunction) => {
+    const blogId = parseInt(req.params.id);
+    if (isNaN(blogId)) {
+        throw new BadRequestException('Invalid blog id!', ErrorCode.INVALID_BLOG_ID);
+    }
+
+    const userId = req.user?.id;
+    if (!userId) {
+        throw new UnauthorizedException('User not found!', ErrorCode.USER_NOTFOUND)
+    }
+
+    const count = await blogService.deleteBlog(blogId, userId);
+
+    res.status(204).json({ count });
+}
+
+export const searchBlogs = async (req: Request, res: Response, next: NextFunction) => {
+    const queryParams = req.query;
+
+    const blogs = await blogService.searchBlogs(queryParams);
+
+    res.status(200).json(blogs);
+};

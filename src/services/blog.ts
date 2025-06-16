@@ -3,7 +3,6 @@ import { BlogResponseDto } from "../dtos/blog";
 import { ForbiddenException } from "../exceptions/forbidden";
 import { NotFoundException } from "../exceptions/not-found";
 import { ErrorCode } from "../exceptions/root";
-import { UnauthorizedException } from "../exceptions/unauthorized";
 import { Blog, CreateBlog, UpdateBlog } from "../interfaces/blog";
 import { IBlogRepository } from "../repositories/blog";
 
@@ -21,7 +20,7 @@ export class BlogService {
         return new BlogResponseDto(blog)
     }
 
-    async getAllusers(): Promise<Blog[]> {
+    async getAllBlogs(): Promise<Blog[]> {
 
         const blogs = await this.blogRepository.getAll();
 
@@ -43,7 +42,7 @@ export class BlogService {
         if (!blog) {
             throw new NotFoundException(`No blog found with id ${id}`, ErrorCode.BLOG_NOT_FOUND)
         }
-        if(userId !== blog.userId) {
+        if (userId !== blog.userId) {
             throw new ForbiddenException(`Userid ${userId} can not perform update on blog ${id}`, ErrorCode.FORBIDDEN);
         }
 
@@ -51,5 +50,24 @@ export class BlogService {
 
         return new BlogResponseDto(updatedBlog);
     }
+
+    async deleteBlog(id: number, userId: number): Promise<number> {
+        const blog = await this.blogRepository.getById(id);
+        if (!blog) {
+            throw new NotFoundException(`No blog found with id ${id}`, ErrorCode.BLOG_NOT_FOUND)
+        }
+        if (userId !== blog.userId) {
+            throw new ForbiddenException(`Userid ${userId} can not perform delete on blog ${id}`, ErrorCode.FORBIDDEN);
+        }
+
+        const count = await this.blogRepository.delete(id);
+
+        return count;
+    }
+
+    async searchBlogs(params: Record<string, any>): Promise<Blog[]> {
+    const blogs = await this.blogRepository.search(params);
+    return blogs.map(blog => new BlogResponseDto(blog));
+}
 
 }
