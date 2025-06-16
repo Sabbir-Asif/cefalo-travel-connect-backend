@@ -4,8 +4,8 @@ export interface ITransportRepository {
     create(transport: CreateTransport) : Promise<Transport>;
     getAll() : Promise<Transport[]>;
     getById(id: number): Promise<Transport | null>;
-    // update(id: number, data: UpdateTransport) : Promise<Transport>;
-    // delete(id: number): Promise<number>;
+    update(id: number, data: UpdateTransport) : Promise<Transport>;
+    delete(id: number): Promise<number>;
     // allStratingLocations(): Promise<TransportLocation[]>;
     // allDestinationLocations() : Promise<TransportLocation[]>;
 }

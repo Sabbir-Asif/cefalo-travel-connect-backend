@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { TransportRepository } from "../repositories/impl/transport-impl";
 import { TransportService } from "../services/transport";
-import { CreateTransportSchema } from "../schemas/transport";
+import { CreateTransportSchema, UpdateTransportSchema } from "../schemas/transport";
 import { UnprocessableEntityException } from "../exceptions/validation";
 import { ErrorCode } from "../exceptions/root";
-import { CreateTransport, Transport, TransportType } from "../interfaces/transport";
-import { CreateTransportDto } from "../dtos/transport";
+import { CreateTransport, Transport, TransportType, UpdateTransport } from "../interfaces/transport";
+import { CreateTransportDto, UpdateTransportDto } from "../dtos/transport";
 import { BadRequestException } from "../exceptions/bad-request";
 
 
@@ -46,11 +46,36 @@ export const createTransport = async (req: Request, res: Response) => {
 }
 
 export const updateTransport = async (req: Request, res: Response) => {
-    res.send('update transport called');
+    const transportId = parseInt(req.params.id);
+    const parsed = UpdateTransportSchema.safeParse(req.body);
+
+    if (!parsed.success) {
+        throw new UnprocessableEntityException(parsed.error, "Validation error!", ErrorCode.UNPROCESSABLE_ENTITY);
+    }
+
+    if (isNaN(transportId)) {
+        throw new BadRequestException('Invalid transport id!', ErrorCode.INVALID_TRANSPORT_ID);
+    }
+
+    const transportUpdateDto = new UpdateTransportDto({
+        ...parsed.data,
+        type: parsed.data.type as TransportType | undefined 
+    });
+
+    const transport: Transport = await transportService.updateTransport(transportId, transportUpdateDto as UpdateTransport);
+
+    res.status(200).json(transport);
 }
 
 export const deleteTransport = async (req: Request, res: Response) => {
-    res.send('delete transport called');
+    const transportId = parseInt(req.params.id);
+    if (isNaN(transportId)) {
+        throw new BadRequestException('Invalid transport id!', ErrorCode.INVALID_TRANSPORT_ID);
+    }
+
+    const deletedCount = await transportService.deleteTransport(transportId);
+
+    res.status(204).json(deletedCount);
 }
 
 export const getAllStartingLocations = async (req: Request, res: Response) => {

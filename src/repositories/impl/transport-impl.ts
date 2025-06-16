@@ -1,5 +1,5 @@
 import { db } from "../../configs/db";
-import { CreateTransport, Transport } from "../../interfaces/transport";
+import { CreateTransport, Transport, UpdateTransport } from "../../interfaces/transport";
 import { ITransportRepository } from "../transport";
 
 export class TransportRepository implements ITransportRepository {
@@ -89,4 +89,54 @@ export class TransportRepository implements ITransportRepository {
         } : null;
     }
 
+    async update(id: number, data: UpdateTransport): Promise<Transport> {
+        const updateData: any = {
+            ...data,
+            updated_at: new Date()
+        };
+
+        if (data.starting_point) {
+            updateData.starting_point = db.raw(
+                `ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography`,
+                [data.starting_point.long, data.starting_point.lat]
+            );
+        }
+
+        if (data.destination_point) {
+            updateData.destination_point = db.raw(
+                `ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography`,
+                [data.destination_point.long, data.destination_point.lat]
+            );
+        }
+
+        const [updatedTransport] = await db(this.tableName)
+            .where({ id })
+            .update(updateData)
+            .returning([
+                '*',
+                db.raw(`ST_X(starting_point::geometry) as start_long`),
+                db.raw(`ST_Y(starting_point::geometry) as start_lat`),
+                db.raw(`ST_X(destination_point::geometry) as des_long`),
+                db.raw(`ST_Y(destination_point::geometry) as des_lat`)
+            ]);
+
+        return {
+            ...updatedTransport,
+            starting_point: {
+                lat: parseFloat(updatedTransport.start_lat),
+                long: parseFloat(updatedTransport.start_long)
+            },
+            destination_point: {
+                lat: parseFloat(updatedTransport.des_lat),
+                long: parseFloat(updatedTransport.des_long)
+            },
+            created_at: new Date(updatedTransport.created_at),
+            updated_at: new Date(updatedTransport.updated_at)
+        };
+    }
+
+    async delete(id: number): Promise<number> {
+        const count = await db(this.tableName).where({ id }).del();
+        return count;
+    }
 }
