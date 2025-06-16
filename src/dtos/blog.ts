@@ -1,4 +1,4 @@
-import { Blog, Blog_Status, CreateBlog } from "../interfaces/blog";
+import { Blog, Blog_Status, CreateBlog, UpdateBlog } from "../interfaces/blog";
 
 export class CreateBlogDto {
     title: string;
@@ -20,8 +20,36 @@ export class CreateBlogDto {
             long: blogData.location_points.long
         }
         this.description = blogData.description,
-        this.tags = blogData.tags
+            this.tags = blogData.tags
         this.images = blogData.images
+        this.videos = blogData.videos
+    }
+}
+
+export class UpdateBlogDto {
+    title?: string;
+    locationName?: string;
+    location_points?: {
+        lat: number;
+        long: number;
+    };
+    description?: string;
+    tags?: string[];
+    images?: string[];
+    videos?: string[]
+
+    constructor(blogData: UpdateBlog) {
+        this.title = blogData.title;
+        this.locationName = blogData.locationName;
+        if (blogData.location_points) {
+            this.location_points = {
+                lat: blogData.location_points.lat,
+                long: blogData.location_points.long
+            }
+        }
+        this.description = blogData.description,
+        this.tags = blogData.tags,
+        this.images = blogData.images,
         this.videos = blogData.videos
     }
 }
@@ -54,13 +82,13 @@ export class BlogResponseDto {
             long: blogData.location_points.long
         }
         this.description = blogData.description,
-        this.cover_image = blogData.cover_image,
-        this.status = blogData.status,
-        this.tags = blogData.tags
+            this.cover_image = blogData.cover_image,
+            this.status = blogData.status,
+            this.tags = blogData.tags
         this.tags = blogData.tags,
-        this.images = blogData.images,
-        this.videos = blogData.videos,
-        this.created_at = blogData.created_at,
-        this.updated_at = blogData.updated_at
+            this.images = blogData.images,
+            this.videos = blogData.videos,
+            this.created_at = blogData.created_at,
+            this.updated_at = blogData.updated_at
     }
 }

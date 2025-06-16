@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from "express"
-import { CreateBlogSchema } from "../schemas/blog"
+import { CreateBlogSchema, UpdateBlogSchema } from "../schemas/blog"
 import { UnprocessableEntityException } from "../exceptions/validation"
 import { ErrorCode } from "../exceptions/root"
-import {  CreateBlogDto } from "../dtos/blog"
+import { CreateBlogDto, UpdateBlogDto } from "../dtos/blog"
 import { BadRequestException } from "../exceptions/bad-request"
-import { Blog, CreateBlog } from "../interfaces/blog"
+import { Blog, CreateBlog, UpdateBlog } from "../interfaces/blog"
 import { BlogRepository } from "../repositories/impl/blog-impl"
 import { BlogService } from "../services/blog"
+import { UnauthorizedException } from "../exceptions/unauthorized"
 
 
 const blogRepository = new BlogRepository();
@@ -14,17 +15,17 @@ const blogService = new BlogService(blogRepository);
 
 export const createBlog = async (req: Request, res: Response, next: NextFunction) => {
     const parsed = CreateBlogSchema.safeParse(req.body)
-    if(!parsed.success) {
-        throw new UnprocessableEntityException(parsed.error, "Validation error!",ErrorCode.UNPROCESSABLE_ENTITY);
+    if (!parsed.success) {
+        throw new UnprocessableEntityException(parsed.error, "Validation error!", ErrorCode.UNPROCESSABLE_ENTITY);
     }
 
     const userId = req.user?.id;
-    if(!userId) {
-        throw new BadRequestException('User not found!', ErrorCode.USER_NOTFOUND)
+    if (!userId) {
+        throw new UnauthorizedException('User not found!', ErrorCode.USER_NOTFOUND)
     }
     const blogCreateDto: CreateBlog = new CreateBlogDto(parsed.data)
-    
-    const blog: Blog = await blogService.createBlog(userId,blogCreateDto);
+
+    const blog: Blog = await blogService.createBlog(userId, blogCreateDto);
 
     res.status(201).json(blog);
 }
@@ -38,10 +39,34 @@ export const getAllBlogs = async (req: Request, res: Response, next: NextFunctio
 export const getBlogById = async (req: Request, res: Response, next: NextFunction) => {
     const blogId = parseInt(req.params.id);
     if (isNaN(blogId)) {
-        throw new BadRequestException('Invalid blog id!',ErrorCode.INVALID_BLOG_ID);
+        throw new BadRequestException('Invalid blog id!', ErrorCode.INVALID_BLOG_ID);
     }
 
     const blog = await blogService.getBlogById(blogId);
 
     res.status(200).json(blog);
 };
+
+export const updateBlog = async (req: Request, res: Response, next: NextFunction) => {
+    const blogId = parseInt(req.params.id);
+    const parsed = UpdateBlogSchema.safeParse(req.body);
+
+    if (!parsed.success) {
+        throw new UnprocessableEntityException(parsed.error, "Validation error!", ErrorCode.UNPROCESSABLE_ENTITY);
+    }
+
+    if (isNaN(blogId)) {
+        throw new BadRequestException('Invalid blog id!', ErrorCode.INVALID_BLOG_ID);
+    }
+
+    const userId = req.user?.id;
+    if (!userId) {
+        throw new UnauthorizedException('User not found!', ErrorCode.USER_NOTFOUND)
+    }
+
+    const blogUpdateDto : UpdateBlog = new UpdateBlogDto(req.body);
+
+    const blog : Blog = await blogService.updateBlog(blogId, userId, blogUpdateDto);
+
+    res.status(200).json(blog);
+}

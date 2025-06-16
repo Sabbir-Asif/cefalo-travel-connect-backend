@@ -1,8 +1,10 @@
 import { userService } from "../controllers/user";
 import { BlogResponseDto } from "../dtos/blog";
+import { ForbiddenException } from "../exceptions/forbidden";
 import { NotFoundException } from "../exceptions/not-found";
 import { ErrorCode } from "../exceptions/root";
-import { Blog, CreateBlog } from "../interfaces/blog";
+import { UnauthorizedException } from "../exceptions/unauthorized";
+import { Blog, CreateBlog, UpdateBlog } from "../interfaces/blog";
 import { IBlogRepository } from "../repositories/blog";
 
 export class BlogService {
@@ -19,7 +21,7 @@ export class BlogService {
         return new BlogResponseDto(blog)
     }
 
-    async getAllusers() : Promise<Blog[]> {
+    async getAllusers(): Promise<Blog[]> {
 
         const blogs = await this.blogRepository.getAll();
 
@@ -29,11 +31,25 @@ export class BlogService {
     async getBlogById(id: number): Promise<Blog> {
         const blog = await this.blogRepository.getById(id);
 
-        if(!blog) {
-            throw new NotFoundException(`No user found with id ${id}`, ErrorCode.BLOG_NOT_FOUND)
+        if (!blog) {
+            throw new NotFoundException(`No blog found with id ${id}`, ErrorCode.BLOG_NOT_FOUND)
         }
 
         return new BlogResponseDto(blog);
+    }
+
+    async updateBlog(id: number, userId: number, data: UpdateBlog): Promise<Blog> {
+        const blog = await this.blogRepository.getById(id);
+        if (!blog) {
+            throw new NotFoundException(`No blog found with id ${id}`, ErrorCode.BLOG_NOT_FOUND)
+        }
+        if(userId !== blog.userId) {
+            throw new ForbiddenException(`Userid ${userId} can not perform update on blog ${id}`, ErrorCode.FORBIDDEN);
+        }
+
+        const updatedBlog = await this.blogRepository.update(id, data);
+
+        return new BlogResponseDto(updatedBlog);
     }
 
 }

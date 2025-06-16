@@ -19,15 +19,3 @@ export const UserUpdateSchema = z.object({
 }).refine((data) => Object.keys(data).length > 0, {
     message: 'At least one field must be provided for update.'
 });
-
-// export interface User {
-//     id: number;
-//     name: string;
-//     email: string;
-//     password: string;
-//     role: Role;
-//     displayPicture: string | null;
-//     bio: string | null;
-//     createdAt: Date;
-//     updatedAt: Date;
-// }

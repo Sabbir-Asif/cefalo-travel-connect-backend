@@ -1,3 +1,6 @@
+import { z } from "zod";
+import { UpdateBlogSchema } from "../schemas/blog";
+
 export enum Blog_Status {
     DRAFT = "DRAFT",
     PUBLISHED = "PUBLISHED",
@@ -35,3 +38,5 @@ export interface CreateBlog {
     images?: string[];
     videos?: string[];
 }
+
+export type UpdateBlog = z.infer<typeof UpdateBlogSchema>;
