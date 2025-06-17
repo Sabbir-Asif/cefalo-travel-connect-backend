@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { UpdateBlogSchema } from "../schemas/blog";
+import { UUID } from "crypto";
 
 export enum Blog_Status {
     DRAFT = "DRAFT",
@@ -8,7 +9,7 @@ export enum Blog_Status {
 }
 
 export interface Blog {
-    id: number;
+    id: UUID;
     title: string;
     userId: number;
     locationName: string;

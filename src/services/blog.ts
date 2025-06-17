@@ -1,3 +1,4 @@
+import { UUID } from "crypto";
 import { userService } from "../controllers/user";
 import { BlogResponseDto } from "../dtos/blog";
 import { ForbiddenException } from "../exceptions/forbidden";
@@ -27,7 +28,7 @@ export class BlogService {
         return blogs.map(blog => new BlogResponseDto(blog));
     }
 
-    async getBlogById(id: number): Promise<Blog> {
+    async getBlogById(id: UUID): Promise<Blog> {
         const blog = await this.blogRepository.getById(id);
 
         if (!blog) {
@@ -37,7 +38,7 @@ export class BlogService {
         return new BlogResponseDto(blog);
     }
 
-    async updateBlog(id: number, userId: number, data: UpdateBlog): Promise<Blog> {
+    async updateBlog(id: UUID, userId: number, data: UpdateBlog): Promise<Blog> {
         const blog = await this.blogRepository.getById(id);
         if (!blog) {
             throw new NotFoundException(`No blog found with id ${id}`, ErrorCode.BLOG_NOT_FOUND)
@@ -51,7 +52,7 @@ export class BlogService {
         return new BlogResponseDto(updatedBlog);
     }
 
-    async deleteBlog(id: number, userId: number): Promise<number> {
+    async deleteBlog(id: UUID, userId: number): Promise<number> {
         const blog = await this.blogRepository.getById(id);
         if (!blog) {
             throw new NotFoundException(`No blog found with id ${id}`, ErrorCode.BLOG_NOT_FOUND)

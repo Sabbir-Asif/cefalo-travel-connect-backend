@@ -8,6 +8,8 @@ import { Blog, CreateBlog, UpdateBlog } from "../interfaces/blog"
 import { BlogRepository } from "../repositories/impl/blog-impl"
 import { BlogService } from "../services/blog"
 import { UnauthorizedException } from "../exceptions/unauthorized"
+import { IdSchema } from "../schemas/id"
+import { UUID } from "crypto"
 
 
 const blogRepository = new BlogRepository();
@@ -37,10 +39,14 @@ export const getAllBlogs = async (req: Request, res: Response, next: NextFunctio
 }
 
 export const getBlogById = async (req: Request, res: Response, next: NextFunction) => {
-    const blogId = parseInt(req.params.id);
-    if (isNaN(blogId)) {
-        throw new BadRequestException('Invalid blog id!', ErrorCode.INVALID_BLOG_ID);
+
+    const Id = req.params.id;
+    const parsedId = IdSchema.safeParse(Id);
+    if (!parsedId.success) {
+        throw new BadRequestException('Invalid blog id!', ErrorCode.INVALID_TRANSPORT_ID);
     }
+
+    const blogId = parsedId.data as UUID;
 
     const blog = await blogService.getBlogById(blogId);
 
@@ -48,15 +54,19 @@ export const getBlogById = async (req: Request, res: Response, next: NextFunctio
 };
 
 export const updateBlog = async (req: Request, res: Response, next: NextFunction) => {
-    const blogId = parseInt(req.params.id);
+
+    const Id = req.params.id;
+    const parsedId = IdSchema.safeParse(Id);
+    if (!parsedId.success) {
+        throw new BadRequestException('Invalid blog id!', ErrorCode.INVALID_TRANSPORT_ID);
+    }
+
+    const blogId = parsedId.data as UUID;
+
     const parsed = UpdateBlogSchema.safeParse(req.body);
 
     if (!parsed.success) {
         throw new UnprocessableEntityException(parsed.error, "Validation error!", ErrorCode.UNPROCESSABLE_ENTITY);
-    }
-
-    if (isNaN(blogId)) {
-        throw new BadRequestException('Invalid blog id!', ErrorCode.INVALID_BLOG_ID);
     }
 
     const userId = req.user?.id;
@@ -72,10 +82,14 @@ export const updateBlog = async (req: Request, res: Response, next: NextFunction
 }
 
 export const deleteBlog = async (req: Request, res: Response, next: NextFunction) => {
-    const blogId = parseInt(req.params.id);
-    if (isNaN(blogId)) {
-        throw new BadRequestException('Invalid blog id!', ErrorCode.INVALID_BLOG_ID);
+   
+    const Id = req.params.id;
+    const parsedId = IdSchema.safeParse(Id);
+    if (!parsedId.success) {
+        throw new BadRequestException('Invalid blog id!', ErrorCode.INVALID_TRANSPORT_ID);
     }
+
+    const blogId = parsedId.data as UUID;
 
     const userId = req.user?.id;
     if (!userId) {

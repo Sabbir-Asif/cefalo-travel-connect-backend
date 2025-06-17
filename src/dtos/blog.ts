@@ -1,3 +1,4 @@
+import { UUID } from "crypto";
 import { Blog, Blog_Status, CreateBlog, UpdateBlog } from "../interfaces/blog";
 
 export class CreateBlogDto {
@@ -48,14 +49,14 @@ export class UpdateBlogDto {
             }
         }
         this.description = blogData.description,
-        this.tags = blogData.tags,
-        this.images = blogData.images,
-        this.videos = blogData.videos
+            this.tags = blogData.tags,
+            this.images = blogData.images,
+            this.videos = blogData.videos
     }
 }
 
 export class BlogResponseDto {
-    id: number;
+    id: UUID;
     title: string;
     userId: number;
     locationName: string;

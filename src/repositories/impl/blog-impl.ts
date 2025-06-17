@@ -1,3 +1,4 @@
+import { UUID } from "crypto";
 import { db } from "../../configs/db";
 import { CreateBlog, Blog, UpdateBlog } from "../../interfaces/blog";
 import { IBlogRepository } from "../blog";
@@ -50,7 +51,7 @@ export class BlogRepository implements IBlogRepository {
         }));
     }
 
-    async getById(id: number): Promise<Blog | null> {
+    async getById(id: UUID): Promise<Blog | null> {
         const blog = await db(this.tableName)
             .select(
                 '*',
@@ -71,7 +72,7 @@ export class BlogRepository implements IBlogRepository {
         } : null;
     }
 
-    async update(id: number, data: UpdateBlog): Promise<Blog> {
+    async update(id: UUID, data: UpdateBlog): Promise<Blog> {
         const updateData: any = {
             ...data,
             updated_at: new Date()
@@ -107,7 +108,7 @@ export class BlogRepository implements IBlogRepository {
         };
     }
 
-    async delete(id: number): Promise<number> {
+    async delete(id: UUID): Promise<number> {
         const count = await db(this.tableName).where({ id }).del();
         return count;
     }
