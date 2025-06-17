@@ -58,7 +58,7 @@ export class UpdateBlogDto {
 export class BlogResponseDto {
     id: UUID;
     title: string;
-    userId: number;
+    userId: UUID;
     locationName: string;
     location_points: {
         lat: number;

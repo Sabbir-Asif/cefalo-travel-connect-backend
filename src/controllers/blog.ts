@@ -21,10 +21,15 @@ export const createBlog = async (req: Request, res: Response, next: NextFunction
         throw new UnprocessableEntityException(parsed.error, "Validation error!", ErrorCode.UNPROCESSABLE_ENTITY);
     }
 
-    const userId = req.user?.id;
-    if (!userId) {
+    const rawUserId = req.user?.id;
+    const parsedUserId = IdSchema.safeParse(rawUserId);
+
+    if (!parsedUserId.success) {
         throw new UnauthorizedException('User not found!', ErrorCode.USER_NOTFOUND)
     }
+
+    const userId = parsedUserId.data as UUID;
+
     const blogCreateDto: CreateBlog = new CreateBlogDto(parsed.data)
 
     const blog: Blog = await blogService.createBlog(userId, blogCreateDto);
@@ -43,7 +48,7 @@ export const getBlogById = async (req: Request, res: Response, next: NextFunctio
     const Id = req.params.id;
     const parsedId = IdSchema.safeParse(Id);
     if (!parsedId.success) {
-        throw new BadRequestException('Invalid blog id!', ErrorCode.INVALID_TRANSPORT_ID);
+        throw new BadRequestException('Invalid blog id!', ErrorCode.INVALID_BLOG_ID);
     }
 
     const blogId = parsedId.data as UUID;
@@ -58,7 +63,7 @@ export const updateBlog = async (req: Request, res: Response, next: NextFunction
     const Id = req.params.id;
     const parsedId = IdSchema.safeParse(Id);
     if (!parsedId.success) {
-        throw new BadRequestException('Invalid blog id!', ErrorCode.INVALID_TRANSPORT_ID);
+        throw new BadRequestException('Invalid blog id!', ErrorCode.INVALID_BLOG_ID);
     }
 
     const blogId = parsedId.data as UUID;
@@ -69,10 +74,14 @@ export const updateBlog = async (req: Request, res: Response, next: NextFunction
         throw new UnprocessableEntityException(parsed.error, "Validation error!", ErrorCode.UNPROCESSABLE_ENTITY);
     }
 
-    const userId = req.user?.id;
-    if (!userId) {
+    const rawUserId = req.user?.id;
+    const parsedUserId = IdSchema.safeParse(rawUserId);
+
+    if (!parsedUserId.success) {
         throw new UnauthorizedException('User not found!', ErrorCode.USER_NOTFOUND)
     }
+
+    const userId = parsedUserId.data as UUID;
 
     const blogUpdateDto: UpdateBlog = new UpdateBlogDto(req.body);
 
@@ -82,19 +91,23 @@ export const updateBlog = async (req: Request, res: Response, next: NextFunction
 }
 
 export const deleteBlog = async (req: Request, res: Response, next: NextFunction) => {
-   
+
     const Id = req.params.id;
     const parsedId = IdSchema.safeParse(Id);
     if (!parsedId.success) {
-        throw new BadRequestException('Invalid blog id!', ErrorCode.INVALID_TRANSPORT_ID);
+        throw new BadRequestException('Invalid blog id!', ErrorCode.INVALID_BLOG_ID);
     }
 
     const blogId = parsedId.data as UUID;
 
-    const userId = req.user?.id;
-    if (!userId) {
+    const rawUserId = req.user?.id;
+    const parsedUserId = IdSchema.safeParse(rawUserId);
+
+    if (!parsedUserId.success) {
         throw new UnauthorizedException('User not found!', ErrorCode.USER_NOTFOUND)
     }
+
+    const userId = parsedUserId.data as UUID;
 
     const count = await blogService.deleteBlog(blogId, userId);
 

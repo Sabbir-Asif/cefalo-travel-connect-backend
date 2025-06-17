@@ -10,7 +10,7 @@ import { IBlogRepository } from "../repositories/blog";
 export class BlogService {
     constructor(private blogRepository: IBlogRepository) { };
 
-    async createBlog(userId: number, blogData: CreateBlog): Promise<Blog> {
+    async createBlog(userId: UUID, blogData: CreateBlog): Promise<Blog> {
         try {
             const user = await userService.getUserById(userId);
         } catch (err) {
@@ -38,7 +38,7 @@ export class BlogService {
         return new BlogResponseDto(blog);
     }
 
-    async updateBlog(id: UUID, userId: number, data: UpdateBlog): Promise<Blog> {
+    async updateBlog(id: UUID, userId: UUID, data: UpdateBlog): Promise<Blog> {
         const blog = await this.blogRepository.getById(id);
         if (!blog) {
             throw new NotFoundException(`No blog found with id ${id}`, ErrorCode.BLOG_NOT_FOUND)
@@ -52,7 +52,7 @@ export class BlogService {
         return new BlogResponseDto(updatedBlog);
     }
 
-    async deleteBlog(id: UUID, userId: number): Promise<number> {
+    async deleteBlog(id: UUID, userId: UUID): Promise<number> {
         const blog = await this.blogRepository.getById(id);
         if (!blog) {
             throw new NotFoundException(`No blog found with id ${id}`, ErrorCode.BLOG_NOT_FOUND)

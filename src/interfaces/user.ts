@@ -1,3 +1,4 @@
+import { UUID } from "crypto";
 import { UserUpdateSchema } from "../schemas/user";
 import { z } from 'zod'
 
@@ -8,7 +9,7 @@ export enum Role {
 }
 
 export interface User {
-    id: number;
+    id: UUID;
     name: string;
     email: string;
     password: string;

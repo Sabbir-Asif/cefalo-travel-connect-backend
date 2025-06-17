@@ -1,3 +1,4 @@
+import { UUID } from 'crypto';
 import { CreateUser, Role, UpdateUser, User } from '../interfaces/user';
 
 export class CreateUserDto {
@@ -27,7 +28,7 @@ export class UpdateUserDto {
 }
 
 export class UserResponseDto {
-    id: number;
+    id: UUID;
     name: string;
     email: string;
     role: Role;

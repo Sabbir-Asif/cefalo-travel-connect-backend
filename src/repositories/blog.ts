@@ -2,7 +2,7 @@ import { UUID } from "crypto";
 import { Blog, CreateBlog, UpdateBlog } from "../interfaces/blog";
 
 export interface IBlogRepository {
-    create(userId:number, blog: CreateBlog) : Promise<Blog>;
+    create(userId:UUID, blog: CreateBlog) : Promise<Blog>;
     getAll(): Promise<Blog[]>;
     getById(id: UUID): Promise<Blog | null>;
     update(id: UUID, data: UpdateBlog) : Promise<Blog>;

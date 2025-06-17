@@ -1,9 +1,6 @@
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
+
 exports.up = async function (knex) {
-    // await knex.raw(`CREATE TYPE "Role" AS ENUM ('ADMIN', 'TRAVELER', 'EXPLORER')`);
+    await knex.raw(`CREATE TYPE "Role" AS ENUM ('ADMIN', 'TRAVELER', 'EXPLORER')`);
     
     return knex.schema.createTable('users', (table) => {
         table.increments('id').primary();
@@ -21,10 +18,6 @@ exports.up = async function (knex) {
     })
 };
 
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
 exports.down = async function (knex) {
     await knex.schema.dropTable('users');
     await knex.raw('DROP TYPE "Role"');

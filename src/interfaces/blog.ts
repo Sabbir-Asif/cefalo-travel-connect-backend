@@ -11,7 +11,7 @@ export enum Blog_Status {
 export interface Blog {
     id: UUID;
     title: string;
-    userId: number;
+    userId: UUID;
     locationName: string;
     location_points: {
         lat: number;

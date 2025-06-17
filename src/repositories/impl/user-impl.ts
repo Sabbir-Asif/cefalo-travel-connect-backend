@@ -1,3 +1,4 @@
+import { UUID } from "crypto";
 import { db } from "../../configs/db";
 import { CreateUser, UpdateUser } from "../../interfaces/user";
 import { User } from "../../interfaces/user";
@@ -39,7 +40,7 @@ export class UserRepository implements IUserRepository {
         return users;
     }
 
-    async findById(id: number): Promise<User | null> {
+    async findById(id: UUID): Promise<User | null> {
         const user: User = await db(this.tableName).where({id}).first();
         const result = user ? {
             ...user,
@@ -50,7 +51,7 @@ export class UserRepository implements IUserRepository {
         return result;
     }
 
-    async update(id: number, data: UpdateUser): Promise<User> {
+    async update(id: UUID, data: UpdateUser): Promise<User> {
         const [user] = await db(this.tableName)
         .where({id})
         .update({...data, updatedAt: new Date()})

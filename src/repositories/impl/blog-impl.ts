@@ -5,7 +5,7 @@ import { IBlogRepository } from "../blog";
 
 export class BlogRepository implements IBlogRepository {
     private tableName = 'blogs';
-    async create(userId: number, blog: CreateBlog): Promise<Blog> {
+    async create(userId: UUID, blog: CreateBlog): Promise<Blog> {
         const [newBlog] = await db(this.tableName).insert({
             ...blog,
             userId,

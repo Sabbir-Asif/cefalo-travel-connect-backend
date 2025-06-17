@@ -1,3 +1,4 @@
+import { UUID } from "crypto";
 import { UserResponseDto } from "../dtos/user";
 import { InternalException } from "../exceptions/internal-exception";
 import { NotFoundException } from "../exceptions/not-found";
@@ -14,7 +15,7 @@ export class UserService {
         return responseData;
     }
 
-    async getUserById(id: number) : Promise<UserResponse> {
+    async getUserById(id: UUID) : Promise<UserResponse> {
         const user : User | null = await this.userRepository.findById(id);
 
         if(!user) {
@@ -24,7 +25,7 @@ export class UserService {
         return new UserResponseDto(user);
     }
 
-    async updateUser(id: number, data: UpdateUser) : Promise<UserResponse> {
+    async updateUser(id: UUID, data: UpdateUser) : Promise<UserResponse> {
         const existingUser = await this.userRepository.findById(id);
 
          if(!existingUser) {

@@ -4,6 +4,7 @@ import { ErrorCode } from "../exceptions/root";
 import * as jwt from 'jsonwebtoken';
 import { JWT_SECRET } from "../configs/secrets";
 import { userService } from "../controllers/user";
+import { UUID } from "crypto";
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
@@ -13,7 +14,7 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     }
 
     try {
-        const payload = jwt.verify(token, JWT_SECRET) as {userId: number};
+        const payload = jwt.verify(token, JWT_SECRET) as {userId: UUID};
         const userId = payload.userId;
         const user = await userService.getUserById(userId)
 
