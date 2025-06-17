@@ -1,3 +1,4 @@
+import { UUID } from "crypto";
 import { CreateTransport, Transport, TransportType, UpdateTransport } from "../interfaces/transport";
 
 export class CreateTransportDto {
@@ -81,7 +82,7 @@ export class UpdateTransportDto {
 }
 
 export class TransportResponseDto {
-  id: number;
+  id: UUID;
   type: TransportType;
   name: string;
   starting_location: string;

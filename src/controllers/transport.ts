@@ -7,16 +7,22 @@ import { ErrorCode } from "../exceptions/root";
 import { CreateTransport, Transport, TransportType, UpdateTransport } from "../interfaces/transport";
 import { CreateTransportDto, UpdateTransportDto } from "../dtos/transport";
 import { BadRequestException } from "../exceptions/bad-request";
+import { z } from "zod";
+import { UUID } from "crypto";
+import { IdSchema } from "../schemas/id";
 
 
 const transportRepository = new TransportRepository();
 const transportService = new TransportService(transportRepository);
 
 export const getTransportById = async (req: Request, res: Response) => {
-    const transportId = parseInt(req.params.id);
-    if (isNaN(transportId)) {
+    const Id = req.params.id;
+    const parsedId = IdSchema.safeParse(Id);
+    if (!parsedId.success ) {
         throw new BadRequestException('Invalid transport id!', ErrorCode.INVALID_TRANSPORT_ID);
     }
+
+    const transportId = parsedId.data as UUID;
 
     const transport = await transportService.getTransportById(transportId);
 
@@ -46,15 +52,20 @@ export const createTransport = async (req: Request, res: Response) => {
 }
 
 export const updateTransport = async (req: Request, res: Response) => {
-    const transportId = parseInt(req.params.id);
+    
+    const Id = req.params.id;
+    const parsedId = IdSchema.safeParse(Id);
+
+    if (!parsedId.success ) {
+        throw new BadRequestException('Invalid transport id!', ErrorCode.INVALID_TRANSPORT_ID);
+    }
+
+    const transportId = parsedId.data as UUID;
+
     const parsed = UpdateTransportSchema.safeParse(req.body);
 
     if (!parsed.success) {
         throw new UnprocessableEntityException(parsed.error, "Validation error!", ErrorCode.UNPROCESSABLE_ENTITY);
-    }
-
-    if (isNaN(transportId)) {
-        throw new BadRequestException('Invalid transport id!', ErrorCode.INVALID_TRANSPORT_ID);
     }
 
     const transportUpdateDto = new UpdateTransportDto({
@@ -68,11 +79,14 @@ export const updateTransport = async (req: Request, res: Response) => {
 }
 
 export const deleteTransport = async (req: Request, res: Response) => {
-    const transportId = parseInt(req.params.id);
-    if (isNaN(transportId)) {
+    
+    const Id = req.params.id;
+    const parsedId = IdSchema.safeParse(Id);
+    if (!parsedId.success ) {
         throw new BadRequestException('Invalid transport id!', ErrorCode.INVALID_TRANSPORT_ID);
     }
 
+    const transportId = parsedId.data as UUID;
     const deletedCount = await transportService.deleteTransport(transportId);
 
     res.status(204).json(deletedCount);

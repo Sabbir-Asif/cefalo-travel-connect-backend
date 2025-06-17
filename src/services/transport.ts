@@ -3,6 +3,7 @@ import { CreateTransport, Transport, TransportLocation, UpdateTransport } from "
 import { ITransportRepository } from "../repositories/transport";
 import { NotFoundException } from '../exceptions/not-found';
 import { ErrorCode } from '../exceptions/root';
+import { UUID } from "crypto";
 
 export class TransportService {
     constructor(private transportRepository: ITransportRepository) { };
@@ -20,7 +21,7 @@ export class TransportService {
         return transports.map(transport => new TransportResponseDto(transport));
     }
 
-    async getTransportById(id: number): Promise<Transport> {
+    async getTransportById(id: UUID): Promise<Transport> {
         const transport = await this.transportRepository.getById(id);
 
         if (!transport) {
@@ -30,7 +31,7 @@ export class TransportService {
         return new TransportResponseDto(transport);
     }
 
-    async updateTransport(id: number, data: UpdateTransport): Promise<Transport> {
+    async updateTransport(id: UUID, data: UpdateTransport): Promise<Transport> {
         const existingTransport = await this.transportRepository.getById(id);
 
         if (!existingTransport) {
@@ -42,7 +43,7 @@ export class TransportService {
         return new TransportResponseDto(updatedTransport);
     }
 
-    async deleteTransport(id: number): Promise<number> {
+    async deleteTransport(id: UUID): Promise<number> {
         const existingTransport = await this.transportRepository.getById(id);
 
         if (!existingTransport) {

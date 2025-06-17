@@ -1,3 +1,4 @@
+import { UUID } from "crypto";
 import { db } from "../../configs/db";
 import { CreateTransport, Transport, TransportLocation, UpdateTransport } from "../../interfaces/transport";
 import { ITransportRepository } from "../transport";
@@ -63,7 +64,7 @@ export class TransportRepository implements ITransportRepository {
         }));
     }
 
-    async getById(id: number): Promise<Transport | null> {
+    async getById(id: UUID): Promise<Transport | null> {
         const transport = await db(this.tableName).select(
             '*',
             db.raw(`ST_X(starting_point::geometry) as start_long`),
@@ -89,7 +90,7 @@ export class TransportRepository implements ITransportRepository {
         } : null;
     }
 
-    async update(id: number, data: UpdateTransport): Promise<Transport> {
+    async update(id: UUID, data: UpdateTransport): Promise<Transport> {
         const updateData: any = {
             ...data,
             updated_at: new Date()
@@ -135,7 +136,7 @@ export class TransportRepository implements ITransportRepository {
         };
     }
 
-    async delete(id: number): Promise<number> {
+    async delete(id: UUID): Promise<number> {
         const count = await db(this.tableName).where({ id }).del();
         return count;
     }

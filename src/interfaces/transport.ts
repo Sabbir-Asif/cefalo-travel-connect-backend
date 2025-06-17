@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { UpdateTransportSchema } from "../schemas/transport";
+import { UUID } from "crypto";
 
 export enum TransportType {
     BUS = "BUS",
@@ -10,7 +11,7 @@ export enum TransportType {
 }
 
 export interface Transport {
-    id: number;
+    id: UUID;
     type: TransportType;
     name: string;
     starting_location: string;
