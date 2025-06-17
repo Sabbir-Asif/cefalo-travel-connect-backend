@@ -235,7 +235,6 @@ export class TransportRepository implements ITransportRepository {
           created_at: new Date(t.created_at),
           updated_at: new Date(t.updated_at),
         }));
-      }
-          
+      }         
 
 }
