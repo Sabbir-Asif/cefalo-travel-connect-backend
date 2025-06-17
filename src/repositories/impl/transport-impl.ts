@@ -201,7 +201,6 @@ export class TransportRepository implements ITransportRepository {
             db.raw(`ST_Y(destination_point::geometry) as dest_lat`)
           );
       
-        // Search filters
         if (startingLocationName) {
           query.whereILike('starting_location', `%${startingLocationName}%`);
         }
@@ -221,7 +220,6 @@ export class TransportRepository implements ITransportRepository {
           query.whereILike('name', `%${name}%`);
         }
       
-        // Sorting
         if (sortBy === 'fare') {
           query.orderByRaw(`fare::numeric ${order === 'desc' ? 'desc' : 'asc'}`);
         } else {
@@ -230,7 +228,6 @@ export class TransportRepository implements ITransportRepository {
       
         const transports = await query;
       
-        // Map lat/long and convert timestamps
         return transports.map(t => ({
           ...t,
           starting_point: { lat: parseFloat(t.start_lat), long: parseFloat(t.start_long) },

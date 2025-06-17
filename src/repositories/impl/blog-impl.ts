@@ -2,6 +2,7 @@ import { UUID } from "crypto";
 import { db } from "../../configs/db";
 import { CreateBlog, Blog, UpdateBlog } from "../../interfaces/blog";
 import { IBlogRepository } from "../blog";
+import { IdSchema } from "../../schemas/id";
 
 export class BlogRepository implements IBlogRepository {
     private tableName = 'blogs';
@@ -123,19 +124,19 @@ export class BlogRepository implements IBlogRepository {
 
         const { lat, long, radius = 10000, ...filters } = params;
 
-        const INT_FIELDS = ['id', 'userId'];
+        const UUID_FIELDS = ['id', 'userId'];
+
         for (const key in filters) {
             const value = filters[key];
 
             if (Array.isArray(value)) {
-                const parsed = INT_FIELDS.includes(key)
-                    ? value.map((v: any) => parseInt(v)).filter(v => !isNaN(v))
+                const parsed = UUID_FIELDS.includes(key)
+                    ? value.filter((v: any) => IdSchema.safeParse(v).success)
                     : value;
                 query.whereIn(key, parsed);
-            } else if (INT_FIELDS.includes(key)) {
-                const parsed = parseInt(value);
-                if (!isNaN(parsed)) {
-                    query.where(key, parsed);
+            } else if (UUID_FIELDS.includes(key)) {
+                if (IdSchema.safeParse(value).success) {
+                    query.where(key, value);
                 }
             } else {
                 query.whereILike(key, `%${value}%`);
@@ -166,6 +167,5 @@ export class BlogRepository implements IBlogRepository {
             updated_at: new Date(blog.updated_at),
         }));
     }
-
 
 }
