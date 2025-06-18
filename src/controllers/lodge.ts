@@ -83,5 +83,15 @@ export const deleteLodge = async (req: Request, res: Response) => {
 }
 
 export const getLodgeLocationNames = async (req: Request, res: Response) => {
-    res.json('lodge location names called');
+    const locations = await lodgeService.getAllLocations();
+
+    res.status(200).json(locations);
+}
+
+export const searchLodge = async (req: Request, res: Response) => {
+    const queryParams = req.query;
+
+    const results = await lodgeService.searchLodge(queryParams);
+
+    res.status(200).json(results);
 }

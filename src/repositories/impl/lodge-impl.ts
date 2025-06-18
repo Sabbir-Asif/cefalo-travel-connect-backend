@@ -1,6 +1,6 @@
 import { UUID } from "crypto";
 import { db } from "../../configs/db";
-import { CreateLodge, Lodge, UpdateLodge } from "../../interfaces/lodge";
+import { CreateLodge, Lodge, LodgeLocation, UpdateLodge } from "../../interfaces/lodge";
 import { ILodgeRepositiry } from "../lodge";
 
 export class LodgeRepository implements ILodgeRepositiry {
@@ -101,7 +101,93 @@ export class LodgeRepository implements ILodgeRepositiry {
         }
     }
 
-    async delete(id: UUID) : Promise<void> {
+    async delete(id: UUID): Promise<void> {
         const rows = await db(this.tableName).where({ id }).del();
+    }
+
+    async allLocations(): Promise<LodgeLocation[]> {
+        const rows = await db(this.tableName)
+            .distinct('location_name as name')
+            .select(
+                db.raw(`ST_X(location_point::geometry) as long`),
+                db.raw(`ST_Y(location_point::geometry) as lat`)
+            );
+
+        return rows.map((row) => ({
+            name: row.name,
+            location_point: {
+                lat: parseFloat(row.lat),
+                long: parseFloat(row.long)
+            }
+        }))
+    }
+
+    async search(params: {
+        name?: string;
+        location_name?: string;
+        priceMin?: number;
+        priceMax?: number;
+        description?: string;
+        coverImage?: string;
+        sortBy?: 'price' | 'name';
+        order?: 'asc' | 'desc';
+    }): Promise<Lodge[]> {
+        const {
+            name,
+            location_name,
+            priceMin,
+            priceMax,
+            description,
+            coverImage,
+            sortBy,
+            order = 'asc'
+        } = params;
+
+        const query = db(this.tableName)
+            .select(
+                '*',
+                db.raw(`ST_X(location_point::geometry) as long`),
+                db.raw(`ST_Y(location_point::geometry) as lat`)
+            );
+
+        if (name) {
+            query.whereILike('name', `%${name}%`);
+        }
+
+        if (location_name) {
+            query.whereILike('location_name', `%${location_name}%`);
+        }
+
+        if (priceMin !== undefined) {
+            query.where('price', '>=', priceMin);
+        }
+
+        if (priceMax !== undefined) {
+            query.where('price', '<=', priceMax);
+        }
+
+        if (description) {
+            query.whereILike('description', `%${description}%`);
+        }
+
+        if (sortBy === 'price') {
+            query.orderBy('price', order);
+        } else if (sortBy === 'name') {
+            query.orderBy('name', order);
+        } else {
+            query.orderBy('created_at', 'desc');
+        }
+
+        const lodges = await query;
+
+        return lodges.map((lodge) => ({
+            ...lodge,
+            location_point: {
+                lat: parseFloat(lodge.lat),
+                long: parseFloat(lodge.long)
+            },
+            created_at: new Date(lodge.created_at),
+            updated_at: new Date(lodge.updated_at)
+        }));
     }
 }

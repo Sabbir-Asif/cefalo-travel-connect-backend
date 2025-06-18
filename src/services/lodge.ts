@@ -1,7 +1,7 @@
 import { TransportRepository } from './../repositories/impl/transport-impl';
 import { UUID } from "crypto";
 import { LodgeResponseDto } from "../dtos/lodge";
-import { CreateLodge, Lodge, UpdateLodge } from "../interfaces/lodge";
+import { CreateLodge, Lodge, LodgeLocation, UpdateLodge } from "../interfaces/lodge";
 import { ILodgeRepositiry } from "../repositories/lodge";
 import { NotFoundException } from "../exceptions/not-found";
 import { ErrorCode } from "../exceptions/root";
@@ -51,5 +51,15 @@ export class LodgeService {
         }
 
         await this.lodgeRepository.delete(id);
+    }
+
+    async getAllLocations(): Promise<LodgeLocation[]> {
+        return this.lodgeRepository.allLocations();
+    }
+
+    async searchLodge(params: Record<string, any>): Promise<Lodge[]> {
+        const results = await this.lodgeRepository.search(params);
+
+        return results.map((lodge) => new LodgeResponseDto(lodge));
     }
 }

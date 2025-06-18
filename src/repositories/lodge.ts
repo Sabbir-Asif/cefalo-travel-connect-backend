@@ -7,5 +7,6 @@ export interface ILodgeRepositiry {
     getById(id: UUID) : Promise<Lodge | null>;
     update(id: UUID, data: UpdateLodge) : Promise<Lodge>;
     delete(id: UUID) : Promise<void>;
-    // allLocations() : Promise<LodgeLocation[]>;
+    search(params: Record<string, any>): Promise<Lodge[]>;
+    allLocations() : Promise<LodgeLocation[]>;
 }
