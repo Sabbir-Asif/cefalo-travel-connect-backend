@@ -9,7 +9,7 @@ export const CreateLodgeSchema = z.object({
   }),
   price: z.number().min(0, 'Price can not be less than zero'),
   description: z.string().optional(),
-  coverImage: z.string().url('Cover image must be a valid URL').optional(),
+  cover_image: z.string().url('Cover image must be a valid URL').optional(),
 });
 
 export const UpdateLodgeSchema = z.object({
@@ -21,7 +21,7 @@ export const UpdateLodgeSchema = z.object({
   }).optional(),
   price: z.number().min(0, 'Price can not be less than zero').optional(),
   description: z.string().optional(),
-  coverImage: z.string().url('Cover image must be a valid URL').optional(),
+  cover_image: z.string().url('Cover image must be a valid URL').optional(),
 }).refine((data) => Object.keys(data).length > 0, {
   message: 'At least one field must be provided for update.',
 });
