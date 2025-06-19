@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { BlogTransportRepository } from "../repositories/impl/blogTransport-impl";
-import { BlogTransportService } from "../services/blogTransport";
-import { BlogTransportSchema } from "../schemas/blogTransport";
+import { BlogTransportService } from "../services/blog-transport";
+import { BlogTransportSchema } from "../schemas/blog-transport";
 import { UnprocessableEntityException } from "../exceptions/validation";
 import { ErrorCode } from "../exceptions/root";
-import { CreateBlogTransportDto } from "../dtos/blogTransport";
-import { BlogTransport, CreateBlogTransport } from "../interfaces/blogTransport";
+import { CreateBlogTransportDto } from "../dtos/blog-transport";
+import { BlogTransport, CreateBlogTransport } from "../interfaces/blog-transport";
 import { IdSchema } from "../schemas/id";
 import { UUID } from "crypto";
 

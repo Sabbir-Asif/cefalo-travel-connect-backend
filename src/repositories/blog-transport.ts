@@ -1,5 +1,5 @@
 import { UUID } from "crypto";
-import { BlogTransport } from "../interfaces/blogTransport";
+import { BlogTransport } from "../interfaces/blog-transport";
 import { Transport } from "../interfaces/transport";
 
 export interface IBlogTransportRepository {
