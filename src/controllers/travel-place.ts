@@ -108,3 +108,11 @@ export const deleteTravelPlace = async (req: Request, res: Response) => {
 
     res.status(204).json({success: true});
 }
+
+export const searchTravelPlaces = async (req: Request, res: Response) => {
+    const queryParmas = req.query;
+
+    const travelPlaces = await travelPlaceService.searchTravelPlaces(queryParmas);
+
+    res.status(200).json(travelPlaces);
+}

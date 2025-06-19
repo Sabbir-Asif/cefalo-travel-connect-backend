@@ -72,4 +72,10 @@ export class TravelPlaceService {
 
         await this.travelPlaceRepository.delete(id);
     }
+
+    async searchTravelPlaces(params: Record<string, any>) : Promise<TravelPlace[]> {
+        const trvaelPlaces = await this.travelPlaceRepository.search(params);
+
+        return trvaelPlaces.map(travelPlace => new TravelPlaceResponseDto(travelPlace));
+    }
 }

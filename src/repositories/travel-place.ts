@@ -7,5 +7,5 @@ export interface ITravelPlaceRepository {
     getById(id: UUID) : Promise<TravelPlace | null>;
     update(id: UUID, data: UpdateTravelPlace) : Promise<TravelPlace>;
     delete(id: UUID) : Promise<void>;
-    // search(params: Record<string, any>): Promise<TravelPlace[]>;
+    search(params: Record<string, any>): Promise<TravelPlace[]>;
 }

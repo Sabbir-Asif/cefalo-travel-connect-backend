@@ -96,8 +96,8 @@ export class TravelPlaceRepository implements ITravelPlaceRepository {
                 db.raw(`ST_X(location_point::geometry) as long`),
                 db.raw(`ST_Y(location_point::geometry) as lat`)
             ]);
-        
-            return {
+
+        return {
             ...updatedTravelPlace,
             location_point: {
                 lat: parseFloat(updatedTravelPlace.lat),
@@ -111,5 +111,65 @@ export class TravelPlaceRepository implements ITravelPlaceRepository {
     async delete(id: UUID): Promise<void> {
         const rows = await db(this.tableName).where({ id }).del();
     }
+
+    async search(params: {
+        name?: string;
+        location_name?: string;
+        description?: string;
+        tag?: string;
+        sortBy?: 'name' | 'location_name' | 'created_at';
+        order?: 'asc' | 'desc';
+    }): Promise<TravelPlace[]> {
+        const {
+            name,
+            location_name,
+            description,
+            tag,
+            sortBy,
+            order = 'asc'
+        } = params;
+
+        const query = db(this.tableName)
+            .select(
+                '*',
+                db.raw(`ST_X(location_point::geometry) as long`),
+                db.raw(`ST_Y(location_point::geometry) as lat`)
+            );
+
+        if (name) {
+            query.whereILike('name', `%${name}%`);
+        }
+
+        if (location_name) {
+            query.whereILike('location_name', `%${location_name}%`);
+        }
+
+        if (description) {
+            query.whereILike('description', `%${description}%`);
+        }
+
+        if (tag) {
+            query.whereRaw(`tags @> ?::jsonb`, [JSON.stringify([tag])])
+        }
+
+        if (sortBy === 'name' || sortBy === 'location_name' || sortBy === 'created_at') {
+            query.orderBy(sortBy, order);
+        } else {
+            query.orderBy('created_at', 'desc');
+        }
+
+        const results = await query;
+
+        return results.map(place => ({
+            ...place,
+            location_point: {
+                lat: parseFloat(place.lat),
+                long: parseFloat(place.long)
+            },
+            created_at: new Date(place.created_at),
+            updated_at: new Date(place.updated_at)
+        }));
+    }
+
 
 }
