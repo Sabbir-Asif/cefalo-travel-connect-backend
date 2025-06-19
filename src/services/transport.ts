@@ -1,0 +1,68 @@
+import { TransportResponseDto } from "../dtos/transport";
+import { CreateTransport, Transport, TransportLocation, UpdateTransport } from "../interfaces/transport";
+import { ITransportRepository } from "../repositories/transport";
+import { NotFoundException } from '../exceptions/not-found';
+import { ErrorCode } from '../exceptions/root';
+import { UUID } from "crypto";
+
+export class TransportService {
+    constructor(private transportRepository: ITransportRepository) { };
+
+    async createTransport(transportData: CreateTransport): Promise<Transport> {
+
+        const transport = await this.transportRepository.create(transportData);
+
+        return new TransportResponseDto(transport);
+    }
+
+    async getAllTransports(): Promise<Transport[]> {
+        const transports = await this.transportRepository.getAll();
+
+        return transports.map(transport => new TransportResponseDto(transport));
+    }
+
+    async getTransportById(id: UUID): Promise<Transport> {
+        const transport = await this.transportRepository.getById(id);
+
+        if (!transport) {
+            throw new NotFoundException(`No transport found with id ${id}`, ErrorCode.TRANSPORT_NOT_FOUND);
+        }
+
+        return new TransportResponseDto(transport);
+    }
+
+    async updateTransport(id: UUID, data: UpdateTransport): Promise<Transport> {
+        const existingTransport = await this.transportRepository.getById(id);
+
+        if (!existingTransport) {
+            throw new NotFoundException(`Transport not found with id ${id}`, ErrorCode.TRANSPORT_NOT_FOUND);
+        }
+
+        const updatedTransport = await this.transportRepository.update(id, data);
+
+        return new TransportResponseDto(updatedTransport);
+    }
+
+    async deleteTransport(id: UUID): Promise<number> {
+        const existingTransport = await this.transportRepository.getById(id);
+
+        if (!existingTransport) {
+            throw new NotFoundException(`Transport not found with id ${id}`, ErrorCode.TRANSPORT_NOT_FOUND);
+        }
+
+        return this.transportRepository.delete(id);
+    }
+
+    async getAllStartingLocations(): Promise<TransportLocation[]> {
+        return this.transportRepository.allStratingLocations();
+    }
+
+    async getAllDestinationLocations(): Promise<TransportLocation[]> {
+        return this.transportRepository.allDestinationLocations();
+    }
+
+    async searchTransports(params: Record<string, any>): Promise<Transport[]> {
+        const results = await this.transportRepository.search(params);
+        return results.map((transport) => new TransportResponseDto(transport));
+    }
+}
