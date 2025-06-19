@@ -1,5 +1,5 @@
 import { UUID } from "crypto";
-import { CreateTravelPlace, TravelPlace } from "../../interfaces/travel-place";
+import { CreateTravelPlace, TravelPlace, UpdateTravelPlace } from "../../interfaces/travel-place";
 import { ITravelPlaceRepository } from "../travel-place";
 import { db } from "../../configs/db";
 
@@ -61,7 +61,7 @@ export class TravelPlaceRepository implements ITravelPlaceRepository {
             );
 
 
-        return {
+        return travelPlace ? {
             ...travelPlace,
             location_point: {
                 lat: parseFloat(travelPlace.lat),
@@ -69,7 +69,47 @@ export class TravelPlaceRepository implements ITravelPlaceRepository {
             },
             created_at: new Date(travelPlace.created_at),
             updated_at: new Date(travelPlace.updated_at)
+        } : null;
+    }
+
+    async update(id: UUID, data: UpdateTravelPlace): Promise<TravelPlace> {
+        const updateData: any = {
+            ...data,
+            updated_at: new Date()
+        }
+
+        if (data.location_point) {
+            updateData.location_point = db.raw(
+                `ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography`,
+                [data.location_point.long, data.location_point.lat]
+            );
+        }
+        if (data.tags) updateData.tags = JSON.stringify(data.tags);
+
+        const [updatedTravelPlace
+
+        ] = await db(this.tableName)
+            .where({ id })
+            .update(updateData)
+            .returning([
+                '*',
+                db.raw(`ST_X(location_point::geometry) as long`),
+                db.raw(`ST_Y(location_point::geometry) as lat`)
+            ]);
+        
+            return {
+            ...updatedTravelPlace,
+            location_point: {
+                lat: parseFloat(updatedTravelPlace.lat),
+                long: parseFloat(updatedTravelPlace.long)
+            },
+            created_at: new Date(updatedTravelPlace.created_at),
+            updated_at: new Date(updatedTravelPlace.updated_at)
         };
+    }
+
+    async delete(id: UUID): Promise<void> {
+        const rows = await db(this.tableName).where({ id }).del();
     }
 
 }
