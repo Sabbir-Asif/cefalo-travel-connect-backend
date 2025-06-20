@@ -7,6 +7,7 @@ import { lodgeRouter } from "./lodge";
 import { travelPlaceRouter } from "./travel-place";
 import { foodRouter } from "./food";
 import { travelPlanRouter } from "./travel-plan";
+import { wishlistRouter } from "./wishlist";
 
 export const rootRouter: Router = Router();
 
@@ -18,3 +19,4 @@ rootRouter.use('/lodges', lodgeRouter);
 rootRouter.use('/travel-places', travelPlaceRouter);
 rootRouter.use('/foods', foodRouter);
 rootRouter.use('/travel-plans', travelPlanRouter);
+rootRouter.use('/wishlists', wishlistRouter);
