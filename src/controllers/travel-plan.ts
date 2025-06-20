@@ -12,7 +12,7 @@ import { CreateTravelPlan, TravelPlan, TravelPlanStatus, UpdateTravelPlan } from
 import { CreateTravelPlanDto, UpdateTravelPlanDto } from "../dtos/travel-plan";
 
 const travelPlanRepository = new TravelPlanRepository();
-const travelPlanService = new TravelPlanService(travelPlanRepository);
+export const travelPlanService = new TravelPlanService(travelPlanRepository);
 
 export const createTravelPlan = async (req: Request, res: Response) => {
     const parsed = CreateTravelPlanSchema.safeParse(req.body);
@@ -27,6 +27,7 @@ export const createTravelPlan = async (req: Request, res: Response) => {
     }
 
     const userId = parsedUserId.data as UUID;
+    
     const parsedData = parsed.data as CreateTravelPlan;
 
     const travelPlanDto: CreateTravelPlan = new CreateTravelPlanDto({
