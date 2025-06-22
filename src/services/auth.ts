@@ -7,6 +7,7 @@ import { UnauthorizedException } from '../exceptions/unauthorized';
 import * as jwt from 'jsonwebtoken';
 import { CreateUser, User, UserResponse } from '../interfaces/user';
 import { CreateUserDto, UserResponseDto } from '../dtos/user';
+import { TokenService } from './token';
 
 export class AuthService {
     constructor(private userRepository: IUserRepository) { }
@@ -20,12 +21,12 @@ export class AuthService {
 
         const hashedPassword = await hash(userData.password, BCRYPT_SALT_ROUNDS);
 
-        const user : User = await this.userRepository.create({
+        const user: User = await this.userRepository.create({
             ...userData,
             password: hashedPassword
         });
 
-       const userResponse = new UserResponseDto(user);
+        const userResponse = new UserResponseDto(user);
 
         return userResponse;
     }
@@ -43,11 +44,9 @@ export class AuthService {
             throw new UnauthorizedException('Incorrect password!', ErrorCode.UNAUTHORIZED)
         }
 
-        const token = jwt.sign({
-            userId: user.id
-        }, JWT_SECRET);
+        const token = TokenService.signAccessToken(user.id);
 
-       const userResponse = new UserResponseDto(user);
+        const userResponse = new UserResponseDto(user);
 
         return {
             user: userResponse,

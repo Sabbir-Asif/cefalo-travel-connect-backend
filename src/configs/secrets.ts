@@ -9,3 +9,8 @@ export const PG_DATABASE_NAME = process.env.PG_DATABASE_NAME;
 export const PG_USER = process.env.PG_USER;
 export const PG_PASSWORD = process.env.PG_PASSWORD;
 export const PG_PORT = parseInt(process.env.PG_PORT!);
+export const ACCESS_TOKEN_EXPIRES_IN = process.env.ACCESS_TOKEN_EXPIRES_IN ?? '15m';
+export const REFRESH_TOKEN_EXPIRES_DAYS = parseInt(process.env.REFRESH_TOKEN_EXPIRES_DAYS!);
+export const REFRESH_TOKEN_COOKIE_NAME = process.env.REFRESH_TOKEN_COOKIE_NAME;
+export const NODE_ENV = process.env.NODE_ENV;
+export const IS_PRODUCTION = process.env.IS_PRODUCTION === 'true';

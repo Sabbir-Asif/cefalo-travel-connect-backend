@@ -3,9 +3,11 @@ import { PORT } from './configs/secrets';
 import { rootRouter } from './routes/root';
 import { db } from './configs/db';
 import { errorMiddleware } from './middlewares/error';
+import cookieParser from 'cookie-parser';
 
 const app: Express = express();
 app.use(express.json());
+app.use(cookieParser());
 
 app.use('/api',rootRouter);
 app.use(errorMiddleware);
