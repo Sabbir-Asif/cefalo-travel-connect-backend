@@ -19,3 +19,4 @@ export const SMTP_HOST = process.env.SMTP_HOST!;
 export const SMTP_PORT = parseInt(process.env.SMTP_PORT!);
 export const SMTP_USER = process.env.SMTP_USER!;
 export const SMTP_PASS = process.env.SMTP_PASS!;
+export const PASSWORD_RESET_TOKEN_EXPIRY_MINUTES = parseInt(process.env.PASSWORD_RESET_TOKEN_EXPIRY_MINUTES!);

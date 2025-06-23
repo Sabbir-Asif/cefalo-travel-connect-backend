@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { initiateVerification, verifyEmail } from "../controllers/email-verification";
-import { authMiddleware } from "../middlewares/auth";
+import { errorHandler } from "../global-error-handler";
 
 const emailVerificationRouter : Router = Router();
 
-emailVerificationRouter.post("/initiate", initiateVerification);
-emailVerificationRouter.get("/verify", verifyEmail);
+emailVerificationRouter.post("/initiate", errorHandler(initiateVerification));
+emailVerificationRouter.get("/verify", errorHandler(verifyEmail));
 
 export default emailVerificationRouter;
