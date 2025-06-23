@@ -1,13 +1,14 @@
-import { BCRYPT_SALT_ROUNDS, JWT_SECRET } from '../configs/secrets';
+import { BCRYPT_SALT_ROUNDS} from '../configs/secrets';
 import { BadRequestException } from '../exceptions/bad-request';
 import { ErrorCode } from '../exceptions/root';
 import { IUserRepository } from '../repositories/user';
 import { compare, hash } from 'bcrypt'
 import { UnauthorizedException } from '../exceptions/unauthorized';
-import * as jwt from 'jsonwebtoken';
 import { CreateUser, User, UserResponse } from '../interfaces/user';
 import { CreateUserDto, UserResponseDto } from '../dtos/user';
 import { TokenService } from './token';
+import { emailVerificationService } from '../controllers/email-verification';
+import { InternalException } from '../exceptions/internal-exception';
 
 export class AuthService {
     constructor(private userRepository: IUserRepository) { }
@@ -16,17 +17,25 @@ export class AuthService {
         const existingUser = await this.userRepository.findByEmail(userData.email);
 
         if (existingUser) {
-            throw new BadRequestException('Email already esists!', ErrorCode.USER_ALREADY_EXISTS);
+            throw new BadRequestException('Email already exists!', ErrorCode.USER_ALREADY_EXISTS);
         }
 
         const hashedPassword = await hash(userData.password, BCRYPT_SALT_ROUNDS);
 
         const user: User = await this.userRepository.create({
             ...userData,
-            password: hashedPassword
+            password: hashedPassword,
         });
 
         const userResponse = new UserResponseDto(user);
+
+        try {
+            if (!user.is_verified) {
+                await emailVerificationService.initiateVerification(user.id, user.email, user.name);
+            }
+        } catch (err) {
+            throw new InternalException("Error initiating email verification", err, ErrorCode.INTERNAL_EXCEPTION);
+        }
 
         return userResponse;
     }
@@ -36,6 +45,10 @@ export class AuthService {
 
         if (!user) {
             throw new UnauthorizedException('No user found by this email!', ErrorCode.USER_NOTFOUND);
+        }
+
+        if(!user.is_verified) {
+            throw new UnauthorizedException('Email is not verified!', ErrorCode.UNAUTHORIZED);
         }
 
         const isMatch = await compare(password, user.password);

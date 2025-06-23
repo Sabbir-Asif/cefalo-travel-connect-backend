@@ -34,6 +34,7 @@ export class UserResponseDto {
     role: Role;
     displayPicture: string | null;
     bio: string | null;
+    is_verified: boolean;
     createdAt: Date;
     updatedAt: Date;
 
@@ -44,8 +45,9 @@ export class UserResponseDto {
         this.role = data.role;
         this.displayPicture = data.displayPicture;
         this.bio = data.bio;
+        this.is_verified = data.is_verified;
         this.createdAt = data.createdAt;
         this.updatedAt = data.updatedAt;
     }
-
 }
+

@@ -14,3 +14,8 @@ export const REFRESH_TOKEN_EXPIRES_DAYS = parseInt(process.env.REFRESH_TOKEN_EXP
 export const REFRESH_TOKEN_COOKIE_NAME = process.env.REFRESH_TOKEN_COOKIE_NAME;
 export const NODE_ENV = process.env.NODE_ENV;
 export const IS_PRODUCTION = process.env.IS_PRODUCTION === 'true';
+export const VERIFICATION_TOKEN_EXPIRY_MINUTES = parseInt(process.env.VERIFICATION_TOKEN_EXPIRY_MINUTES!);
+export const SMTP_HOST = process.env.SMTP_HOST!;
+export const SMTP_PORT = parseInt(process.env.SMTP_PORT!);
+export const SMTP_USER = process.env.SMTP_USER!;
+export const SMTP_PASS = process.env.SMTP_PASS!;

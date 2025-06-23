@@ -9,6 +9,7 @@ import { foodRouter } from "./food";
 import { travelPlanRouter } from "./travel-plan";
 import { wishlistRouter } from "./wishlist";
 import { travelRequestRouter } from "./travel-request";
+import emailVerificationRouter from "./email-verification";
 
 export const rootRouter: Router = Router();
 
@@ -22,3 +23,4 @@ rootRouter.use('/foods', foodRouter);
 rootRouter.use('/travel-plans', travelPlanRouter);
 rootRouter.use('/wishlists', wishlistRouter);
 rootRouter.use('/travel-requests', travelRequestRouter);
+rootRouter.use('/email-verifications', emailVerificationRouter)

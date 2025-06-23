@@ -16,6 +16,7 @@ export interface User {
     role: Role;
     displayPicture: string | null;
     bio: string | null;
+    is_verified: boolean;
     createdAt: Date;
     updatedAt: Date;
 }
