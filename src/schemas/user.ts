@@ -3,6 +3,7 @@ import { z } from 'zod'
 export const CreateUserSchema = z.object({
     name: z.string(),
     email: z.string().email(),
+    phone_number: z.string(),
     password: z.string().min(6)
 })
 
@@ -15,6 +16,7 @@ export const UserUpdateSchema = z.object({
     name: z.string().optional(),
     role: z.enum(['ADMIN', 'EXPLORER', 'TRAVELER']).optional(),
     displayPicture: z.string().nullable().optional(),
+    phone_number: z.string().optional(),
     is_verified: z.boolean().optional(),
     password: z.string().min(6).optional(),
     bio: z.string().nullable().optional()

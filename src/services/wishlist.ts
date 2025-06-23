@@ -7,10 +7,12 @@ import { blogService } from "../controllers/blog";
 import { NotFoundException } from "../exceptions/not-found";
 import { ForbiddenException } from "../exceptions/forbidden";
 import { ErrorCode } from "../exceptions/root";
-import { Role } from "../interfaces/user";
+import { Role, UserResponse } from "../interfaces/user";
+import { addDays, isAfter } from "date-fns";
+import { db } from "../configs/db";
 
 export class WishlistService {
-    constructor( private wishlistRepository: IWishlistRepository) {};
+    constructor(private wishlistRepository: IWishlistRepository) { };
 
     async createWishlist(userId: UUID, data: CreateWishlist): Promise<Wishlist> {
         const user = await userService.getUserById(userId);
@@ -105,4 +107,66 @@ export class WishlistService {
 
         return wishlists.map(wishlist => new WishlistResponseDto(wishlist));
     }
+
+    async findMatchingUsers(
+        userId: UUID,
+        query: {
+            radius: number;
+            timeDiff: string;
+            wishlistId?: UUID;
+            limit?: number;
+            offset?: number;
+        }
+    ): Promise<UserResponse[]> {
+        const { radius, timeDiff, wishlistId, limit = 10, offset = 0 } = query;
+
+        let location_point: { lat: number; long: number };
+        let travel_date: Date;
+
+        if (wishlistId) {
+            const baseWishlist = await this.wishlistRepository.getById(wishlistId);
+            if (!baseWishlist) {
+                throw new NotFoundException(`Wishlist not found with id ${wishlistId}`, ErrorCode.WISHLIST_NOT_FOUND);
+            }
+            location_point = baseWishlist.location_point;
+            travel_date = new Date(baseWishlist.travel_date);
+        } else {
+            const userWishlists = await this.wishlistRepository.getByUserId(userId);
+            const upcoming = userWishlists.find(wishlist =>
+                isAfter(new Date(wishlist.travel_date), new Date())
+            );
+            if (!upcoming) return [];
+            location_point = upcoming.location_point;
+            travel_date = new Date(upcoming.travel_date);
+        }
+        const timeDiffInDays = timeDiff.endsWith("m")
+            ? parseInt(timeDiff) * 30
+            : parseInt(timeDiff);
+        const lowerBound = addDays(travel_date, -timeDiffInDays);
+        const upperBound = addDays(travel_date, timeDiffInDays);
+
+        const rows = await db("wishlists")
+            .select("users.*")
+            .join("users", "wishlists.user_id", "users.id")
+            .whereNot("wishlists.user_id", userId)
+            .andWhereBetween("travel_date", [lowerBound, upperBound])
+            .andWhereRaw(
+                `ST_DWithin(
+              wishlists.location_point,
+              ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography,
+              ?
+            )`,
+                [location_point.long, location_point.lat, radius * 1000]
+            )
+            .groupBy("users.id")
+            .limit(limit)
+            .offset(offset);
+
+        const users: UserResponse[] = await Promise.all(
+            rows.map(row => userService.getUserById(row.id))
+        );
+
+        return users;
+    }
 }
+

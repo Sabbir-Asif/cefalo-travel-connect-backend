@@ -16,6 +16,7 @@ export interface User {
     role: Role;
     displayPicture: string | null;
     bio: string | null;
+    phone_number: string;
     is_verified: boolean;
     createdAt: Date;
     updatedAt: Date;
@@ -24,6 +25,7 @@ export interface User {
 export interface CreateUser {
     name: string;
     email: string;
+    phone_number: string;
     password: string;
 }
 

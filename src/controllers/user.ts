@@ -35,14 +35,14 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
 }
 
 export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
-    
+
     const Id = req.params.id;
     const parsedId = IdSchema.safeParse(Id);
     if (!parsedId.success) {
         throw new BadRequestException('Invalid user id!', ErrorCode.INVALID_USER_ID);
     }
     const userId = parsedId.data as UUID;
-    
+
     const parsed = UserUpdateSchema.safeParse(req.body);
 
     if (!parsed.success) {
@@ -57,5 +57,15 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
 }
 
 export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
-    res.json('delete user called');
+    const id = req.params.id;
+    const parsed = IdSchema.safeParse(id);
+
+    if (!parsed.success) {
+        throw new BadRequestException("Invalid user id", ErrorCode.INVALID_USER_ID);
+    }
+
+    const userId = parsed.data as UUID;
+    await userService.deleteUser(userId);
+
+    res.status(204).json({ success: true });
 }

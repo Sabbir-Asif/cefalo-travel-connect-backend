@@ -124,6 +124,25 @@ export const getWishlistsByUserId = async (req: Request, res: Response) => {
   const userId = parsedId.data as UUID;
 
   const wishlists = await wishlistService.getWishlistsByUserId(userId);
-  
+
   res.status(200).json(wishlists);
+};
+
+export const getMatchingUsers = async (req: Request, res: Response) => {
+  const userId = req.query.userId as UUID;
+  const wishlistId = req.query.wishlistId as UUID | undefined;
+  const radius = parseInt(req.query.radius as string) || 10;
+  const timeDiff = req.query.timeDiff as string || '15d';
+  const limit = parseInt(req.query.limit as string) || 10;
+  const offset = parseInt(req.query.offset as string) || 0;
+
+  const users = await wishlistService.findMatchingUsers(userId, {
+    radius,
+    timeDiff,
+    wishlistId,
+    limit,
+    offset
+  });
+
+  res.status(200).json(users);
 };
