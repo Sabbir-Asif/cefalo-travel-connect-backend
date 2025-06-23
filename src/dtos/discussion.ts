@@ -1,4 +1,5 @@
 // dtos/discussion.ts
+import { UUID } from "crypto";
 import { Discussion, DiscussionWithSender, CreateDiscussion } from "../interfaces/discussion";
 
 export class CreateDiscussionDto {
@@ -12,7 +13,7 @@ export class CreateDiscussionDto {
 }
 
 export class DiscussionResponseDto {
-  id: number;
+  id: UUID;
   travel_plan_id: string;
   sender_id: string;
   content: string;

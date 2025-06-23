@@ -1,7 +1,7 @@
 import { UUID } from "crypto";
 
 export interface Discussion {
-  id: number;
+  id: UUID;
   travel_plan_id: UUID;
   sender_id: UUID;
   content: string;

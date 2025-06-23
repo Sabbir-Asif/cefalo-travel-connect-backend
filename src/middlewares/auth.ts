@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { UnauthorizedException } from "../exceptions/unauthorized";
 import { ErrorCode } from "../exceptions/root";
-import * as jwt from 'jsonwebtoken';
-import { JWT_SECRET } from "../configs/secrets";
 import { userService } from "../controllers/user";
 import { UUID } from "crypto";
 import { TokenService } from "../services/token";
