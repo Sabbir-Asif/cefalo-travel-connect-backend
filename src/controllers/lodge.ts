@@ -11,7 +11,7 @@ import { BadRequestException } from '../exceptions/bad-request';
 import { UUID } from 'crypto';
 
 const lodgeRespository = new LodgeRepository();
-const lodgeService = new LodgeService(lodgeRespository);
+export const lodgeService = new LodgeService(lodgeRespository);
 
 export const createLodge = async (req: Request, res: Response) => {
     const parsed = CreateLodgeSchema.safeParse(req.body);

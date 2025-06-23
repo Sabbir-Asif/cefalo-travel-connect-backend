@@ -4,6 +4,7 @@ import { errorHandler } from "../global-error-handler";
 import { authMiddleware } from "../middlewares/auth";
 import { createBlogtransport, deleteBlogTransport, getTransportsForBlog } from "../controllers/blog-transport";
 import { createBlogInsight, deleteBlogInsight, getAllBlogInsights, getBlogInsightById, getBlogInsightsByBlogId, searchBlogInsights, updateBlogInsight } from "../controllers/blog-insight";
+import { createBlogLodge, deleteBlogLodge, getLodgesForBlog } from "../controllers/blog-lodge";
 
 export const blogRouter: Router = Router();
 
@@ -11,6 +12,10 @@ blogRouter.post('/transports', authMiddleware, errorHandler(createBlogtransport)
 blogRouter.get('/:id/transports', authMiddleware, errorHandler(getTransportsForBlog));
 blogRouter.delete('/:blogId/transports/:transportId', authMiddleware, errorHandler(deleteBlogTransport));
 blogRouter.get('/search', authMiddleware, errorHandler(searchBlogs));
+
+blogRouter.post('/lodges', authMiddleware, errorHandler(createBlogLodge));
+blogRouter.get('/:id/lodges', authMiddleware, errorHandler(getLodgesForBlog))
+blogRouter.delete('/:blogId/lodges/:lodgeId', authMiddleware, errorHandler(deleteBlogLodge));
 
 blogRouter.post("/:blogId/insights", authMiddleware, errorHandler(createBlogInsight));
 blogRouter.get("/:blogId/insights", authMiddleware, errorHandler(getBlogInsightsByBlogId));
