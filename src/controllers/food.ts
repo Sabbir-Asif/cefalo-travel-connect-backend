@@ -11,7 +11,7 @@ import { CreateFood, Food, UpdateFood } from "../interfaces/food";
 import { UUID } from "crypto";
 
 const foodRepository = new FoodRepository();
-const foodService = new FoodService(foodRepository);
+export const foodService = new FoodService(foodRepository);
 
 export const createFood = async (req: Request, res: Response) => {
   const parsed = CreateFoodSchema.safeParse(req.body);
