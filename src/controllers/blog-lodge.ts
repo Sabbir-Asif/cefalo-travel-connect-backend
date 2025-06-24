@@ -4,10 +4,10 @@ import { BlogLodgeService } from "../services/blog-lodge";
 import { BlogLodgeSchema } from "../schemas/blog-lodge";
 import { UnprocessableEntityException } from "../exceptions/validation";
 import { ErrorCode } from "../exceptions/root";
-import { CreateBlogLodgeDto } from "../dtos/blog-lodge";
 import { IdSchema } from "../schemas/id";
 import { UUID } from "crypto";
 import { CreateBlogLodge } from "../interfaces/blog-lodge";
+import { BlogLodgeDto } from "../dtos/blog-lodge";
 
 const blogLodgeRepository = new BlogLodgeRepository();
 const blogLodgeService = new BlogLodgeService(blogLodgeRepository);
@@ -18,7 +18,7 @@ export const createBlogLodge = async (req: Request, res: Response) => {
     throw new UnprocessableEntityException(parsed.error, "Validation error!", ErrorCode.UNPROCESSABLE_ENTITY);
   }
 
-  const { blog_id, lodge_id } = new CreateBlogLodgeDto(parsed.data as CreateBlogLodge);
+  const { blog_id, lodge_id } = new BlogLodgeDto(parsed.data as CreateBlogLodge);
   const result = await blogLodgeService.createBlogLodge(blog_id, lodge_id);
 
   res.status(201).json(result);

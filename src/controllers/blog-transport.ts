@@ -4,10 +4,10 @@ import { BlogTransportService } from "../services/blog-transport";
 import { BlogTransportSchema } from "../schemas/blog-transport";
 import { UnprocessableEntityException } from "../exceptions/validation";
 import { ErrorCode } from "../exceptions/root";
-import { CreateBlogTransportDto } from "../dtos/blog-transport";
 import { BlogTransport, CreateBlogTransport } from "../interfaces/blog-transport";
 import { IdSchema } from "../schemas/id";
 import { UUID } from "crypto";
+import { BlogTransportDto } from "../dtos/blog-transport";
 
 const blogTransportRepository = new BlogTransportRepository();
 const blogTransportSercive = new BlogTransportService(blogTransportRepository);
@@ -20,7 +20,7 @@ export const createBlogtransport = async (req: Request, res: Response) => {
 
     const parsedData = parsed.data as CreateBlogTransport;
     
-    const blogTransportCreateDto = new CreateBlogTransportDto(parsedData) as CreateBlogTransport;
+    const blogTransportCreateDto = new BlogTransportDto(parsedData) as CreateBlogTransport;
 
     const blogTransport : BlogTransport = await blogTransportSercive.createBlogTransport(blogTransportCreateDto.blog_id, blogTransportCreateDto.transport_id);
 

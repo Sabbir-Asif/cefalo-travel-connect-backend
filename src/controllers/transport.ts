@@ -7,7 +7,6 @@ import { ErrorCode } from "../exceptions/root";
 import { CreateTransport, Transport, TransportType, UpdateTransport } from "../interfaces/transport";
 import { CreateTransportDto, UpdateTransportDto } from "../dtos/transport";
 import { BadRequestException } from "../exceptions/bad-request";
-import { z } from "zod";
 import { UUID } from "crypto";
 import { IdSchema } from "../schemas/id";
 
