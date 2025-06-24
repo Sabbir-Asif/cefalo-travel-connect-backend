@@ -22,10 +22,28 @@ export class TourLodgeService {
     }
 
     async deleteTourLodge(travelplanId: UUID, lodgeId: UUID): Promise<number> {
-        return await this.tourLodgeRepository.delete(travelplanId, lodgeId);
+        const travelPlan = await travelPlanService.getTravelPlanById(travelplanId);
+        if (!travelPlan) {
+            throw new NotFoundException("Travel plan not found", ErrorCode.TRAVEL_PLAN_NOT_FOUND);
+        }
+        const lodge = await lodgeService.getLodgeById(lodgeId);
+        if (!lodge) {
+            throw new NotFoundException("Lodge not found", ErrorCode.LODGE_NOT_FOUND);
+        }
+
+        const deletedCount =  await this.tourLodgeRepository.delete(travelplanId, lodgeId);
+        if (deletedCount === 0) {
+            throw new NotFoundException("Lodge not found in travel plan", ErrorCode.LODGE_NOT_FOUND);
+        }
+
+        return deletedCount;
     }
 
     async getLodgesForTravelPlan(travelplanId: UUID): Promise<LodgeResponseDto[]> {
+        const travelPlan = await travelPlanService.getTravelPlanById(travelplanId);
+        if (!travelPlan) {
+            throw new NotFoundException("Travel plan not found", ErrorCode.TRAVEL_PLAN_NOT_FOUND);
+        }
         const lodges = await this.tourLodgeRepository.lodgesForTravelPlan(travelplanId);
         return lodges.map(lodge => new LodgeResponseDto(lodge));
     }
