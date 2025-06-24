@@ -5,6 +5,7 @@ import { authMiddleware } from "../middlewares/auth";
 import { createBlogtransport, deleteBlogTransport, getTransportsForBlog } from "../controllers/blog-transport";
 import { createBlogInsight, deleteBlogInsight, getAllBlogInsights, getBlogInsightById, getBlogInsightsByBlogId, searchBlogInsights, updateBlogInsight } from "../controllers/blog-insight";
 import { createBlogLodge, deleteBlogLodge, getLodgesForBlog } from "../controllers/blog-lodge";
+import { createBlogFood, deleteBlogFood, getFoodsForBlog } from "../controllers/blog-food";
 
 export const blogRouter: Router = Router();
 
@@ -16,6 +17,10 @@ blogRouter.get('/search', authMiddleware, errorHandler(searchBlogs));
 blogRouter.post('/lodges', authMiddleware, errorHandler(createBlogLodge));
 blogRouter.get('/:id/lodges', authMiddleware, errorHandler(getLodgesForBlog))
 blogRouter.delete('/:blogId/lodges/:lodgeId', authMiddleware, errorHandler(deleteBlogLodge));
+
+blogRouter.post('/foods', authMiddleware, errorHandler(createBlogFood));
+blogRouter.get('/:id/foods', authMiddleware, errorHandler(getFoodsForBlog));
+blogRouter.delete('/:blogId/foods/:foodId', authMiddleware, errorHandler(deleteBlogFood));
 
 blogRouter.post("/:blogId/insights", authMiddleware, errorHandler(createBlogInsight));
 blogRouter.get("/:blogId/insights", authMiddleware, errorHandler(getBlogInsightsByBlogId));
