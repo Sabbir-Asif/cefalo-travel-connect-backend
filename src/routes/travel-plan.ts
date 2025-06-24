@@ -4,12 +4,17 @@ import { errorHandler } from "../global-error-handler";
 import { createTravelPlan, deleteTravelPlan, getAllTravelPlans, getTravelPlanById, searchTravelPlans, updateTravelPlan } from "../controllers/travel-plan";
 import { getDiscussionsByTravelPlanId } from "../controllers/discussion";
 import { tourTransportRouter } from "./tour-transport";
+import { createTourLodge, deleteTourLodge, getLodgesForTravelPlan } from "../controllers/tour-lodge";
 
 export const travelPlanRouter : Router = Router();
 
 travelPlanRouter.use('/transports', authMiddleware, tourTransportRouter);
 
 travelPlanRouter.get("/:travelPlanId/discussions", authMiddleware, errorHandler(getDiscussionsByTravelPlanId));
+
+travelPlanRouter.post('/lodges', authMiddleware, errorHandler(createTourLodge));
+travelPlanRouter.get('/:id/lodges', authMiddleware, errorHandler(getLodgesForTravelPlan));
+travelPlanRouter.delete('/:travelplanId/lodges/:lodgeId', authMiddleware, errorHandler(deleteTourLodge));
 
 travelPlanRouter.post('/', authMiddleware, errorHandler(createTravelPlan));
 travelPlanRouter.get('/search', authMiddleware, errorHandler(searchTravelPlans));
