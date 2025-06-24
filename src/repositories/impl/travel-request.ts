@@ -1,11 +1,6 @@
 import { UUID } from "crypto";
 import { db } from "../../configs/db";
-import {
-  TravelRequest,
-  CreateTravelRequest,
-  UpdateTravelRequest,
-  TravelRequestWithUsers,
-} from "../../interfaces/travel-request";
+import { TravelRequest, CreateTravelRequest, UpdateTravelRequest, TravelRequestWithUsers } from "../../interfaces/travel-request";
 import { ITravelRequestRepository } from "../travel-request";
 import { UserResponseDto } from "../../dtos/user";
 

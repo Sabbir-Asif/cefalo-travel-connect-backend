@@ -1,5 +1,5 @@
 import { UUID } from "crypto";
-import { User, UserResponse } from "../interfaces/user";
+import { User } from "../interfaces/user";
 
 export interface ITourMemberRepository {
     create(travelplanId: UUID, userId: UUID): Promise<{ travelplan_id: UUID, user_id: UUID }>;

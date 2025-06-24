@@ -4,9 +4,9 @@ import { TourMemberService } from "../services/tour-member";
 import { TourMemberSchema } from "../schemas/tour-member";
 import { UnprocessableEntityException } from "../exceptions/validation";
 import { ErrorCode } from "../exceptions/root";
-import { CreateTourMemberDto } from "../dtos/tour-member";
 import { IdSchema } from "../schemas/id";
 import { UUID } from "crypto";
+import { TourMemberDto } from "../dtos/tour-member";
 
 const tourMemberRepository = new TourMemberRepository();
 export const tourMemberService = new TourMemberService(tourMemberRepository);
@@ -17,7 +17,7 @@ export const createTourMember = async (req: Request, res: Response) => {
         throw new UnprocessableEntityException(parsed.error, "Validation error!", ErrorCode.UNPROCESSABLE_ENTITY);
     }
 
-    const { travelplan_id, user_id } = new CreateTourMemberDto(parsed.data as CreateTourMemberDto);
+    const { travelplan_id, user_id } = new TourMemberDto(parsed.data as TourMemberDto);
     const result = await tourMemberService.createTourMember(travelplan_id, user_id);
     res.status(201).json(result);
 };

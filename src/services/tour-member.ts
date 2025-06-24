@@ -5,7 +5,7 @@ import { ErrorCode } from "../exceptions/root";
 import { travelPlanService } from "../controllers/travel-plan";
 import { userService } from "../controllers/user";
 import { UserResponseDto } from "../dtos/user";
-import { User, UserResponse } from "../interfaces/user";
+import { User } from "../interfaces/user";
 
 export class TourMemberService {
     constructor(private tourMemberRepository: ITourMemberRepository) {}

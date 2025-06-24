@@ -1,5 +1,5 @@
 import { UUID } from "crypto";
-import { BlogLodge, CreateBlogLodge } from "../interfaces/blog-lodge";
+import { BlogLodge } from "../interfaces/blog-lodge";
 
 export class BlogLodgeDto {
   blog_id: UUID;

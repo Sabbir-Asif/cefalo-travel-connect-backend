@@ -1,4 +1,3 @@
-// dtos/discussion.ts
 import { UUID } from "crypto";
 import { Discussion, DiscussionWithSender, CreateDiscussion } from "../interfaces/discussion";
 

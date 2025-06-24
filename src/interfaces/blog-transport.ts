@@ -5,7 +5,3 @@ export interface BlogTransport {
     transport_id: UUID,
 }
 
-export interface CreateBlogTransport {
-    blog_id: UUID,
-    transport_id: UUID
-}

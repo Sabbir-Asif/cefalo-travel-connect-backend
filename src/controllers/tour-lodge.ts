@@ -5,8 +5,8 @@ import { TourLodgeSchema } from "../schemas/tour-lodge";
 import { IdSchema } from "../schemas/id";
 import { UnprocessableEntityException } from "../exceptions/validation";
 import { ErrorCode } from "../exceptions/root";
-import { CreateTourLodgeDto } from "../dtos/tour-lodge";
 import { UUID } from "crypto";
+import { TourLodgeDto } from "../dtos/tour-lodge";
 
 const tourLodgeRepository = new TourLodgeRepository();
 const tourLodgeService = new TourLodgeService(tourLodgeRepository);
@@ -17,7 +17,7 @@ export const createTourLodge = async (req: Request, res: Response) => {
     throw new UnprocessableEntityException(parsed.error, "Validation error!", ErrorCode.UNPROCESSABLE_ENTITY);
   }
 
-  const dto = new CreateTourLodgeDto(parsed.data as { travelplan_id: UUID; lodge_id: UUID });
+  const dto = new TourLodgeDto(parsed.data as { travelplan_id: UUID; lodge_id: UUID });
   const { travelplan_id, lodge_id } = dto;
   const result = await tourLodgeService.createTourLodge(travelplan_id, lodge_id);
 

@@ -1,5 +1,5 @@
 import { UUID } from "crypto";
-import { BlogTransport, CreateBlogTransport } from "../interfaces/blog-transport";
+import { BlogTransport } from "../interfaces/blog-transport";
 
 export class BlogTransportDto {
     blog_id: UUID;

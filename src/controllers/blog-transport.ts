@@ -4,7 +4,7 @@ import { BlogTransportService } from "../services/blog-transport";
 import { BlogTransportSchema } from "../schemas/blog-transport";
 import { UnprocessableEntityException } from "../exceptions/validation";
 import { ErrorCode } from "../exceptions/root";
-import { BlogTransport, CreateBlogTransport } from "../interfaces/blog-transport";
+import { BlogTransport } from "../interfaces/blog-transport";
 import { IdSchema } from "../schemas/id";
 import { UUID } from "crypto";
 import { BlogTransportDto } from "../dtos/blog-transport";
@@ -18,9 +18,9 @@ export const createBlogtransport = async (req: Request, res: Response) => {
         throw new UnprocessableEntityException(parsed.error, "Validation error!", ErrorCode.UNPROCESSABLE_ENTITY);
     }
 
-    const parsedData = parsed.data as CreateBlogTransport;
+    const parsedData = parsed.data as BlogTransport;
     
-    const blogTransportCreateDto = new BlogTransportDto(parsedData) as CreateBlogTransport;
+    const blogTransportCreateDto = new BlogTransportDto(parsedData) as BlogTransport;
 
     const blogTransport : BlogTransport = await blogTransportSercive.createBlogTransport(blogTransportCreateDto.blog_id, blogTransportCreateDto.transport_id);
 
