@@ -29,6 +29,9 @@ export class BlogRepository implements IBlogRepository {
                 lat: parseFloat(newBlog.lat),
                 long: parseFloat(newBlog.long),
             },
+            tags: JSON.parse(newBlog.tags),
+            images: JSON.parse(newBlog.images),
+            videos: JSON.parse(newBlog.videos),
             created_at: new Date(newBlog.created_at),
             updated_at: new Date(newBlog.updated_at)
         };
@@ -47,6 +50,9 @@ export class BlogRepository implements IBlogRepository {
                 lat: parseFloat(blog.lat),
                 long: parseFloat(blog.long),
             },
+            tags: JSON.parse(blog.tags),
+            images: JSON.parse(blog.images),
+            videos: JSON.parse(blog.videos),
             created_at: new Date(blog.created_at),
             updated_at: new Date(blog.updated_at)
         }));
@@ -68,6 +74,9 @@ export class BlogRepository implements IBlogRepository {
                 lat: parseFloat(blog.lat),
                 long: parseFloat(blog.long),
             },
+            tags: JSON.parse(blog.tags),
+            images: JSON.parse(blog.images),
+            videos: JSON.parse(blog.videos),
             created_at: new Date(blog.created_at),
             updated_at: new Date(blog.updated_at)
         } : null;
@@ -104,6 +113,9 @@ export class BlogRepository implements IBlogRepository {
                 lat: parseFloat(updatedBlog.lat),
                 long: parseFloat(updatedBlog.long),
             },
+            tags: JSON.parse(updatedBlog.tags),
+            images: JSON.parse(updatedBlog.images),
+            videos: JSON.parse(updatedBlog.videos),
             created_at: new Date(updatedBlog.created_at),
             updated_at: new Date(updatedBlog.updated_at),
         };
@@ -163,6 +175,9 @@ export class BlogRepository implements IBlogRepository {
                 lat: parseFloat(blog.lat),
                 long: parseFloat(blog.long),
             },
+            tags: JSON.parse(blog.tags),
+            images: JSON.parse(blog.images),
+            videos: JSON.parse(blog.videos),
             created_at: new Date(blog.created_at),
             updated_at: new Date(blog.updated_at),
         }));
