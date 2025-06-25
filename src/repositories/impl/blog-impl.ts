@@ -1,6 +1,6 @@
 import { UUID } from "crypto";
 import { db } from "../../configs/db";
-import { CreateBlog, Blog, UpdateBlog } from "../../interfaces/blog";
+import { CreateBlog, Blog, UpdateBlog, Blog_Status } from "../../interfaces/blog";
 import { IBlogRepository } from "../blog";
 import { IdSchema } from "../../schemas/id";
 
@@ -23,18 +23,7 @@ export class BlogRepository implements IBlogRepository {
             db.raw(`ST_Y(location_points::geometry) as lat`)
         ]);
 
-        return {
-            ...newBlog,
-            location_points: {
-                lat: parseFloat(newBlog.lat),
-                long: parseFloat(newBlog.long),
-            },
-            tags: JSON.parse(newBlog.tags),
-            images: JSON.parse(newBlog.images),
-            videos: JSON.parse(newBlog.videos),
-            created_at: new Date(newBlog.created_at),
-            updated_at: new Date(newBlog.updated_at)
-        };
+        return this.mapRowToBlog(newBlog);
     }
 
     async getAll(): Promise<Blog[]> {
@@ -44,18 +33,7 @@ export class BlogRepository implements IBlogRepository {
             db.raw(`ST_Y(location_points::geometry) as lat`)
         );
 
-        return blogs.map((blog) => ({
-            ...blog,
-            location_points: {
-                lat: parseFloat(blog.lat),
-                long: parseFloat(blog.long),
-            },
-            tags: JSON.parse(blog.tags),
-            images: JSON.parse(blog.images),
-            videos: JSON.parse(blog.videos),
-            created_at: new Date(blog.created_at),
-            updated_at: new Date(blog.updated_at)
-        }));
+        return blogs.map((blog) => (this.mapRowToBlog(blog)));
     }
 
     async getById(id: UUID): Promise<Blog | null> {
@@ -68,18 +46,7 @@ export class BlogRepository implements IBlogRepository {
             .where({ id })
             .first();
 
-        return blog ? {
-            ...blog,
-            location_points: {
-                lat: parseFloat(blog.lat),
-                long: parseFloat(blog.long),
-            },
-            tags: JSON.parse(blog.tags),
-            images: JSON.parse(blog.images),
-            videos: JSON.parse(blog.videos),
-            created_at: new Date(blog.created_at),
-            updated_at: new Date(blog.updated_at)
-        } : null;
+        return blog ? this.mapRowToBlog(blog) : null;
     }
 
     async update(id: UUID, data: UpdateBlog): Promise<Blog> {
@@ -107,18 +74,7 @@ export class BlogRepository implements IBlogRepository {
                 db.raw(`ST_Y(location_points::geometry) as lat`)
             ]);
 
-        return {
-            ...updatedBlog,
-            location_points: {
-                lat: parseFloat(updatedBlog.lat),
-                long: parseFloat(updatedBlog.long),
-            },
-            tags: JSON.parse(updatedBlog.tags),
-            images: JSON.parse(updatedBlog.images),
-            videos: JSON.parse(updatedBlog.videos),
-            created_at: new Date(updatedBlog.created_at),
-            updated_at: new Date(updatedBlog.updated_at),
-        };
+        return this.mapRowToBlog(updatedBlog);
     }
 
     async delete(id: UUID): Promise<number> {
@@ -169,18 +125,28 @@ export class BlogRepository implements IBlogRepository {
 
         const blogs = await query;
 
-        return blogs.map(blog => ({
-            ...blog,
+        return blogs.map(blog => (this.mapRowToBlog(blog)));
+    }
+
+    mapRowToBlog(row: any): Blog {
+        return {
+            id: row.id,
+            title: row.title,
+            userId: row.userId,
+            locationName: row.locationName ?? '',
             location_points: {
-                lat: parseFloat(blog.lat),
-                long: parseFloat(blog.long),
+                lat: parseFloat(row.lat),
+                long: parseFloat(row.long),
             },
-            tags: JSON.parse(blog.tags),
-            images: JSON.parse(blog.images),
-            videos: JSON.parse(blog.videos),
-            created_at: new Date(blog.created_at),
-            updated_at: new Date(blog.updated_at),
-        }));
+            description: row.description,
+            cover_image: row.cover_image ?? null,
+            status: row.status ?? Blog_Status.DRAFT,
+            tags: typeof row.tags === 'string' ? JSON.parse(row.tags) : [],
+            images: typeof row.images === 'string' ? JSON.parse(row.images) : [],
+            videos: typeof row.videos === 'string' ? JSON.parse(row.videos) : [],
+            created_at: new Date(row.created_at),
+            updated_at: new Date(row.updated_at),
+        };
     }
 
 }
