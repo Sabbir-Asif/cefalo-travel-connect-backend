@@ -1,0 +1,43 @@
+{
+  "name": "ctc-backend",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "start": "npx nodemon",
+    "test": "jest",
+    "mk:migrate": "knex migrate:make --knexfile knexfile.cjs --env development",
+    "migrate:latest": "npx knex migrate:latest --knexfile knexfile.cjs --env development"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.1.0",
+    "node-cron": "^4.1.1",
+    "nodemailer": "^7.0.3",
+    "pg": "^8.16.0",
+    "resend": "^4.6.0",
+    "zod": "^3.25.32"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.9",
+    "@types/express": "^5.0.2",
+    "@types/jest": "^30.0.0",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^22.15.21",
+    "@types/nodemailer": "^6.4.17",
+    "jest": "^30.0.3",
+    "nodemon": "^3.1.10",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
