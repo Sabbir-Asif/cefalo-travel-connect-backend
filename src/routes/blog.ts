@@ -6,6 +6,7 @@ import { createBlogtransport, deleteBlogTransport, getTransportsForBlog } from "
 import { createBlogInsight, deleteBlogInsight, getAllBlogInsights, getBlogInsightById, getBlogInsightsByBlogId, searchBlogInsights, updateBlogInsight } from "../controllers/blog-insight";
 import { createBlogLodge, deleteBlogLodge, getLodgesForBlog } from "../controllers/blog-lodge";
 import { createBlogFood, deleteBlogFood, getFoodsForBlog } from "../controllers/blog-food";
+import { getUsersWhoReacted, reactToBlog, removeReaction } from "../controllers/liked-blog";
 
 export const blogRouter: Router = Router();
 
@@ -30,6 +31,10 @@ blogRouter.get("/insights/search", authMiddleware, errorHandler(searchBlogInsigh
 blogRouter.get("/insights/:id", authMiddleware, errorHandler(getBlogInsightById));
 blogRouter.put("/insights/:id", authMiddleware, errorHandler(updateBlogInsight));
 blogRouter.delete("/insights/:id", authMiddleware, errorHandler(deleteBlogInsight));
+
+blogRouter.post('/react', authMiddleware, errorHandler(reactToBlog));
+blogRouter.delete('/:blogId/react', authMiddleware, errorHandler(removeReaction));
+blogRouter.get('/:blogId/react', authMiddleware, errorHandler(getUsersWhoReacted));
 
 blogRouter.post('/', authMiddleware, errorHandler(createBlog));
 blogRouter.get('/',authMiddleware, errorHandler(getAllBlogs));
