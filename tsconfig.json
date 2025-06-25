@@ -107,6 +107,6 @@
   },
   "include": [
     "src",
-    "tests/**/*.test.ts"
+    "__tests__/**/*.test.ts"
   ]
 }
