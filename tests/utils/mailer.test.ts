@@ -20,25 +20,27 @@ describe('Mailer Utility', () => {
     const name = 'John Doe';
     const token = 'verify-token';
 
-    it('should send verification email successfully', async () => {
-
+    it('sends verification email successfully', async () => {
       sendMailMock.mockResolvedValueOnce({});
 
       await mailer.sendVerificationEmail(to, name, token);
 
       expect(sendMailMock).toHaveBeenCalledTimes(1);
-      const options = sendMailMock.mock.calls[0][0];
-      expect(options.to).toBe(to);
-      expect(options.subject).toContain('Verify');
-      expect(options.html).toContain(name);
-      expect(options.html).toContain(token);
+
+      const mailOptions = sendMailMock.mock.calls[0][0];
+
+      expect(mailOptions.to).toBe(to);
+      expect(mailOptions.subject).toMatch(/verify/i);
+      expect(mailOptions.html).toContain(name);
+      expect(mailOptions.html).toContain(token);
     });
 
-    it('should throw InternalException if sendMail fails', async () => {
-
+    it('throws InternalException if sendMail rejects', async () => {
       sendMailMock.mockRejectedValueOnce(new Error('SMTP error'));
 
-      await expect(mailer.sendVerificationEmail(to, name, token)).rejects.toThrow(InternalException);
+      await expect(mailer.sendVerificationEmail(to, name, token))
+        .rejects.toThrow(InternalException);
+
       expect(sendMailMock).toHaveBeenCalledTimes(1);
     });
   });
@@ -48,25 +50,27 @@ describe('Mailer Utility', () => {
     const name = 'Jane Doe';
     const token = 'reset-token';
 
-    it('should send password reset email successfully', async () => {
-
+    it('sends password reset email successfully', async () => {
       sendMailMock.mockResolvedValueOnce({});
 
       await mailer.sendPasswordResetEmail(to, name, token);
 
       expect(sendMailMock).toHaveBeenCalledTimes(1);
-      const options = sendMailMock.mock.calls[0][0];
-      expect(options.to).toBe(to);
-      expect(options.subject).toContain('Reset');
-      expect(options.html).toContain(name);
-      expect(options.html).toContain(token);
+
+      const mailOptions = sendMailMock.mock.calls[0][0];
+
+      expect(mailOptions.to).toBe(to);
+      expect(mailOptions.subject).toMatch(/reset/i);
+      expect(mailOptions.html).toContain(name);
+      expect(mailOptions.html).toContain(token);
     });
 
-    it('should throw InternalException if sendMail fails', async () => {
-
+    it('throws InternalException if sendMail rejects', async () => {
       sendMailMock.mockRejectedValueOnce(new Error('SMTP down'));
 
-      await expect(mailer.sendPasswordResetEmail(to, name, token)).rejects.toThrow(InternalException);
+      await expect(mailer.sendPasswordResetEmail(to, name, token))
+        .rejects.toThrow(InternalException);
+
       expect(sendMailMock).toHaveBeenCalledTimes(1);
     });
   });
