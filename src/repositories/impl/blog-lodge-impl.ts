@@ -34,14 +34,16 @@ export class BlogLodgeRepository implements IBlogLodgeRepository {
                 db.raw(`ST_Y(lodges.location_point::geometry) as lat`)
             );
 
-        return lodges.map(lodge => ({
-            ...lodge,
+        return lodges.map(lodge => {
+            const { lat, long, created_at, updated_at, ...lodgeWithoutCoords } = lodge;
+            return {
+            ...lodgeWithoutCoords,
             location_point: {
                 lat: parseFloat(lodge.lat),
                 long: parseFloat(lodge.long),
             },
             created_at: new Date(lodge.created_at),
             updated_at: new Date(lodge.updated_at),
-        }));
+        }});
     }
 }
