@@ -34,14 +34,17 @@ export class TourLodgeRepository implements ITourLodgeRepository {
                 db.raw(`ST_Y(lodges.location_point::geometry) as lat`)
             );
 
-        return lodges.map(lodge => ({
-            ...lodge,
-            location_point: {
-                lat: parseFloat(lodge.lat),
-                long: parseFloat(lodge.long)
-            },
-            created_at: new Date(lodge.created_at),
-            updated_at: new Date(lodge.updated_at)
-        }));
+        return lodges.map(lodge => {
+            const {lat, long, ...lodgeWithoutCords } = lodge;
+            return {
+                ...lodgeWithoutCords,
+                location_point: {
+                    lat: parseFloat(lodge.lat),
+                    long: parseFloat(lodge.long)
+                },
+                created_at: new Date(lodge.created_at),
+                updated_at: new Date(lodge.updated_at)
+            }
+        });
     }
 }

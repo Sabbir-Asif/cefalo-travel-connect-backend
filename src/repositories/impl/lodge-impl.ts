@@ -19,8 +19,10 @@ export class LodgeRepository implements ILodgeRepositiry {
             db.raw(`ST_Y(location_point::geometry) as lat`)
         ]);
 
+        const { long, lat, ...newLodgeWithoutCords } = newLodge;
+
         return {
-            ...newLodge,
+            ...newLodgeWithoutCords,
             location_point: {
                 lat: parseFloat(newLodge.lat),
                 long: parseFloat(newLodge.long)
@@ -37,15 +39,18 @@ export class LodgeRepository implements ILodgeRepositiry {
             db.raw(`ST_Y(location_point::geometry) as lat`)
         )
 
-        return lodges.map((lodge) => ({
-            ...lodge,
-            location_point: {
-                lat: lodge.lat,
-                long: lodge.long
-            },
-            created_at: new Date(lodge.created_at),
-            updated_at: new Date(lodge.updated_at)
-        }))
+        return lodges.map((lodge) => {
+            const { long, lat, ...lodgeWithoutCords } = lodge;
+            return {
+                ...lodgeWithoutCords,
+                location_point: {
+                    lat: parseFloat(lodge.lat),
+                    long: parseFloat(lodge.long)
+                },
+                created_at: new Date(lodge.created_at),
+                updated_at: new Date(lodge.updated_at)
+            }
+        })
     }
 
     async getById(id: UUID): Promise<Lodge | null> {
@@ -57,11 +62,14 @@ export class LodgeRepository implements ILodgeRepositiry {
             .where({ id })
             .first();
 
+
+        const { long, lat, ...lodgeWithoutCords } = lodge;
+
         return lodge ? {
-            ...lodge,
+            ...lodgeWithoutCords,
             location_point: {
-                lat: lodge.lat,
-                long: lodge.long
+                lat: parseFloat(lodge.lat),
+                long: parseFloat(lodge.long)
             },
             created_at: new Date(lodge.created_at),
             updated_at: new Date(lodge.updated_at)
@@ -90,11 +98,13 @@ export class LodgeRepository implements ILodgeRepositiry {
                 db.raw(`ST_Y(location_point::geometry) as lat`)
             ]);
 
+        const { long, lat, ...lodgeWithoutCords } = updatedLodge;
+
         return {
-            ...updatedLodge,
+            ...lodgeWithoutCords,
             location_point: {
-                lat: updatedLodge.lat,
-                long: updatedLodge.long
+                lat: parseFloat(updatedLodge.lat),
+                long: parseFloat(updatedLodge.long)
             },
             created_at: new Date(updatedLodge.created_at),
             updated_at: new Date(updatedLodge.updated_at)
