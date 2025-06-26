@@ -292,8 +292,8 @@ describe('UserRepository', () => {
       const mockSelect = jest.fn().mockReturnValue(mockQueryBuilder);
       mockDb.mockReturnValue({ select: mockSelect });
 
-      const result = await userRepository.search({ 
-        name: 'John', 
+      const result = await userRepository.search({
+        name: 'John',
         email: 'john@',
         phone_number: '123'
       });

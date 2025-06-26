@@ -39,18 +39,23 @@ export class BlogTransportRepository implements IBlogTransportRepository {
                 db.raw(`ST_Y(transports.destination_point::geometry) as des_lat`)
             );
 
-        return transports.map((transport) => ({
-            ...transport,
-            starting_point: {
-                lat: parseFloat(transport.start_lat),
-                long: parseFloat(transport.start_long)
-            },
-            destination_point: {
-                lat: parseFloat(transport.des_lat),
-                long: parseFloat(transport.des_long)
-            },
-            created_at: new Date(transport.created_at),
-            updated_at: new Date(transport.updated_at)
-        }));
+        return transports.map((transport) => {
+            const { start_lat, start_long, des_lat, des_long, ...transportWithoutCoords } = transport;
+            return {
+                ...transportWithoutCoords,
+                starting_point: {
+                    lat: parseFloat(transport.start_lat),
+                    long: parseFloat(transport.start_long)
+                },
+                destination_point: {
+                    lat: parseFloat(transport.des_lat),
+                    long: parseFloat(transport.des_long)
+                },
+                departure_time: transport.departure_time ? new Date(transport.departure_time) : null,
+                arrival_time: transport.arrival_time ? new Date(transport.arrival_time) : null,
+                created_at: new Date(transport.created_at),
+                updated_at: new Date(transport.updated_at)
+            }
+        });
     }
 }
