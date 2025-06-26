@@ -1,4 +1,5 @@
 import { UUID } from "crypto";
+import { UserResponse } from "./user";
 
 export interface Discussion {
   id: UUID;
@@ -14,10 +15,5 @@ export interface CreateDiscussion {
 }
 
 export interface DiscussionWithSender extends Discussion {
-  sender: {
-    id: UUID;
-    name: string;
-    email: string;
-    displayPicture: string | null;
-  };
+  sender: UserResponse;
 }
