@@ -25,8 +25,9 @@ export class TransportRepository implements ITransportRepository {
             db.raw(`ST_Y(destination_point::geometry) as des_lat`)
         ]);
 
+        const { start_long, start_lat, des_long, des_lat, ...transportWithoutCords } = newTransport;
         return {
-            ...newTransport,
+            ...transportWithoutCords,
             starting_point: {
                 lat: parseFloat(newTransport.start_lat),
                 long: parseFloat(newTransport.start_long)
@@ -49,19 +50,22 @@ export class TransportRepository implements ITransportRepository {
             db.raw(`ST_Y(destination_point::geometry) as des_lat`)
         )
 
-        return transports.map((transport) => ({
-            ...transport,
-            starting_point: {
-                lat: parseFloat(transport.start_lat),
-                long: parseFloat(transport.start_long)
-            },
-            destination_point: {
-                lat: parseFloat(transport.des_lat),
-                long: parseFloat(transport.des_long)
-            },
-            created_at: new Date(transport.created_at),
-            updated_at: new Date(transport.updated_at)
-        }));
+        return transports.map((transport) => {
+            const { start_long, start_lat, des_long, des_lat, ...transportWithoutCords } = transport;
+            return {
+                ...transportWithoutCords,
+                starting_point: {
+                    lat: parseFloat(transport.start_lat),
+                    long: parseFloat(transport.start_long)
+                },
+                destination_point: {
+                    lat: parseFloat(transport.des_lat),
+                    long: parseFloat(transport.des_long)
+                },
+                created_at: new Date(transport.created_at),
+                updated_at: new Date(transport.updated_at)
+            }
+        });
     }
 
     async getById(id: UUID): Promise<Transport | null> {
@@ -75,8 +79,9 @@ export class TransportRepository implements ITransportRepository {
             .where({ id })
             .first();
 
+        const { start_long, start_lat, des_long, des_lat, ...transportWithoutCords } = transport || {};
         return transport ? {
-            ...transport,
+            ...transportWithoutCords,
             starting_point: {
                 lat: parseFloat(transport.start_lat),
                 long: parseFloat(transport.start_long)
@@ -121,8 +126,10 @@ export class TransportRepository implements ITransportRepository {
                 db.raw(`ST_Y(destination_point::geometry) as des_lat`)
             ]);
 
+        const { start_long, start_lat, des_long, des_lat, ...transportWithoutCords } = updatedTransport;
+
         return {
-            ...updatedTransport,
+            ...transportWithoutCords,
             starting_point: {
                 lat: parseFloat(updatedTransport.start_lat),
                 long: parseFloat(updatedTransport.start_long)
@@ -182,59 +189,61 @@ export class TransportRepository implements ITransportRepository {
         name?: string;
         sortBy?: 'fare';
         order?: 'asc' | 'desc';
-      }): Promise<Transport[]> {
+    }): Promise<Transport[]> {
         const {
-          startingLocationName,
-          destinationLocationName,
-          type,
-          name,
-          sortBy,
-          order = 'asc'
+            startingLocationName,
+            destinationLocationName,
+            type,
+            name,
+            sortBy,
+            order = 'asc'
         } = params;
-      
+
         const query = db('transports')
-          .select(
-            '*',
-            db.raw(`ST_X(starting_point::geometry) as start_long`),
-            db.raw(`ST_Y(starting_point::geometry) as start_lat`),
-            db.raw(`ST_X(destination_point::geometry) as dest_long`),
-            db.raw(`ST_Y(destination_point::geometry) as dest_lat`)
-          );
-      
+            .select(
+                '*',
+                db.raw(`ST_X(starting_point::geometry) as start_long`),
+                db.raw(`ST_Y(starting_point::geometry) as start_lat`),
+                db.raw(`ST_X(destination_point::geometry) as des_long`),
+                db.raw(`ST_Y(destination_point::geometry) as des_lat`)
+            );
+
         if (startingLocationName) {
-          query.whereILike('starting_location', `%${startingLocationName}%`);
+            query.whereILike('starting_location', `%${startingLocationName}%`);
         }
-      
+
         if (destinationLocationName) {
-          query.whereILike('destination', `%${destinationLocationName}%`);
+            query.whereILike('destination', `%${destinationLocationName}%`);
         }
-      
+
         if (type) {
-          const upper = type.toUpperCase();
-          if (['BUS', 'TRAIN', 'FLIGHT', 'BOAT', 'OTHER'].includes(upper)) {
-            query.where('type', upper);
-          }
+            const upper = type.toUpperCase();
+            if (['BUS', 'TRAIN', 'FLIGHT', 'BOAT', 'OTHER'].includes(upper)) {
+                query.where('type', upper);
+            }
         }
-      
+
         if (name) {
-          query.whereILike('name', `%${name}%`);
+            query.whereILike('name', `%${name}%`);
         }
-      
+
         if (sortBy === 'fare') {
-          query.orderByRaw(`fare::numeric ${order === 'desc' ? 'desc' : 'asc'}`);
+            query.orderByRaw(`fare::numeric ${order === 'desc' ? 'desc' : 'asc'}`);
         } else {
-          query.orderBy('created_at', 'desc');
+            query.orderBy('created_at', 'desc');
         }
-      
+
         const transports = await query;
-      
-        return transports.map(t => ({
-          ...t,
-          starting_point: { lat: parseFloat(t.start_lat), long: parseFloat(t.start_long) },
-          destination_point: { lat: parseFloat(t.dest_lat), long: parseFloat(t.dest_long) },
-          created_at: new Date(t.created_at),
-          updated_at: new Date(t.updated_at),
-        }));
-      }         
+
+        return transports.map(transport => {
+            const { start_long, start_lat, des_long, des_lat, ...transportWithoutCords } = transport;
+            return {
+            ...transportWithoutCords,
+            starting_point: { lat: parseFloat(transport.start_lat), long: parseFloat(transport.start_long) },
+            destination_point: { lat: parseFloat(transport.des_lat), long: parseFloat(transport.des_long) },
+            created_at: new Date(transport.created_at),
+            updated_at: new Date(transport.updated_at),
+        }});
+    }
 
 }

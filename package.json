@@ -5,6 +5,7 @@
   "scripts": {
     "start": "npx nodemon",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "mk:migrate": "knex migrate:make --knexfile knexfile.cjs --env development",
     "migrate:latest": "npx knex migrate:latest --knexfile knexfile.cjs --env development"
   },
