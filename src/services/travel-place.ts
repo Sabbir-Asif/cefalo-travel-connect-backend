@@ -49,7 +49,7 @@ export class TravelPlaceService {
 
         const user = await userService.getUserById(userId);
 
-        if(userId !== travelPlace.user_id || user.role !== Role.ADMIN) {
+        if(userId !== travelPlace.user_id && user.role !== Role.ADMIN) {
             throw new ForbiddenException(`UserId ${userId} can not perform update on blog ${id}`, ErrorCode.FORBIDDEN);
         }
 
