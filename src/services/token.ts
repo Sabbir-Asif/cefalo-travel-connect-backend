@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { privateKey, publicKey } from '../configs/keys';
 import { UUID } from 'crypto';
+import { ACCESS_TOKEN_EXPIRES_IN } from '../configs/secrets';
 
-const ACCESS_TOKEN_EXPIRES_IN = '15m';
 
 export const TokenService = {
   signAccessToken(userId: UUID): string {
