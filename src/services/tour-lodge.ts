@@ -4,17 +4,21 @@ import { TourLodgeDto } from "../dtos/tour-lodge";
 import { LodgeResponseDto } from "../dtos/lodge";
 import { NotFoundException } from "../exceptions/not-found";
 import { ErrorCode } from "../exceptions/root";
-import { travelPlanService } from "../controllers/travel-plan";
-import { lodgeService } from "../controllers/lodge";
+import { ITravelPlanRepository } from "../repositories/travel-plan";
+import { ILodgeRepositiry } from '../repositories/lodge';
 
 export class TourLodgeService {
-    constructor(private tourLodgeRepository: ITourLodgeRepository) { }
+    constructor(
+        private tourLodgeRepository: ITourLodgeRepository,
+        private travelPlanRepository: ITravelPlanRepository,
+        private lodgeRepository: ILodgeRepositiry
+    ) { }
 
     async createTourLodge(travelplanId: UUID, lodgeId: UUID): Promise<TourLodgeDto> {
-        const plan = await travelPlanService.getTravelPlanById(travelplanId);
+        const plan = await this.travelPlanRepository.getById(travelplanId);
         if (!plan) throw new NotFoundException("Travel plan not found", ErrorCode.TRAVEL_PLAN_NOT_FOUND);
 
-        const lodge = await lodgeService.getLodgeById(lodgeId);
+        const lodge = await this.lodgeRepository.getById(lodgeId);
         if (!lodge) throw new NotFoundException("Lodge not found", ErrorCode.LODGE_NOT_FOUND);
 
         const record = await this.tourLodgeRepository.create(travelplanId, lodgeId);
@@ -22,11 +26,11 @@ export class TourLodgeService {
     }
 
     async deleteTourLodge(travelplanId: UUID, lodgeId: UUID): Promise<number> {
-        const travelPlan = await travelPlanService.getTravelPlanById(travelplanId);
+        const travelPlan = await this.travelPlanRepository.getById(travelplanId);
         if (!travelPlan) {
             throw new NotFoundException("Travel plan not found", ErrorCode.TRAVEL_PLAN_NOT_FOUND);
         }
-        const lodge = await lodgeService.getLodgeById(lodgeId);
+        const lodge = await this.lodgeRepository.getById(lodgeId);
         if (!lodge) {
             throw new NotFoundException("Lodge not found", ErrorCode.LODGE_NOT_FOUND);
         }
@@ -40,7 +44,7 @@ export class TourLodgeService {
     }
 
     async getLodgesForTravelPlan(travelplanId: UUID): Promise<LodgeResponseDto[]> {
-        const travelPlan = await travelPlanService.getTravelPlanById(travelplanId);
+        const travelPlan = await this.travelPlanRepository.getById(travelplanId);
         if (!travelPlan) {
             throw new NotFoundException("Travel plan not found", ErrorCode.TRAVEL_PLAN_NOT_FOUND);
         }

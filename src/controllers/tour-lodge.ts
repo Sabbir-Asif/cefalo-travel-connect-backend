@@ -7,9 +7,17 @@ import { UnprocessableEntityException } from "../exceptions/validation";
 import { ErrorCode } from "../exceptions/root";
 import { UUID } from "crypto";
 import { TourLodgeDto } from "../dtos/tour-lodge";
+import { LodgeRepository } from "../repositories/impl/lodge-impl";
+import { TravelPlanRepository } from "../repositories/impl/travel-plan-impl";
 
 const tourLodgeRepository = new TourLodgeRepository();
-const tourLodgeService = new TourLodgeService(tourLodgeRepository);
+const travelPlanRepository = new TravelPlanRepository();
+const lodgeRepository = new LodgeRepository();
+const tourLodgeService = new TourLodgeService(
+  tourLodgeRepository,
+  travelPlanRepository,
+  lodgeRepository
+);
 
 export const createTourLodge = async (req: Request, res: Response) => {
   const parsed = TourLodgeSchema.safeParse(req.body);
