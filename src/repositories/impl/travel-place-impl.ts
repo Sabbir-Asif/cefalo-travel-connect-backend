@@ -21,8 +21,10 @@ export class TravelPlaceRepository implements ITravelPlaceRepository {
             db.raw(`ST_Y(location_point::geometry) as lat`)
         ]);
 
+        const { lat, long, ...travelPlaceWithourCords } = newTravelPlace;
+
         return {
-            ...newTravelPlace,
+            ...travelPlaceWithourCords,
             location_point: {
                 lat: parseFloat(newTravelPlace.lat),
                 long: parseFloat(newTravelPlace.long)
@@ -40,15 +42,19 @@ export class TravelPlaceRepository implements ITravelPlaceRepository {
                 db.raw(`ST_Y(location_point::geometry) as lat`)
             );
 
-        return travelPlaces.map((travelPlace) => ({
-            ...travelPlace,
-            location_point: {
-                lat: parseFloat(travelPlace.lat),
-                long: parseFloat(travelPlace.long)
-            },
-            created_at: new Date(travelPlace.created_at),
-            updated_at: new Date(travelPlace.updated_at)
-        }));
+
+        return travelPlaces.map((travelPlace) => {
+            const { lat, long, ...travelPlacesWithoutCords } = travelPlace;
+            return {
+                ...travelPlacesWithoutCords,
+                location_point: {
+                    lat: parseFloat(travelPlace.lat),
+                    long: parseFloat(travelPlace.long)
+                },
+                created_at: new Date(travelPlace.created_at),
+                updated_at: new Date(travelPlace.updated_at)
+            }
+        });
     }
 
     async getById(id: UUID): Promise<TravelPlace | null> {
@@ -60,9 +66,10 @@ export class TravelPlaceRepository implements ITravelPlaceRepository {
                 db.raw(`ST_Y(location_point::geometry) as lat`)
             );
 
+        const { lat, long, ...travelPlaceWithoutCords } = travelPlace || {};
 
         return travelPlace ? {
-            ...travelPlace,
+            ...travelPlaceWithoutCords,
             location_point: {
                 lat: parseFloat(travelPlace.lat),
                 long: parseFloat(travelPlace.long)
@@ -97,8 +104,9 @@ export class TravelPlaceRepository implements ITravelPlaceRepository {
                 db.raw(`ST_Y(location_point::geometry) as lat`)
             ]);
 
+        const { lat, long, ...updatedTravelPlaceWithoutCords } = updatedTravelPlace;
         return {
-            ...updatedTravelPlace,
+            ...updatedTravelPlaceWithoutCords,
             location_point: {
                 lat: parseFloat(updatedTravelPlace.lat),
                 long: parseFloat(updatedTravelPlace.long)
@@ -160,16 +168,17 @@ export class TravelPlaceRepository implements ITravelPlaceRepository {
 
         const results = await query;
 
-        return results.map(place => ({
-            ...place,
-            location_point: {
-                lat: parseFloat(place.lat),
-                long: parseFloat(place.long)
-            },
-            created_at: new Date(place.created_at),
-            updated_at: new Date(place.updated_at)
-        }));
+        return results.map(place => {
+            const { lat, long, ...placeWithoutCords } = place;
+            return {
+                ...placeWithoutCords,
+                location_point: {
+                    lat: parseFloat(place.lat),
+                    long: parseFloat(place.long)
+                },
+                created_at: new Date(place.created_at),
+                updated_at: new Date(place.updated_at)
+            }
+        });
     }
-
-
 }
