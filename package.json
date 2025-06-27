@@ -4,7 +4,6 @@
   "main": "index.ts",
   "scripts": {
     "start": "npx nodemon",
-    "test": "jest",
     "mk:migrate": "knex migrate:make --knexfile knexfile.cjs --env development",
     "migrate:latest": "npx knex migrate:latest --knexfile knexfile.cjs --env development"
   },
