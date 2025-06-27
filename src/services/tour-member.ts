@@ -2,21 +2,25 @@ import { UUID } from "crypto";
 import { ITourMemberRepository } from "../repositories/tour-member";
 import { NotFoundException } from "../exceptions/not-found";
 import { ErrorCode } from "../exceptions/root";
-import { travelPlanService } from "../controllers/travel-plan";
-import { userService } from "../controllers/user";
 import { UserResponseDto } from "../dtos/user";
 import { User } from "../interfaces/user";
+import { ITravelPlanRepository } from "../repositories/travel-plan";
+import { IUserRepository } from "../repositories/user";
 
 export class TourMemberService {
-    constructor(private tourMemberRepository: ITourMemberRepository) {}
+    constructor(
+        private tourMemberRepository: ITourMemberRepository,
+        private travelPlanRepository: ITravelPlanRepository,
+        private userrepository: IUserRepository
+    ) {}
 
     async createTourMember(travelplanId: UUID, userId: UUID): Promise<{ travelplan_id: UUID, user_id: UUID }> {
-        const travelPlan = await travelPlanService.getTravelPlanById(travelplanId);
+        const travelPlan = await this.travelPlanRepository.getById(travelplanId);
         if (!travelPlan) {
             throw new NotFoundException("Travel plan not found", ErrorCode.TRAVEL_PLAN_NOT_FOUND);
         }
 
-        const user = await userService.getUserById(userId);
+        const user = await this.userrepository.findById(userId);
         if (!user) {
             throw new NotFoundException("User not found", ErrorCode.USER_NOTFOUND);
         }
@@ -25,11 +29,11 @@ export class TourMemberService {
     }
 
     async deleteTourMember(travelplanId: UUID, userId: UUID): Promise<number> {
-        const travelPlan = await travelPlanService.getTravelPlanById(travelplanId);
+        const travelPlan = await this.travelPlanRepository.getById(travelplanId);
         if (!travelPlan) {
             throw new NotFoundException("Travel plan not found", ErrorCode.TRAVEL_PLAN_NOT_FOUND);
         }
-        const user = await userService.getUserById(userId);
+        const user = await this.userrepository.findById(userId);
         if (!user) {
             throw new NotFoundException("User not found", ErrorCode.USER_NOTFOUND);
         }
@@ -43,7 +47,7 @@ export class TourMemberService {
     }
 
     async getMembersForTravelPlan(travelplanId: UUID): Promise<UserResponseDto[]> {
-        const travelPlan = await travelPlanService.getTravelPlanById(travelplanId);
+        const travelPlan = await this.travelPlanRepository.getById(travelplanId);
         if (!travelPlan) {
             throw new NotFoundException("Travel plan not found", ErrorCode.TRAVEL_PLAN_NOT_FOUND);
         }

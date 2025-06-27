@@ -7,9 +7,17 @@ import { ErrorCode } from "../exceptions/root";
 import { IdSchema } from "../schemas/id";
 import { UUID } from "crypto";
 import { TourMemberDto } from "../dtos/tour-member";
+import { TravelPlanRepository } from "../repositories/impl/travel-plan-impl";
+import { UserRepository } from "../repositories/impl/user-impl";
 
 const tourMemberRepository = new TourMemberRepository();
-export const tourMemberService = new TourMemberService(tourMemberRepository);
+const travelPlanRepository = new TravelPlanRepository();
+const userRepository = new UserRepository();
+export const tourMemberService = new TourMemberService(
+    tourMemberRepository,
+    travelPlanRepository,
+    userRepository
+);
 
 export const createTourMember = async (req: Request, res: Response) => {
     const parsed = TourMemberSchema.safeParse(req.body);
