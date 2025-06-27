@@ -27,7 +27,6 @@ export const createTravelPlan = async (req: Request, res: Response) => {
     }
 
     const userId = parsedUserId.data as UUID;
-
     const parsedData = parsed.data as CreateTravelPlan;
 
     const travelPlanDto: CreateTravelPlan = new CreateTravelPlanDto({
@@ -85,7 +84,6 @@ export const updateTravelPlan = async (req: Request, res: Response) => {
         ...parsedData,
         status: parsedData.status as TravelPlanStatus
     });
-
     const updatedTravelPlan = await travelPlanService.updateTravelPlan(travelPlanId, userId, travelPlanUpdateDto);
 
     res.status(200).json(updatedTravelPlan);
