@@ -1,4 +1,4 @@
-import { UUID, randomBytes } from "crypto";
+import { randomBytes } from "crypto";
 import { hash } from "bcrypt";
 import { IPasswordResetRepository } from "../repositories/password-reset";
 import { IUserRepository } from "../repositories/user";
