@@ -14,11 +14,12 @@ import { NextFunction } from "connect";
 import { BadRequestException } from "../exceptions/bad-request";
 import { IS_PRODUCTION, REFRESH_TOKEN_COOKIE_NAME, REFRESH_TOKEN_EXPIRES_DAYS } from "../configs/secrets";
 
-const userRepository = new UserRepository();
-const authService = new AuthService(userRepository);
 
-const refreshTokenRepository = new RefreshTokenRepository();
-const refreshTokenService = new RefreshTokenService(refreshTokenRepository);
+export let authService = new AuthService(new UserRepository());
+export let refreshTokenService = new RefreshTokenService(new RefreshTokenRepository());
+
+export const __setAuthService = (svc: AuthService) => { authService = svc; };
+export const __setRefreshTokenService = (svc: RefreshTokenService) => { refreshTokenService = svc; };
 
 
 export const signup = async (req: Request, res: Response) => {

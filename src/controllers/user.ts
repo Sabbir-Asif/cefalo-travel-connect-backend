@@ -11,7 +11,9 @@ import { BadRequestException } from '../exceptions/bad-request';
 import { UUID } from 'crypto';
 
 const userRepository = new UserRepository();
-export const userService = new UserService(userRepository);
+export let userService = new UserService(userRepository);
+
+export const __setUserService = (svc: UserService) => { userService = svc; };
 
 
 export const getUserById = async (req: Request, res: Response, next: NextFunction) => {

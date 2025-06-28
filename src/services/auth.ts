@@ -5,7 +5,7 @@ import { IUserRepository } from '../repositories/user';
 import { compare, hash } from 'bcrypt'
 import { UnauthorizedException } from '../exceptions/unauthorized';
 import { CreateUser, User, UserResponse } from '../interfaces/user';
-import { CreateUserDto, UserResponseDto } from '../dtos/user';
+import { UserResponseDto } from '../dtos/user';
 import { TokenService } from './token';
 import { emailVerificationService } from '../controllers/email-verification';
 import { InternalException } from '../exceptions/internal-exception';
