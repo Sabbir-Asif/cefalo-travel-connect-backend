@@ -13,11 +13,15 @@ import { TravelPlanRepository } from "../repositories/impl/travel-plan-impl";
 const tourLodgeRepository = new TourLodgeRepository();
 const travelPlanRepository = new TravelPlanRepository();
 const lodgeRepository = new LodgeRepository();
-const tourLodgeService = new TourLodgeService(
+let tourLodgeService = new TourLodgeService(
   tourLodgeRepository,
   travelPlanRepository,
   lodgeRepository
 );
+
+export const __setTourLodgeService = (svc: TourLodgeService) => {
+  tourLodgeService = svc;
+};
 
 export const createTourLodge = async (req: Request, res: Response) => {
   const parsed = TourLodgeSchema.safeParse(req.body);

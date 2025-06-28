@@ -8,10 +8,14 @@ import { ErrorCode } from "../exceptions/root";
 
 const passwordResetRepository = new PasswordResetRepository();
 const userRepository = new UserRepository();
-export const passwordResetService = new PasswordResetService(
+export let passwordResetService = new PasswordResetService(
   passwordResetRepository,
   userRepository
 );
+
+export const __setPasswordResetService = (svc: PasswordResetService) => {
+  passwordResetService = svc;
+};
 
 export const requestPasswordReset = async (req: Request, res: Response) => {
   const parsed = InitiatePasswordResetSchema.safeParse(req.body);

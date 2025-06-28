@@ -11,7 +11,9 @@ import { InitiateVerificationSchema } from "../schemas/email-verification";
 
 const emailVerificationRepository = new EmailVerificationRepository();
 const userRepository = new UserRepository();
-export const emailVerificationService = new EmailVerificationService(emailVerificationRepository, userRepository);
+export let emailVerificationService = new EmailVerificationService(emailVerificationRepository, userRepository);
+
+export const __setEmailVerificationService = (svc: EmailVerificationService) => { emailVerificationService = svc; }
 
 export const initiateVerification = async (req: Request, res: Response) => {
     const parsedBody = InitiateVerificationSchema.safeParse(req.body);

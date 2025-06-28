@@ -12,7 +12,11 @@ import { CreateTravelPlaceDto, UpdateTravelPlaceDto } from "../dtos/travel-place
 import { BadRequestException } from "../exceptions/bad-request";
 
 const travelPlaceRepository = new TravelPlaceRepository();
-const travelPlaceService = new TravelPlaceService(travelPlaceRepository);
+let travelPlaceService = new TravelPlaceService(travelPlaceRepository);
+
+export const __setTravelPlaceService = (svc: TravelPlaceService) => {
+    travelPlaceService = svc;
+}
 
 export const createTravelPlace = async (req: Request, res: Response) => {
     const parsed = CreateTravelPlaceSchema.safeParse(req.body)

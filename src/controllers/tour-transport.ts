@@ -12,7 +12,11 @@ import { UUID } from "crypto";
 import { CreateTourTransportDto } from "../dtos/tour-transport";
 
 const tourTransportRepo = new TourTransportRepository();
-export const tourTransportService = new TourTransportService(tourTransportRepo);
+export let tourTransportService = new TourTransportService(tourTransportRepo);
+
+export const __setTourTransportService = (svc: TourTransportService) => {
+  tourTransportService = svc;
+};
 
 export const createTourTransport = async (req: Request, res: Response) => {
   const parsed = CreateTourTransportSchema.safeParse(req.body);

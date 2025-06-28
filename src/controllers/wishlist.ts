@@ -12,7 +12,11 @@ import { CreateWishlistDto, UpdateWishlistDto } from "../dtos/wishlist";
 import { CreateWishlist, UpdateWishlist } from "../interfaces/wishlist";
 
 const wishlistRepository = new WishlistRepository();
-const wishlistService = new WishlistService(wishlistRepository);
+let wishlistService = new WishlistService(wishlistRepository);
+
+export const __setWishlistService = (svc: WishlistService) => {
+  wishlistService = svc;
+};
 
 export const createWishlist = async (req: Request, res: Response) => {
   const parsed = CreateWishlistSchema.safeParse(req.body);

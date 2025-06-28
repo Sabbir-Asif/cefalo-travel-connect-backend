@@ -12,7 +12,11 @@ import { CreateTravelPlan, TravelPlan, TravelPlanStatus, UpdateTravelPlan } from
 import { CreateTravelPlanDto, UpdateTravelPlanDto } from "../dtos/travel-plan";
 
 const travelPlanRepository = new TravelPlanRepository();
-export const travelPlanService = new TravelPlanService(travelPlanRepository);
+export let travelPlanService = new TravelPlanService(travelPlanRepository);
+
+export const __setTravelPlanService = (svc: TravelPlanService) => {
+    travelPlanService = svc;
+};
 
 export const createTravelPlan = async (req: Request, res: Response) => {
     const parsed = CreateTravelPlanSchema.safeParse(req.body);

@@ -10,7 +10,9 @@ import { BlogLodgeDto } from "../dtos/blog-lodge";
 import { BlogLodge } from "../interfaces/blog-lodge";
 
 const blogLodgeRepository = new BlogLodgeRepository();
-const blogLodgeService = new BlogLodgeService(blogLodgeRepository);
+let blogLodgeService = new BlogLodgeService(blogLodgeRepository);
+
+export const __setBlogLodgeService = (svc: BlogLodgeService) => { blogLodgeService = svc; }
 
 export const createBlogLodge = async (req: Request, res: Response) => {
   const parsed = BlogLodgeSchema.safeParse(req.body);

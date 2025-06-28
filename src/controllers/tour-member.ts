@@ -13,11 +13,15 @@ import { UserRepository } from "../repositories/impl/user-impl";
 const tourMemberRepository = new TourMemberRepository();
 const travelPlanRepository = new TravelPlanRepository();
 const userRepository = new UserRepository();
-export const tourMemberService = new TourMemberService(
+export let tourMemberService = new TourMemberService(
     tourMemberRepository,
     travelPlanRepository,
     userRepository
 );
+
+export const __setTourMemberService = (svc: TourMemberService) => {
+    tourMemberService = svc;
+};
 
 export const createTourMember = async (req: Request, res: Response) => {
     const parsed = TourMemberSchema.safeParse(req.body);

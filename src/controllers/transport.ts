@@ -12,7 +12,11 @@ import { IdSchema } from "../schemas/id";
 
 
 const transportRepository = new TransportRepository();
-const transportService = new TransportService(transportRepository);
+let transportService = new TransportService(transportRepository);
+
+export const __setTransportService = (svc: TransportService) => {
+    transportService = svc;
+}
 
 export const getTransportById = async (req: Request, res: Response) => {
     const Id = req.params.id;

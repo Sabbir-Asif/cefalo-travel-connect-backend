@@ -8,7 +8,9 @@ import { Request, Response } from "express";
 import { IdSchema } from "../schemas/id";
 
 const blogFoodRepository = new BlogFoodRepository();
-const blogFoodService = new BlogFoodService(blogFoodRepository);
+let blogFoodService = new BlogFoodService(blogFoodRepository);
+
+export const __setBlogService = (svc: BlogFoodService) => { blogFoodService = svc; }
 
 export const createBlogFood = async (req: Request, res: Response) => {
     const parsed = BlogFoodSchema.safeParse(req.body);

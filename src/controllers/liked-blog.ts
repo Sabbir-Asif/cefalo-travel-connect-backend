@@ -18,11 +18,15 @@ const likedBlogRepository = new LikedBlogRepository();
 const userRepository = new UserRepository();
 const blogRepository = new BlogRepository();
 
-export const likedBlogService = new LikedBlogService(
+export let likedBlogService = new LikedBlogService(
     likedBlogRepository,
     userRepository,
     blogRepository
 );
+
+export const __setLikedBlogService = (svc: LikedBlogService) => {
+    likedBlogService = svc;
+};
 
 export const reactToBlog = async (req: Request, res: Response, next: NextFunction) => {
     const parsed = LikedBlogSchema.safeParse(req.body);

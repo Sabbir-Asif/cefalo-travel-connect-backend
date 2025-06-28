@@ -12,7 +12,9 @@ import { CreateBlogInsightDto, UpdateBlogInsightDto } from "../dtos/blog-insight
 import { CreateBlogInsight, UpdateBlogInsight } from "../interfaces/blog-insight";
 
 const blogInsightRepository = new BlogInsightRepository();
-export const blogInsightService = new BlogInsightService(blogInsightRepository);
+export let blogInsightService = new BlogInsightService(blogInsightRepository);
+
+export const __setBlogInsightService = (svc: BlogInsightService) => { blogInsightService = svc; }
 
 export const createBlogInsight = async (req: Request, res: Response, next: NextFunction) => {
 

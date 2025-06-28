@@ -12,7 +12,11 @@ import { CreateTravelRequest, UpdateTravelRequest, TravelRequest } from "../inte
 import { CreateTravelRequestDto, UpdateTravelRequestDto } from "../dtos/travel-request";
 
 const travelRequestRepository = new TravelRequestRepository();
-export const travelRequestService = new TravelRequestService(travelRequestRepository);
+export let travelRequestService = new TravelRequestService(travelRequestRepository);
+
+export const __setTravelRequestService = (svc: TravelRequestService) => {
+    travelRequestService = svc;
+};
 
 export const createTravelRequest = async (req: Request, res: Response) => {
     const parsed = CreateTravelRequestSchema.safeParse(req.body);

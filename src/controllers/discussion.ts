@@ -11,7 +11,11 @@ import { UUID } from "crypto";
 import { CreateDiscussion } from "../interfaces/discussion";
 
 const discussionRepo = new DiscussionRepository();
-export const discussionService = new DiscussionService(discussionRepo);
+export let discussionService = new DiscussionService(discussionRepo);
+
+export const __setDiscussionService = (svc: DiscussionService) => {
+  discussionService = svc;
+};
 
 export const createDiscussion = async (req: Request, res: Response) => {
   const parsedBody = CreateDiscussionSchema.safeParse(req.body);

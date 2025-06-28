@@ -13,7 +13,9 @@ import { UUID } from "crypto"
 
 
 const blogRepository = new BlogRepository();
-export const blogService = new BlogService(blogRepository);
+export let blogService = new BlogService(blogRepository);
+
+export const __setBlogService = (svc: BlogService) => { blogService = svc; }
 
 export const createBlog = async (req: Request, res: Response, next: NextFunction) => {
     const parsed = CreateBlogSchema.safeParse(req.body)
