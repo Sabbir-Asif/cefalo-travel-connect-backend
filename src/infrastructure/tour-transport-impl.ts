@@ -1,7 +1,7 @@
 import { UUID } from "crypto";
-import { db } from "../../configs/db";
-import { CreateTourTransport, TourTransportWithTransport, UpdateTourTransport } from "../../interfaces/tour-transport";
-import { ITourTransportRepository } from "../tour-transport";
+import { db } from "../configs/db";
+import { CreateTourTransport, TourTransportWithTransport, UpdateTourTransport } from "../interfaces/tour-transport";
+import { ITourTransportRepository } from "../repositories/tour-transport";
 
 export class TourTransportRepository implements ITourTransportRepository {
     private tableName = "tour_transports";

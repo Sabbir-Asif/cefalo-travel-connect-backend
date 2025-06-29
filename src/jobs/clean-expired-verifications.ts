@@ -1,5 +1,5 @@
-import { EmailVerificationRepository } from "../repositories/impl/email-verification-impl";
-import { PasswordResetRepository } from "../repositories/impl/password-reset-impl";
+import { EmailVerificationRepository } from "../infrastructure/email-verification-impl";
+import { PasswordResetRepository } from "../infrastructure/password-reset-impl";
 import { EmailVerificationService } from "../services/email-verification";
 import { PasswordResetService } from "../services/password-reset";
 

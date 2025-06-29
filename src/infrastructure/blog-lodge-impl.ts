@@ -1,8 +1,8 @@
 import { UUID } from "crypto";
-import { db } from "../../configs/db";
-import { IBlogLodgeRepository } from "../blog-lodge";
-import { BlogLodge } from "../../interfaces/blog-lodge";
-import { Lodge } from "../../interfaces/lodge";
+import { db } from "../configs/db";
+import { IBlogLodgeRepository } from "../repositories/blog-lodge";
+import { BlogLodge } from "../interfaces/blog-lodge";
+import { Lodge } from "../interfaces/lodge";
 
 export class BlogLodgeRepository implements IBlogLodgeRepository {
     private tableName = "blog_lodges";

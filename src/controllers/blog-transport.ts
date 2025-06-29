@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { BlogTransportRepository } from "../repositories/impl/blogTransport-impl";
+import { BlogTransportRepository } from "../infrastructure/blogTransport-impl";
 import { BlogTransportService } from "../services/blog-transport";
 import { BlogTransportSchema } from "../schemas/blog-transport";
 import { UnprocessableEntityException } from "../exceptions/validation";

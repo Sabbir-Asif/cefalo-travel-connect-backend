@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { UUID } from "crypto";
-import { BlogInsightRepository } from "../repositories/impl/blog-insight-impl";
+import { BlogInsightRepository } from "../infrastructure/blog-insight-impl";
 import { BlogInsightService } from "../services/blog-insight";
 import { CreateBlogInsightSchema, UpdateBlogInsightSchema } from "../schemas/blog-insight";
 import { IdSchema } from "../schemas/id";

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { DiscussionRepository } from "../repositories/impl/discussion-impl";
+import { DiscussionRepository } from "../infrastructure/discussion-impl";
 import { DiscussionService } from "../services/discussion";
 import { CreateDiscussionSchema } from "../schemas/discussion";
 import { IdSchema } from "../schemas/id";

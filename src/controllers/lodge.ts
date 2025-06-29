@@ -5,7 +5,7 @@ import { ErrorCode } from "../exceptions/root";
 import { CreateLodge, Lodge } from '../interfaces/lodge';
 import { CreateLodgeDto, UpdateLodgeDto } from '../dtos/lodge';
 import { LodgeService } from '../services/lodge';
-import { LodgeRepository } from '../repositories/impl/lodge-impl';
+import { LodgeRepository } from '../infrastructure/lodge-impl';
 import { IdSchema } from '../schemas/id';
 import { BadRequestException } from '../exceptions/bad-request';
 import { UUID } from 'crypto';

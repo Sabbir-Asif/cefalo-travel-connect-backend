@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { TravelPlaceRepository } from "../repositories/impl/travel-place-impl";
+import { TravelPlaceRepository } from "../infrastructure/travel-place-impl";
 import { TravelPlaceService } from "../services/travel-place";
 import { CreateTravelPlaceSchema, UpdateTravelPlaceSchema } from "../schemas/travel-place";
 import { UnprocessableEntityException } from "../exceptions/validation";

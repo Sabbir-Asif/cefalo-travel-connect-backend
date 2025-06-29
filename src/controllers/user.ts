@@ -1,4 +1,4 @@
-import { UserRepository } from './../repositories/impl/user-impl';
+import { UserRepository } from '../infrastructure/user-impl';
 import { NextFunction, Request, Response } from "express";
 import { UpdateUser, UserResponse } from "../interfaces/user";
 import { UserService } from "../services/user";

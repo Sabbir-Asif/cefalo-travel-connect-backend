@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { PasswordResetRepository } from "../repositories/impl/password-reset-impl";
-import { UserRepository } from "../repositories/impl/user-impl";
+import { PasswordResetRepository } from "../infrastructure/password-reset-impl";
+import { UserRepository } from "../infrastructure/user-impl";
 import { PasswordResetService } from "../services/password-reset";
 import { InitiatePasswordResetSchema, CompletePasswordResetSchema } from "../schemas/password-reset";
 import { UnprocessableEntityException } from "../exceptions/validation";

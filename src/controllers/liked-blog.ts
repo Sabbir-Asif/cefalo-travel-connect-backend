@@ -9,9 +9,9 @@ import { IdSchema } from "../schemas/id";
 import { UUID } from "crypto";
 import { LikedBlogDto } from "../dtos/liked-blog";
 
-import { LikedBlogRepository } from "../repositories/impl/liked-blog-impl";
-import { UserRepository } from "../repositories/impl/user-impl";
-import { BlogRepository } from "../repositories/impl/blog-impl";
+import { LikedBlogRepository } from "../infrastructure/liked-blog-impl";
+import { UserRepository } from "../infrastructure/user-impl";
+import { BlogRepository } from "../infrastructure/blog-impl";
 import { LikedBlogService } from "../services/liked-blog";
 
 const likedBlogRepository = new LikedBlogRepository();

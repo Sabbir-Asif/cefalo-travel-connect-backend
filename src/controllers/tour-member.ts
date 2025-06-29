@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { TourMemberRepository } from "../repositories/impl/tour-member-impl";
+import { TourMemberRepository } from "../infrastructure/tour-member-impl";
 import { TourMemberService } from "../services/tour-member";
 import { TourMemberSchema } from "../schemas/tour-member";
 import { UnprocessableEntityException } from "../exceptions/validation";

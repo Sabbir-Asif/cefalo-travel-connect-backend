@@ -1,7 +1,7 @@
 import { UUID } from "crypto";
 import { ErrorCode } from "../exceptions/root";
 import { UnprocessableEntityException } from "../exceptions/validation";
-import { BlogFoodRepository } from "../repositories/impl/blog-food-impl";
+import { BlogFoodRepository } from "../infrastructure/blog-food-impl";
 import { BlogFoodSchema } from "../schemas/blog-foods";
 import { BlogFoodService } from "../services/blog-food";
 import { Request, Response } from "express";

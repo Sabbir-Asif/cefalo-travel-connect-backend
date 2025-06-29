@@ -1,4 +1,4 @@
-import { TransportRepository } from './../repositories/impl/transport-impl';
+import { TransportRepository } from '../infrastructure/transport-impl';
 import { UUID } from "crypto";
 import { LodgeResponseDto } from "../dtos/lodge";
 import { CreateLodge, Lodge, LodgeLocation, UpdateLodge } from "../interfaces/lodge";

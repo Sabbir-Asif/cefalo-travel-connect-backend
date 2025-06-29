@@ -1,8 +1,8 @@
 import { UUID } from "crypto";
-import { db } from "../../configs/db";
-import { CreateBlog, Blog, UpdateBlog, Blog_Status } from "../../interfaces/blog";
-import { IBlogRepository } from "../blog";
-import { IdSchema } from "../../schemas/id";
+import { db } from "../configs/db";
+import { CreateBlog, Blog, UpdateBlog, Blog_Status } from "../interfaces/blog";
+import { IBlogRepository } from "../repositories/blog";
+import { IdSchema } from "../schemas/id";
 
 export class BlogRepository implements IBlogRepository {
     private tableName = 'blogs';

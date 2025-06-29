@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { EmailVerificationRepository } from "../repositories/impl/email-verification-impl";
-import { UserRepository } from "../repositories/impl/user-impl";
+import { EmailVerificationRepository } from "../infrastructure/email-verification-impl";
+import { UserRepository } from "../infrastructure/user-impl";
 import { EmailVerificationService } from "../services/email-verification";
 import { UnprocessableEntityException } from "../exceptions/validation";
 import { BadRequestException } from "../exceptions/bad-request";

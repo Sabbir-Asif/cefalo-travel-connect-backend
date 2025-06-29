@@ -1,7 +1,7 @@
 import { UUID } from "crypto";
-import { db } from "../../configs/db";
-import { CreateUser, UpdateUser, User } from "../../interfaces/user";
-import { IUserRepository } from "../user";
+import { db } from "../configs/db";
+import { CreateUser, UpdateUser, User } from "../interfaces/user";
+import { IUserRepository } from "../repositories/user";
 
 export class UserRepository implements IUserRepository {
     private tableName = "users";

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { FoodRepository } from "../repositories/impl/food-impl";
+import { FoodRepository } from "../infrastructure/food-impl";
 import { FoodService } from "../services/food";
 import { CreateFoodSchema, UpdateFoodSchema } from "../schemas/food";
 import { UnprocessableEntityException } from "../exceptions/validation";

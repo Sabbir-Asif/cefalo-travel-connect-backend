@@ -1,8 +1,8 @@
 import { UUID } from "crypto";
-import { IBlogTransportRepository } from "../blog-transport";
-import { db } from "../../configs/db";
-import { Transport } from "../../interfaces/transport";
-import { BlogTransport } from "../../interfaces/blog-transport";
+import { IBlogTransportRepository } from "../repositories/blog-transport";
+import { db } from "../configs/db";
+import { Transport } from "../interfaces/transport";
+import { BlogTransport } from "../interfaces/blog-transport";
 
 export class BlogTransportRepository implements IBlogTransportRepository {
     private tableName = 'blog_transports';

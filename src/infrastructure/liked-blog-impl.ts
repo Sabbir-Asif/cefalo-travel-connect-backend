@@ -1,9 +1,9 @@
 import { UUID } from "crypto";
-import { db } from "../../configs/db";
-import { User } from "../../interfaces/user";
-import { Blog } from "../../interfaces/blog";
-import { ILikedBlogRepository } from "../liked-blog";
-import { LikedBlog, LikedBlogResponse } from "../../interfaces/liked-blog";
+import { db } from "../configs/db";
+import { User } from "../interfaces/user";
+import { Blog } from "../interfaces/blog";
+import { ILikedBlogRepository } from "../repositories/liked-blog";
+import { LikedBlog, LikedBlogResponse } from "../interfaces/liked-blog";
 
 export class LikedBlogRepository implements ILikedBlogRepository {
     private tableName = "liked_blogs";

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { TourLodgeRepository } from "../repositories/impl/tour-lodge-impl";
+import { TourLodgeRepository } from "../infrastructure/tour-lodge-impl";
 import { TourLodgeService } from "../services/tour-lodge";
 import { TourLodgeSchema } from "../schemas/tour-lodge";
 import { IdSchema } from "../schemas/id";

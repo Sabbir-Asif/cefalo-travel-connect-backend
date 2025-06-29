@@ -1,7 +1,7 @@
 import { UUID } from "crypto";
-import { CreateTravelPlace, TravelPlace, UpdateTravelPlace } from "../../interfaces/travel-place";
-import { ITravelPlaceRepository } from "../travel-place";
-import { db } from "../../configs/db";
+import { CreateTravelPlace, TravelPlace, UpdateTravelPlace } from "../interfaces/travel-place";
+import { ITravelPlaceRepository } from "../repositories/travel-place";
+import { db } from "../configs/db";
 
 export class TravelPlaceRepository implements ITravelPlaceRepository {
     private tableName = 'travel_places';

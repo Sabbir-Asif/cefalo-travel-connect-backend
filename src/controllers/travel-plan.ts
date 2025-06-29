@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { TravelPlanRepository } from "../repositories/impl/travel-plan-impl";
+import { TravelPlanRepository } from "../infrastructure/travel-plan-impl";
 import { TravelPlanService } from "../services/travel-plan";
 import { CreateTravelPlanSchema, UpdateTravelPlanSchema } from "../schemas/travel-plan";
 import { UnprocessableEntityException } from "../exceptions/validation";
