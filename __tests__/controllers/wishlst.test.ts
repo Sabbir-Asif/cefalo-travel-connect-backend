@@ -1,40 +1,44 @@
 import {
-    createTravelRequest,
-    getAllTravelRequests,
-    getTravelRequestById,
-    updateTravelRequest,
-    deleteTravelRequest,
-    searchTravelRequests,
-    __setTravelRequestService,
-} from "../../src/controllers/travel-request";
-
-import { TravelRequestService } from "../../src/services/travel-request";
+    createWishlist,
+    getAllWishlists,
+    getWishlistById,
+    updateWishlist,
+    deleteWishlist,
+    searchWishlists,
+    getWishlistsByUserId,
+    getMatchingUsers,
+    __setWishlistService,
+} from "../../src/controllers/wishlist";
+import { WishlistService } from "../../src/services/wishlist";
 import { Request, Response } from "express";
-import { UUID } from "crypto";
-import {
-    UnprocessableEntityException,
-} from "../../src/exceptions/validation";
+import { WishlistStatus } from "../../src/interfaces/wishlist";
+import { UnprocessableEntityException } from "../../src/exceptions/validation";
 import { BadRequestException } from "../../src/exceptions/bad-request";
 import { UnauthorizedException } from "../../src/exceptions/unauthorized";
-import { TravelRequestStatus } from "../../src/interfaces/travel-request";
 import { Role } from "../../src/interfaces/user";
+import { UUID } from "crypto";
 
-describe("TravelRequestController", () => {
+describe("WishlistController", () => {
     let req: Partial<Request>;
     let res: Partial<Response>;
-    let mockService: jest.Mocked<TravelRequestService>;
+    let mockService: jest.Mocked<WishlistService>;
 
     const userId = "123e4567-e89b-12d3-a456-426614174000" as UUID;
-    const travelRequestId = "223e4567-e89b-12d3-a456-426614174001" as UUID;
+    const wishlistId = "223e4567-e89b-12d3-a456-426614174001" as UUID;
 
-    const mockTravelRequest = {
-        id: travelRequestId,
-        travel_plan_id: "123e4567-e89b-12d3-a456-426614174111" as UUID,
-        user_from: userId,
-        user_to: "123e4567-e89b-12d3-a456-426614174222" as UUID,
-        title: "Request to join",
-        message: "Can I join?",
-        status: TravelRequestStatus.PENDING,
+    const mockWishlist = {
+        id: wishlistId,
+        user_id: userId,
+        title: "Beach Trip",
+        location_name: "Cox's Bazar",
+        location_point: { lat: 21.4272, long: 92.0058 },
+        travel_date: new Date(),
+        tags: ["beach", "fun"],
+        note: "Bring sunscreen",
+        blog_id: null,
+        travel_place_id: null,
+        cover_image: "img.jpg",
+        status: WishlistStatus.PUBLIC,
         created_at: new Date(),
         updated_at: new Date(),
     };
@@ -46,12 +50,12 @@ describe("TravelRequestController", () => {
             query: {},
             user: {
                 id: userId,
-                name: "Bob",
-                email: "bob@example.com",
+                name: "Test User",
+                email: "test@example.com",
                 role: Role.TRAVELER,
                 displayPicture: null,
                 bio: null,
-                phone_number: "01800000000",
+                phone_number: "01700000000",
                 is_verified: true,
                 createdAt: new Date(),
                 updatedAt: new Date(),
@@ -64,174 +68,212 @@ describe("TravelRequestController", () => {
         };
 
         mockService = {
-            createTravelRequest: jest.fn(),
-            getAllTravelRequests: jest.fn(),
-            getTravelRequestById: jest.fn(),
-            updateTravelRequest: jest.fn(),
-            deleteTravelRequest: jest.fn(),
-            searchTravelRequests: jest.fn(),
-        } as unknown as jest.Mocked<TravelRequestService>;
+            createWishlist: jest.fn(),
+            getAllWishlists: jest.fn(),
+            getWishlistById: jest.fn(),
+            updateWishlist: jest.fn(),
+            deleteWishlist: jest.fn(),
+            searchWishlists: jest.fn(),
+            getWishlistsByUserId: jest.fn(),
+            findMatchingUsers: jest.fn(),
+        } as unknown as jest.Mocked<WishlistService>;
 
-        __setTravelRequestService(mockService);
+        __setWishlistService(mockService);
         jest.clearAllMocks();
     });
 
-    describe("createTravelRequest", () => {
-        it("should create request and return 201", async () => {
+    describe("createWishlist", () => {
+        it("should create wishlist", async () => {
             req.body = {
-                travel_plan_id: "123e4567-e89b-12d3-a456-426614174111" as UUID,
-                user_to: "123e4567-e89b-12d3-a456-426614174222" as UUID,
-                title: "Request to join",
-                message: "Can I join?",
+                title: "Beach Trip",
+                location_name: "Cox's Bazar",
+                location_point: { lat: 21.4272, long: 92.0058 },
+                travel_date: new Date(),
             };
 
-            mockService.createTravelRequest.mockResolvedValue(mockTravelRequest);
+            mockService.createWishlist.mockResolvedValue(mockWishlist);
 
-            await createTravelRequest(req as Request, res as Response);
+            await createWishlist(req as Request, res as Response);
 
-            expect(mockService.createTravelRequest).toHaveBeenCalledWith(
-                userId,
-                expect.objectContaining(req.body)
-            );
+            expect(mockService.createWishlist).toHaveBeenCalledWith(userId, expect.any(Object));
             expect(res.status).toHaveBeenCalledWith(201);
-            expect(res.json).toHaveBeenCalledWith(mockTravelRequest);
+            expect(res.json).toHaveBeenCalledWith(mockWishlist);
         });
 
-        it("should throw for invalid body", async () => {
+        it("should throw for invalid input", async () => {
             req.body = { invalid: "data" };
-
-            await expect(createTravelRequest(req as Request, res as Response))
-                .rejects.toThrow(UnprocessableEntityException);
-        });
-
-        it("should throw for invalid user id", async () => {
-            req.user = { id: "invalid-uuid" } as any;
-            req.body = {
-                travel_plan_id: "123e4567-e89b-12d3-a456-426614174111" as UUID,
-                user_to: "123e4567-e89b-12d3-a456-426614174222" as UUID,
-                title: "Request to join",
-                message: "Can I join?",
-            };
-
-            await expect(createTravelRequest(req as Request, res as Response))
-                .rejects.toThrow(UnauthorizedException);
-        });
-    });
-
-    describe("getAllTravelRequests", () => {
-        it("should return all requests", async () => {
-            mockService.getAllTravelRequests.mockResolvedValue([mockTravelRequest]);
-
-            await getAllTravelRequests(req as Request, res as Response);
-
-            expect(mockService.getAllTravelRequests).toHaveBeenCalled();
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith([mockTravelRequest]);
-        });
-    });
-
-    describe("getTravelRequestById", () => {
-        it("should return request by id", async () => {
-            req.params = { id: travelRequestId };
-            mockService.getTravelRequestById.mockResolvedValue(mockTravelRequest);
-
-            await getTravelRequestById(req as Request, res as Response);
-
-            expect(mockService.getTravelRequestById).toHaveBeenCalledWith(travelRequestId);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(mockTravelRequest);
-        });
-
-        it("should throw for invalid id", async () => {
-            req.params = { id: "invalid-uuid" };
-
-            await expect(getTravelRequestById(req as Request, res as Response))
-                .rejects.toThrow(BadRequestException);
-        });
-    });
-
-    describe("updateTravelRequest", () => {
-        it("should update request", async () => {
-            req.params = { id: travelRequestId };
-            req.body = { title: "New title" };
-
-            mockService.updateTravelRequest.mockResolvedValue(mockTravelRequest);
-
-            await updateTravelRequest(req as Request, res as Response);
-
-            expect(mockService.updateTravelRequest).toHaveBeenCalledWith(
-                travelRequestId,
-                userId,
-                expect.objectContaining(req.body)
-            );
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(mockTravelRequest);
-        });
-
-        it("should throw for invalid id", async () => {
-            req.params = { id: "invalid-uuid" };
-            req.body = { title: "Update" };
-
-            await expect(updateTravelRequest(req as Request, res as Response))
-                .rejects.toThrow(BadRequestException);
-        });
-
-        it("should throw for invalid body", async () => {
-            req.params = { id: travelRequestId };
-            req.body = { status: "WRONG_STATUS" };
-
-            await expect(updateTravelRequest(req as Request, res as Response))
-                .rejects.toThrow(UnprocessableEntityException);
+            await expect(createWishlist(req as Request, res as Response)).rejects.toThrow(UnprocessableEntityException);
         });
 
         it("should throw for invalid user", async () => {
-            req.params = { id: travelRequestId };
-            req.body = { title: "Update" };
-            req.user = { id: "invalid-uuid" } as any;
+            req.user = { id: "invalid-id" } as any;
+            req.body = {
+                title: "Beach Trip",
+                location_name: "Cox's Bazar",
+                location_point: { lat: 21.4272, long: 92.0058 },
+                travel_date: new Date(),
+            };
 
-            await expect(updateTravelRequest(req as Request, res as Response))
-                .rejects.toThrow(UnauthorizedException);
+            await expect(createWishlist(req as Request, res as Response)).rejects.toThrow(UnauthorizedException);
         });
     });
 
-    describe("deleteTravelRequest", () => {
-        it("should delete request", async () => {
-            req.params = { id: travelRequestId };
-            mockService.deleteTravelRequest.mockResolvedValue();
+    describe("getAllWishlists", () => {
+        it("should return all wishlists", async () => {
+            mockService.getAllWishlists.mockResolvedValue([mockWishlist]);
 
-            await deleteTravelRequest(req as Request, res as Response);
+            await getAllWishlists(req as Request, res as Response);
 
-            expect(mockService.deleteTravelRequest).toHaveBeenCalledWith(travelRequestId, userId);
+            expect(mockService.getAllWishlists).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith([mockWishlist]);
+        });
+    });
+
+    describe("getWishlistById", () => {
+        it("should return wishlist by id", async () => {
+            req.params = { id: wishlistId };
+            mockService.getWishlistById.mockResolvedValue(mockWishlist);
+
+            await getWishlistById(req as Request, res as Response);
+
+            expect(mockService.getWishlistById).toHaveBeenCalledWith(wishlistId);
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith(mockWishlist);
+        });
+
+        it("should throw for invalid id", async () => {
+            req.params = { id: "invalid-uuid" };
+            await expect(getWishlistById(req as Request, res as Response)).rejects.toThrow(BadRequestException);
+        });
+    });
+
+    describe("updateWishlist", () => {
+        it("should update wishlist", async () => {
+            req.params = { id: wishlistId };
+            req.body = { title: "New Title" };
+            mockService.updateWishlist.mockResolvedValue(mockWishlist);
+
+            await updateWishlist(req as Request, res as Response);
+
+            expect(mockService.updateWishlist).toHaveBeenCalledWith(wishlistId, userId, expect.any(Object));
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith(mockWishlist);
+        });
+
+        it("should throw for invalid id", async () => {
+            req.params = { id: "invalid-id" };
+            req.body = { title: "Updated" };
+            await expect(updateWishlist(req as Request, res as Response)).rejects.toThrow(BadRequestException);
+        });
+
+        it("should throw for invalid body", async () => {
+            req.params = { id: wishlistId };
+            req.body = { status: "INVALID" };
+            await expect(updateWishlist(req as Request, res as Response)).rejects.toThrow(UnprocessableEntityException);
+        });
+
+        it("should throw for invalid user", async () => {
+            req.params = { id: wishlistId };
+            req.body = { title: "Test" };
+            req.user = { id: "invalid" } as any;
+            await expect(updateWishlist(req as Request, res as Response)).rejects.toThrow(UnauthorizedException);
+        });
+    });
+
+    describe("deleteWishlist", () => {
+        it("should delete wishlist", async () => {
+            req.params = { id: wishlistId };
+            mockService.deleteWishlist.mockResolvedValue();
+
+            await deleteWishlist(req as Request, res as Response);
+
+            expect(mockService.deleteWishlist).toHaveBeenCalledWith(wishlistId, userId);
             expect(res.status).toHaveBeenCalledWith(204);
             expect(res.json).toHaveBeenCalledWith({ success: true });
         });
 
         it("should throw for invalid id", async () => {
-            req.params = { id: "invalid-uuid" };
-
-            await expect(deleteTravelRequest(req as Request, res as Response))
-                .rejects.toThrow(BadRequestException);
+            req.params = { id: "invalid-id" };
+            await expect(deleteWishlist(req as Request, res as Response)).rejects.toThrow(BadRequestException);
         });
 
-        it("should throw for invalid user id", async () => {
-            req.params = { id: travelRequestId };
-            req.user = { id: "invalid-uuid" } as any;
-
-            await expect(deleteTravelRequest(req as Request, res as Response))
-                .rejects.toThrow(UnauthorizedException);
+        it("should throw for invalid user", async () => {
+            req.params = { id: wishlistId };
+            req.user = { id: "invalid" } as any;
+            await expect(deleteWishlist(req as Request, res as Response)).rejects.toThrow(UnauthorizedException);
         });
     });
 
-    describe("searchTravelRequests", () => {
-        it("should search requests", async () => {
-            req.query = { title: "Request" };
-            mockService.searchTravelRequests.mockResolvedValue([mockTravelRequest]);
+    describe("searchWishlists", () => {
+        it("should search wishlists", async () => {
+            req.query = { title: "Beach" };
+            mockService.searchWishlists.mockResolvedValue([mockWishlist]);
 
-            await searchTravelRequests(req as Request, res as Response);
+            await searchWishlists(req as Request, res as Response);
 
-            expect(mockService.searchTravelRequests).toHaveBeenCalledWith(req.query);
+            expect(mockService.searchWishlists).toHaveBeenCalledWith(req.query);
             expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith([mockTravelRequest]);
+            expect(res.json).toHaveBeenCalledWith([mockWishlist]);
+        });
+    });
+
+    describe("getWishlistsByUserId", () => {
+        it("should return user wishlists", async () => {
+            req.params = { id: userId };
+            mockService.getWishlistsByUserId.mockResolvedValue([mockWishlist]);
+
+            await getWishlistsByUserId(req as Request, res as Response);
+
+            expect(mockService.getWishlistsByUserId).toHaveBeenCalledWith(userId);
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith([mockWishlist]);
+        });
+
+        it("should throw for invalid user id", async () => {
+            req.params = { id: "invalid-id" };
+            await expect(getWishlistsByUserId(req as Request, res as Response)).rejects.toThrow(BadRequestException);
+        });
+    });
+
+    describe("getMatchingUsers", () => {
+        it("should return matching users", async () => {
+            req.query = {
+                userId,
+                wishlistId,
+                radius: "10",
+                timeDiff: "15d",
+                limit: "10",
+                offset: "0",
+            };
+
+            mockService.findMatchingUsers.mockResolvedValue([{
+                id: "matched-user-id" as UUID,
+                name: "Test User",
+                email: "test@example.com",
+                role: Role.TRAVELER,
+                displayPicture: null,
+                bio: null,
+                phone_number: "01700000000",
+                is_verified: true,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            }]);
+
+            await getMatchingUsers(req as Request, res as Response);
+
+            expect(mockService.findMatchingUsers).toHaveBeenCalledWith(userId, {
+                radius: 10,
+                timeDiff: "15d",
+                wishlistId,
+                limit: 10,
+                offset: 0,
+            });
+
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith([
+                expect.objectContaining({ id: "matched-user-id" }),
+            ]);
         });
     });
 });
