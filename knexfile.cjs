@@ -1,4 +1,3 @@
-// knexfile.cjs
 require('dotenv').config();
 
 module.exports = {
