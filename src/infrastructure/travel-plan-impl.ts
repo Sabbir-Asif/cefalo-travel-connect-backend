@@ -97,24 +97,36 @@ export class TravelPlanRepository implements ITravelPlanRepository {
   }
 
   async search(params: Record<string, any>): Promise<TravelPlan[]> {
-    const { title, status, sortBy, order = "desc" } = params;
+    const {
+      title,
+      status,
+      sortBy,
+      plannerId,
+      planner_id,
+      order = "desc",
+    } = params;
 
-    const query = db(this.tableName)
+    const planner = (planner_id ?? plannerId)?.trim();
+
+    const qb = db(this.tableName)
       .select(
-        '*',
-        db.raw(`ST_X(starting_point_location::geometry) as start_long`),
-        db.raw(`ST_Y(starting_point_location::geometry) as start_lat`),
-        db.raw(`ST_X(destination_location::geometry) as dest_long`),
-        db.raw(`ST_Y(destination_location::geometry) as dest_lat`),
+        "*",
+        db.raw("ST_X(starting_point_location::geometry) AS start_long"),
+        db.raw("ST_Y(starting_point_location::geometry) AS start_lat"),
+        db.raw("ST_X(destination_location::geometry)   AS dest_long"),
+        db.raw("ST_Y(destination_location::geometry)   AS dest_lat")
       );
 
-    if (title) query.whereILike("title", `%${title}%`);
-    if (status) query.where("status", status);
-    if (sortBy) query.orderBy(sortBy, order);
-    else query.orderBy("created_at", order);
+    if (title) qb.whereILike("title", `%${title}%`);
+    if (status) qb.where("status", status);
+    if (planner) qb.whereRaw("planner_id::text = ?", [planner]);
 
-    const results = await query;
-    return results.map(this.toModel);
+    qb.orderBy(sortBy ?? "created_at", order);
+
+    const rows = await qb;
+    console.log("DB rows:", rows.length);
+
+    return rows.map(this.toModel);
   }
 
   private toModel = (row: any): TravelPlan => ({
