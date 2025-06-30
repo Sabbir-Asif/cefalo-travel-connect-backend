@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { WishlistRepository } from "../repositories/impl/wishlist-impl";
+import { WishlistRepository } from "../infrastructure/wishlist-impl";
 import { WishlistService } from "../services/wishlist";
 import { CreateWishlistSchema, UpdateWishlistSchema } from "../schemas/wishlist";
 import { IdSchema } from "../schemas/id";

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createBlog, deleteBlog, getAllBlogs, getBlogById, searchBlogs, updateBlog } from "../controllers/blog";
+import { createBlog, deleteBlog, getAllBlogs, getBlogWithAllInfo, searchBlogs, updateBlog } from "../controllers/blog";
 import { errorHandler } from "../global-error-handler";
 import { authMiddleware } from "../middlewares/auth";
 import { createBlogtransport, deleteBlogTransport, getTransportsForBlog } from "../controllers/blog-transport";
@@ -38,6 +38,6 @@ blogRouter.get('/:blogId/react', authMiddleware, errorHandler(getUsersWhoReacted
 
 blogRouter.post('/', authMiddleware, errorHandler(createBlog));
 blogRouter.get('/',authMiddleware, errorHandler(getAllBlogs));
-blogRouter.get('/:id', authMiddleware, errorHandler(getBlogById));
+blogRouter.get('/:id', authMiddleware, errorHandler(getBlogWithAllInfo));
 blogRouter.put('/:id', authMiddleware, errorHandler(updateBlog));
 blogRouter.delete('/:id', authMiddleware, errorHandler(deleteBlog));

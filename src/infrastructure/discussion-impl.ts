@@ -1,7 +1,7 @@
 import { UUID } from "crypto";
-import { db } from "../../configs/db";
-import { IDiscussionRepository } from "../discussion";
-import { CreateDiscussion, Discussion, DiscussionWithSender } from "../../interfaces/discussion";
+import { db } from "../configs/db";
+import { IDiscussionRepository } from "../repositories/discussion";
+import { CreateDiscussion, Discussion, DiscussionWithSender } from "../interfaces/discussion";
 
 export class DiscussionRepository implements IDiscussionRepository {
   private table = "discussions";

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { UserRepository } from "../repositories/impl/user-impl";
+import { UserRepository } from "../infrastructure/user-impl";
 import { AuthService } from "../services/auth";
 import { CreateUserSchema, LoginSchema } from "../schemas/user";
 import { UnprocessableEntityException } from "../exceptions/validation";
@@ -7,7 +7,7 @@ import { ErrorCode } from "../exceptions/root";
 import { CreateUserDto } from "../dtos/user";
 import { UserResponse } from "../interfaces/user";
 import { RefreshTokenService } from "../services/refresh-token";
-import { RefreshTokenRepository } from "../repositories/impl/refresh-token-impl";
+import { RefreshTokenRepository } from "../infrastructure/refresh-token-impl";
 import { UUID } from "crypto";
 import { TokenService } from "../services/token";
 import { NextFunction } from "connect";

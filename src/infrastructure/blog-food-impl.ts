@@ -1,8 +1,8 @@
 import { UUID } from 'crypto';
-import { BlogFood } from '../../interfaces/blog-foods';
-import { IBlogFoodRepository } from './../blog-food';
-import { db } from '../../configs/db';
-import { Food } from '../../interfaces/food';
+import { BlogFood } from '../interfaces/blog-foods';
+import { IBlogFoodRepository } from '../repositories/blog-food';
+import { db } from '../configs/db';
+import { Food } from '../interfaces/food';
 export class BlogFoodRepository implements IBlogFoodRepository {
     private tableName = 'blog_foods';
 

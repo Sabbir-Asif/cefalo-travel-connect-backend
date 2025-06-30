@@ -1,4 +1,4 @@
-import { TravelPlanRepository } from "../../../src/repositories/impl/travel-plan-impl";
+import { TravelPlanRepository } from "../../../src/infrastructure/travel-plan-impl";
 import { TravelPlanStatus } from "../../../src/interfaces/travel-plan";
 import { db } from "../../../src/configs/db";
 import { UUID } from "crypto";

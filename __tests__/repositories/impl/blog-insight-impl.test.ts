@@ -1,4 +1,4 @@
-import { BlogInsightRepository } from '../../../src/repositories/impl/blog-insight-impl';
+import { BlogInsightRepository } from '../../../src/infrastructure/blog-insight-impl';
 import { BlogInsight, CreateBlogInsight, UpdateBlogInsight } from '../../../src/interfaces/blog-insight';
 import { UUID } from 'crypto';
 

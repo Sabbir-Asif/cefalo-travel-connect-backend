@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { BlogLodgeRepository } from "../repositories/impl/blog-lodge-impl";
+import { BlogLodgeRepository } from "../infrastructure/blog-lodge-impl";
 import { BlogLodgeService } from "../services/blog-lodge";
 import { BlogLodgeSchema } from "../schemas/blog-lodge";
 import { UnprocessableEntityException } from "../exceptions/validation";

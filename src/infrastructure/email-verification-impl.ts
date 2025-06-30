@@ -1,7 +1,7 @@
-import { IEmailVerificationRepository } from "../email-verification";
-import { EmailVerification } from "../../interfaces/email-verification";
+import { IEmailVerificationRepository } from "../repositories/email-verification";
+import { EmailVerification } from "../interfaces/email-verification";
 import { UUID } from "crypto";
-import { db } from "../../configs/db";
+import { db } from "../configs/db";
 
 export class EmailVerificationRepository implements IEmailVerificationRepository {
   private table = "email_verifications";

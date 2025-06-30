@@ -1,4 +1,4 @@
-import { BlogRepository } from '../../../src/repositories/impl/blog-impl';
+import { BlogRepository } from '../../../src/infrastructure/blog-impl';
 import { CreateBlog, Blog, UpdateBlog, Blog_Status } from '../../../src/interfaces/blog';
 import { UUID } from 'crypto';
 

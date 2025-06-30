@@ -1,7 +1,7 @@
 import { UUID } from "crypto";
-import { db } from "../../configs/db";
-import { BlogInsight, CreateBlogInsight, UpdateBlogInsight } from "../../interfaces/blog-insight";
-import { IBlogInsightRepository } from "../blog-insight";
+import { db } from "../configs/db";
+import { BlogInsight, CreateBlogInsight, UpdateBlogInsight } from "../interfaces/blog-insight";
+import { IBlogInsightRepository } from "../repositories/blog-insight";
 
 export class BlogInsightRepository implements IBlogInsightRepository {
     private tableName = "blog_insights";

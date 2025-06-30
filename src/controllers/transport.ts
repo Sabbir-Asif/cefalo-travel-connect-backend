@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { TransportRepository } from "../repositories/impl/transport-impl";
+import { TransportRepository } from "../infrastructure/transport-impl";
 import { TransportService } from "../services/transport";
 import { CreateTransportSchema, UpdateTransportSchema } from "../schemas/transport";
 import { UnprocessableEntityException } from "../exceptions/validation";

@@ -1,9 +1,9 @@
-import { db } from '../../configs/db';
+import { db } from '../configs/db';
 import { UUID, randomUUID } from 'crypto';
 import { addDays } from 'date-fns';
-import { RefreshToken } from '../../interfaces/token';
-import { IRefreshTokenRepository } from '../refresh-token';
-import { REFRESH_TOKEN_EXPIRES_DAYS } from '../../configs/secrets';
+import { RefreshToken } from '../interfaces/token';
+import { IRefreshTokenRepository } from '../repositories/refresh-token';
+import { REFRESH_TOKEN_EXPIRES_DAYS } from '../configs/secrets';
 
 export class RefreshTokenRepository implements IRefreshTokenRepository {
   private tableName = 'refresh_tokens';

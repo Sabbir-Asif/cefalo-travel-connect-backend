@@ -1,4 +1,4 @@
-import { EmailVerificationRepository } from '../../../src/repositories/impl/email-verification-impl';
+import { EmailVerificationRepository } from '../../../src/infrastructure/email-verification-impl';
 import { EmailVerification } from '../../../src/interfaces/email-verification';
 import { UUID } from 'crypto';
 

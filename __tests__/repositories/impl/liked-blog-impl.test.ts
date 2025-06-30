@@ -1,4 +1,4 @@
-import { LikedBlogRepository } from '../../../src/repositories/impl/liked-blog-impl';
+import { LikedBlogRepository } from '../../../src/infrastructure/liked-blog-impl';
 import { LikedBlog, BlogReaction } from '../../../src/interfaces/liked-blog';
 import { UUID } from 'crypto';
 import { db } from '../../../src/configs/db';

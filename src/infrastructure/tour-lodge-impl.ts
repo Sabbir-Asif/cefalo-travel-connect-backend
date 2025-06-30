@@ -1,8 +1,8 @@
 import { UUID } from "crypto";
-import { db } from "../../configs/db";
-import { ITourLodgeRepository } from "../tour-lodge";
-import { TourLodge } from "../../interfaces/tour-lodge";
-import { Lodge } from "../../interfaces/lodge";
+import { db } from "../configs/db";
+import { ITourLodgeRepository } from "../repositories/tour-lodge";
+import { TourLodge } from "../interfaces/tour-lodge";
+import { Lodge } from "../interfaces/lodge";
 
 export class TourLodgeRepository implements ITourLodgeRepository {
     private tableName = "tour_lodges";

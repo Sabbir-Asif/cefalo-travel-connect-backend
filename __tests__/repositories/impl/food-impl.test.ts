@@ -1,4 +1,4 @@
-import { FoodRepository } from '../../../src/repositories/impl/food-impl';
+import { FoodRepository } from '../../../src/infrastructure/food-impl';
 import { CreateFood, Food } from '../../../src/interfaces/food';
 import { UUID } from 'crypto';
 

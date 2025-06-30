@@ -1,4 +1,4 @@
-import { BlogFoodRepository } from '../../../src/repositories/impl/blog-food-impl';
+import { BlogFoodRepository } from '../../../src/infrastructure/blog-food-impl';
 import { BlogFood } from '../../../src/interfaces/blog-foods';
 import { Food } from '../../../src/interfaces/food';
 import { UUID } from 'crypto';

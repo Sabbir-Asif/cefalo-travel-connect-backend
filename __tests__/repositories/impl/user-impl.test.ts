@@ -1,4 +1,4 @@
-import { UserRepository } from '../../../src/repositories/impl/user-impl';
+import { UserRepository } from '../../../src/infrastructure/user-impl';
 import { CreateUser, UpdateUser, User } from '../../../src/interfaces/user';
 import { UUID } from 'crypto';
 

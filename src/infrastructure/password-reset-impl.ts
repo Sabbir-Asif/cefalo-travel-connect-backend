@@ -1,6 +1,6 @@
-import { db } from "../../configs/db";
-import { IPasswordResetRepository } from "../password-reset";
-import { PasswordReset, CreatePasswordReset } from "../../interfaces/password-reset";
+import { db } from "../configs/db";
+import { IPasswordResetRepository } from "../repositories/password-reset";
+import { PasswordReset, CreatePasswordReset } from "../interfaces/password-reset";
 
 export class PasswordResetRepository implements IPasswordResetRepository {
   private readonly table = "password_resets";

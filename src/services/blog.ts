@@ -5,10 +5,24 @@ import { ForbiddenException } from "../exceptions/forbidden";
 import { NotFoundException } from "../exceptions/not-found";
 import { ErrorCode } from "../exceptions/root";
 import { Blog, CreateBlog, UpdateBlog } from "../interfaces/blog";
+import { IBlogTransportRepository } from "../repositories/blog-transport";
 import { IBlogRepository } from "../repositories/blog";
+import { IBlogLodgeRepository } from "../repositories/blog-lodge";
+import { IBlogInsightRepository } from "../repositories/blog-insight";
+import { IBlogFoodRepository } from '../repositories/blog-food';
+import { Transport } from "../interfaces/transport";
+import { Lodge } from "../interfaces/lodge";
+import { Food } from "../interfaces/food";
+import { BlogInsight } from "../interfaces/blog-insight";
 
 export class BlogService {
-    constructor(private blogRepository: IBlogRepository) { };
+    constructor(
+        private blogRepository: IBlogRepository,
+        private blogTransportRepository: IBlogTransportRepository,
+        private blogLodgeRepository: IBlogLodgeRepository,
+        private blogInsightRepository: IBlogInsightRepository,
+        private blogFoodRepository: IBlogFoodRepository
+    ) { };
 
     async createBlog(userId: UUID, blogData: CreateBlog): Promise<Blog> {
         try {
@@ -67,8 +81,28 @@ export class BlogService {
     }
 
     async searchBlogs(params: Record<string, any>): Promise<Blog[]> {
-    const blogs = await this.blogRepository.search(params);
-    return blogs.map(blog => new BlogResponseDto(blog));
-}
+        const blogs = await this.blogRepository.search(params);
+        return blogs.map(blog => new BlogResponseDto(blog));
+    }
+
+    async BlogWithAllInfo(id: UUID) {
+        const blog = await this.blogRepository.getById(id);
+
+        if (!blog) {
+            throw new NotFoundException(`No blog found with id ${id}`, ErrorCode.BLOG_NOT_FOUND)
+        }
+        const transports: Transport[] = await this.blogTransportRepository.transportForBlog(id);
+        const lodges: Lodge[] = await this.blogLodgeRepository.lodgesForBlog(id);
+        const food: Food[] = await this.blogFoodRepository.foodsForBlog(id);
+        const insights: BlogInsight[] = await this.blogInsightRepository.getByBlogId(id);
+
+        return {
+            blog: new BlogResponseDto(blog),
+            transports,
+            lodges,
+            food,
+            insights
+        };
+    }
 
 }

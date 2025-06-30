@@ -1,7 +1,7 @@
 import { UUID } from "crypto";
-import { db } from "../../configs/db";
-import { CreateFood, Food, UpdateFood } from "../../interfaces/food";
-import { IFoodRepository } from "../food";
+import { db } from "../configs/db";
+import { CreateFood, Food, UpdateFood } from "../interfaces/food";
+import { IFoodRepository } from "../repositories/food";
 
 export class FoodRepository implements IFoodRepository {
   private tableName = "foods";

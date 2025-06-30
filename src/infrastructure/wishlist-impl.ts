@@ -1,8 +1,8 @@
 import { UUID } from "crypto";
-import { db } from "../../configs/db";
-import { CreateWishlist, UpdateWishlist, Wishlist, WishlistWithUser } from "../../interfaces/wishlist";
-import { IWishlistRepository } from "../wishlist";
-import { UserResponse } from "../../interfaces/user";
+import { db } from "../configs/db";
+import { CreateWishlist, UpdateWishlist, Wishlist, WishlistWithUser } from "../interfaces/wishlist";
+import { IWishlistRepository } from "../repositories/wishlist";
+import { UserResponse } from "../interfaces/user";
 
 export class WishlistRepository implements IWishlistRepository {
   private tableName = "wishlists";

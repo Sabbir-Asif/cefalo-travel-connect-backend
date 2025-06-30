@@ -1,4 +1,4 @@
-import { UserRepository } from './../repositories/impl/user-impl';
+import { UserRepository } from '../infrastructure/user-impl';
 import { NextFunction, Request, Response } from "express";
 import { UpdateUser, UserResponse } from "../interfaces/user";
 import { UserService } from "../services/user";
@@ -70,4 +70,10 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
     await userService.deleteUser(userId);
 
     res.status(204).json({ success: true });
+}
+
+export const me = async (req: Request, res: Response) => {
+    if(req.user) {
+        res.send(req.user);
+    }
 }

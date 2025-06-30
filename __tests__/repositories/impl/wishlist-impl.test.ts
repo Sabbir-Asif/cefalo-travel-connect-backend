@@ -1,4 +1,4 @@
-import { WishlistRepository } from "../../../src/repositories/impl/wishlist-impl";
+import { WishlistRepository } from "../../../src/infrastructure/wishlist-impl";
 import { UUID } from "crypto";
 import { db } from "../../../src/configs/db";
 import { WishlistStatus } from "../../../src/interfaces/wishlist";

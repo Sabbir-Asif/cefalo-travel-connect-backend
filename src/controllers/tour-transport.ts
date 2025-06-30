@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { TourTransportRepository } from "../repositories/impl/tour-transport-impl";
+import { TourTransportRepository } from "../infrastructure/tour-transport-impl";
 import { TourTransportService } from "../services/tour-transport";
 import { IdSchema } from "../schemas/id";
 import { CreateTourTransportSchema, UpdateTourTransportSchema } from "../schemas/tour-transport";

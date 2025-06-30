@@ -1,4 +1,4 @@
-import { DiscussionRepository } from '../../../src/repositories/impl/discussion-impl';
+import { DiscussionRepository } from '../../../src/infrastructure/discussion-impl';
 import { CreateDiscussion, Discussion, DiscussionWithSender } from '../../../src/interfaces/discussion';
 import { UUID } from 'crypto';
 import { Role } from '../../../src/interfaces/user';

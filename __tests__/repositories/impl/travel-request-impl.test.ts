@@ -1,4 +1,4 @@
-import { TravelRequestRepository } from "../../../src/repositories/impl/travel-request-impl";
+import { TravelRequestRepository } from "../../../src/infrastructure/travel-request-impl";
 import { UUID } from "crypto";
 import { db } from "../../../src/configs/db";
 import { TravelRequestStatus } from "../../../src/interfaces/travel-request";

@@ -5,15 +5,32 @@ import { ErrorCode } from "../exceptions/root"
 import { CreateBlogDto, UpdateBlogDto } from "../dtos/blog"
 import { BadRequestException } from "../exceptions/bad-request"
 import { Blog, CreateBlog, UpdateBlog } from "../interfaces/blog"
-import { BlogRepository } from "../repositories/impl/blog-impl"
+import { BlogRepository } from "../infrastructure/blog-impl"
 import { BlogService } from "../services/blog"
 import { UnauthorizedException } from "../exceptions/unauthorized"
 import { IdSchema } from "../schemas/id"
 import { UUID } from "crypto"
+import { TransportRepository } from "../infrastructure/transport-impl"
+import { LodgeRepository } from "../infrastructure/lodge-impl"
+import { BlogInsightRepository } from "../infrastructure/blog-insight-impl"
+import { BlogTransportRepository } from "../infrastructure/blogTransport-impl"
+import { BlogLodgeRepository } from "../infrastructure/blog-lodge-impl"
+import { BlogFoodRepository } from "../infrastructure/blog-food-impl"
 
 
 const blogRepository = new BlogRepository();
-export let blogService = new BlogService(blogRepository);
+const blogTransportRepository = new BlogTransportRepository();
+const blogLodgeRepository = new BlogLodgeRepository();
+const blogInsightRepository = new BlogInsightRepository();
+const blogFoodRepository = new BlogFoodRepository()
+
+export let blogService = new BlogService(
+    blogRepository,
+    blogTransportRepository,
+    blogLodgeRepository,
+    blogInsightRepository,
+    blogFoodRepository
+);
 
 export const __setBlogService = (svc: BlogService) => { blogService = svc; }
 
@@ -122,4 +139,18 @@ export const searchBlogs = async (req: Request, res: Response, next: NextFunctio
     const blogs = await blogService.searchBlogs(queryParams);
 
     res.status(200).json(blogs);
+};
+
+export const getBlogWithAllInfo = async (req: Request, res: Response, next: NextFunction) => {
+    const Id = req.params.id;
+    const parsedId = IdSchema.safeParse(Id);
+    if (!parsedId.success) {
+        throw new BadRequestException('Invalid blog id!', ErrorCode.INVALID_BLOG_ID);
+    }
+
+    const blogId = parsedId.data as UUID;
+
+    const fullBlogInfo = await blogService.BlogWithAllInfo(blogId);
+
+    res.status(200).json(fullBlogInfo);
 };

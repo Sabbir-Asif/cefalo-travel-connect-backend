@@ -1,7 +1,7 @@
 import { UUID } from "crypto";
-import { db } from "../../configs/db";
-import { CreateLodge, Lodge, LodgeLocation, UpdateLodge } from "../../interfaces/lodge";
-import { ILodgeRepositiry } from "../lodge";
+import { db } from "../configs/db";
+import { CreateLodge, Lodge, LodgeLocation, UpdateLodge } from "../interfaces/lodge";
+import { ILodgeRepositiry } from "../repositories/lodge";
 
 export class LodgeRepository implements ILodgeRepositiry {
     private tableName = 'lodges';

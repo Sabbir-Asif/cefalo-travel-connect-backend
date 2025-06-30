@@ -1,4 +1,4 @@
-import { BlogTransportRepository } from '../../../src/repositories/impl/blogTransport-impl';
+import { BlogTransportRepository } from '../../../src/infrastructure/blogTransport-impl';
 import { BlogTransport } from '../../../src/interfaces/blog-transport';
 import { Transport, TransportType } from '../../../src/interfaces/transport';
 import { UUID } from 'crypto';

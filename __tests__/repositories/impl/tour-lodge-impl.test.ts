@@ -1,4 +1,4 @@
-import { TourLodgeRepository } from '../../../src/repositories/impl/tour-lodge-impl';
+import { TourLodgeRepository } from '../../../src/infrastructure/tour-lodge-impl';
 import { UUID } from 'crypto';
 import { db } from '../../../src/configs/db';
 

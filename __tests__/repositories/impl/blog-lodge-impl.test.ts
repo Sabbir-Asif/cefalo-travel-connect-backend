@@ -1,4 +1,4 @@
-import { BlogLodgeRepository } from '../../../src/repositories/impl/blog-lodge-impl';
+import { BlogLodgeRepository } from '../../../src/infrastructure/blog-lodge-impl';
 import { BlogLodge } from '../../../src/interfaces/blog-lodge';
 import { Lodge } from '../../../src/interfaces/lodge';
 import { UUID } from 'crypto';

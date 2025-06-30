@@ -1,4 +1,4 @@
-import { TravelPlaceRepository } from "../../../src/repositories/impl/travel-place-impl";
+import { TravelPlaceRepository } from "../../../src/infrastructure/travel-place-impl";
 import { UUID } from "crypto";
 import { db } from "../../../src/configs/db";
 

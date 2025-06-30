@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { TourLodgeRepository } from "../repositories/impl/tour-lodge-impl";
+import { TourLodgeRepository } from "../infrastructure/tour-lodge-impl";
 import { TourLodgeService } from "../services/tour-lodge";
 import { TourLodgeSchema } from "../schemas/tour-lodge";
 import { IdSchema } from "../schemas/id";
@@ -7,8 +7,8 @@ import { UnprocessableEntityException } from "../exceptions/validation";
 import { ErrorCode } from "../exceptions/root";
 import { UUID } from "crypto";
 import { TourLodgeDto } from "../dtos/tour-lodge";
-import { LodgeRepository } from "../repositories/impl/lodge-impl";
-import { TravelPlanRepository } from "../repositories/impl/travel-plan-impl";
+import { LodgeRepository } from "../infrastructure/lodge-impl";
+import { TravelPlanRepository } from "../infrastructure/travel-plan-impl";
 
 const tourLodgeRepository = new TourLodgeRepository();
 const travelPlanRepository = new TravelPlanRepository();

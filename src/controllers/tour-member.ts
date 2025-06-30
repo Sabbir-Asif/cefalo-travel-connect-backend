@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { TourMemberRepository } from "../repositories/impl/tour-member-impl";
+import { TourMemberRepository } from "../infrastructure/tour-member-impl";
 import { TourMemberService } from "../services/tour-member";
 import { TourMemberSchema } from "../schemas/tour-member";
 import { UnprocessableEntityException } from "../exceptions/validation";
@@ -7,8 +7,8 @@ import { ErrorCode } from "../exceptions/root";
 import { IdSchema } from "../schemas/id";
 import { UUID } from "crypto";
 import { TourMemberDto } from "../dtos/tour-member";
-import { TravelPlanRepository } from "../repositories/impl/travel-plan-impl";
-import { UserRepository } from "../repositories/impl/user-impl";
+import { TravelPlanRepository } from "../infrastructure/travel-plan-impl";
+import { UserRepository } from "../infrastructure/user-impl";
 
 const tourMemberRepository = new TourMemberRepository();
 const travelPlanRepository = new TravelPlanRepository();

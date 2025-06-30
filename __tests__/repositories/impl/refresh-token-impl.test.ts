@@ -1,4 +1,4 @@
-import { RefreshTokenRepository } from '../../../src/repositories/impl/refresh-token-impl';
+import { RefreshTokenRepository } from '../../../src/infrastructure/refresh-token-impl';
 import { RefreshToken } from '../../../src/interfaces/token';
 import { UUID } from 'crypto';
 import { addDays } from 'date-fns';

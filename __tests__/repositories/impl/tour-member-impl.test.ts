@@ -1,4 +1,4 @@
-import { TourMemberRepository } from '../../../src/repositories/impl/tour-member-impl';
+import { TourMemberRepository } from '../../../src/infrastructure/tour-member-impl';
 import { UUID } from 'crypto';
 import { db } from '../../../src/configs/db';
 import { User, Role } from '../../../src/interfaces/user';

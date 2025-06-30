@@ -1,7 +1,7 @@
 import { UUID } from "crypto";
-import { db } from "../../configs/db";
-import { CreateTransport, Transport, TransportLocation, UpdateTransport } from "../../interfaces/transport";
-import { ITransportRepository } from "../transport";
+import { db } from "../configs/db";
+import { CreateTransport, Transport, TransportLocation, UpdateTransport } from "../interfaces/transport";
+import { ITransportRepository } from "../repositories/transport";
 
 export class TransportRepository implements ITransportRepository {
     private tableName = 'transports';

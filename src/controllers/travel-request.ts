@@ -6,7 +6,7 @@ import { UnprocessableEntityException } from "../exceptions/validation";
 import { UnauthorizedException } from "../exceptions/unauthorized";
 import { BadRequestException } from "../exceptions/bad-request";
 import { TravelRequestService } from "../services/travel-request";
-import { TravelRequestRepository } from "../repositories/impl/travel-request-impl";
+import { TravelRequestRepository } from "../infrastructure/travel-request-impl";
 import { CreateTravelRequestSchema, UpdateTravelRequestSchema } from "../schemas/travel-request";
 import { CreateTravelRequest, UpdateTravelRequest, TravelRequest } from "../interfaces/travel-request";
 import { CreateTravelRequestDto, UpdateTravelRequestDto } from "../dtos/travel-request";

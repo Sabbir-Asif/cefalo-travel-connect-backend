@@ -1,8 +1,8 @@
 import { UUID } from "crypto";
-import { db } from "../../configs/db";
-import { TravelRequest, CreateTravelRequest, UpdateTravelRequest, TravelRequestWithUsers } from "../../interfaces/travel-request";
-import { ITravelRequestRepository } from "../travel-request";
-import { UserResponseDto } from "../../dtos/user";
+import { db } from "../configs/db";
+import { TravelRequest, CreateTravelRequest, UpdateTravelRequest, TravelRequestWithUsers } from "../interfaces/travel-request";
+import { ITravelRequestRepository } from "../repositories/travel-request";
+import { UserResponseDto } from "../dtos/user";
 
 export class TravelRequestRepository implements ITravelRequestRepository {
   search(params: Record<string, any>): Promise<TravelRequestWithUsers[]> {

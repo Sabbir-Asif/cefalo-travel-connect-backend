@@ -1,4 +1,4 @@
-import { TransportRepository } from "../../../src/repositories/impl/transport-impl";
+import { TransportRepository } from "../../../src/infrastructure/transport-impl";
 import { TransportType } from "../../../src/interfaces/transport";
 import { UUID } from "crypto";
 import { db } from "../../../src/configs/db";

@@ -1,7 +1,7 @@
 import { UUID } from "crypto";
-import { db } from "../../configs/db";
-import { ITourMemberRepository } from "../tour-member";
-import { User } from "../../interfaces/user";
+import { db } from "../configs/db";
+import { ITourMemberRepository } from "../repositories/tour-member";
+import { User } from "../interfaces/user";
 
 export class TourMemberRepository implements ITourMemberRepository {
     private tableName = "tour_members";

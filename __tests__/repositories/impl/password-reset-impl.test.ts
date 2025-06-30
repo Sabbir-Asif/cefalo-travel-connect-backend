@@ -1,4 +1,4 @@
-import { PasswordResetRepository } from '../../../src/repositories/impl/password-reset-impl';
+import { PasswordResetRepository } from '../../../src/infrastructure/password-reset-impl';
 import { CreatePasswordReset, PasswordReset } from '../../../src/interfaces/password-reset';
 
 jest.mock('../../../src/configs/db', () => ({

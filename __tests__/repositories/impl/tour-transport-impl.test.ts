@@ -1,4 +1,4 @@
-import { TourTransportRepository } from '../../../src/repositories/impl/tour-transport-impl';
+import { TourTransportRepository } from '../../../src/infrastructure/tour-transport-impl';
 import { UUID } from 'crypto';
 import { TransportType } from '../../../src/interfaces/transport';
 import {
