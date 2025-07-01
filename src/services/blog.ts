@@ -14,6 +14,8 @@ import { Transport } from "../interfaces/transport";
 import { Lodge } from "../interfaces/lodge";
 import { Food } from "../interfaces/food";
 import { BlogInsight } from "../interfaces/blog-insight";
+import { IUserRepository } from "../repositories/user";
+import { User, UserResponse } from "../interfaces/user";
 
 export class BlogService {
     constructor(
@@ -21,7 +23,8 @@ export class BlogService {
         private blogTransportRepository: IBlogTransportRepository,
         private blogLodgeRepository: IBlogLodgeRepository,
         private blogInsightRepository: IBlogInsightRepository,
-        private blogFoodRepository: IBlogFoodRepository
+        private blogFoodRepository: IBlogFoodRepository,
+        private userRepository: IUserRepository,
     ) { };
 
     async createBlog(userId: UUID, blogData: CreateBlog): Promise<Blog> {
@@ -62,7 +65,6 @@ export class BlogService {
         }
 
         const updatedBlog = await this.blogRepository.update(id, data);
-        // console.log(updatedBlog);
 
         return new BlogResponseDto(updatedBlog);
     }
@@ -96,13 +98,17 @@ export class BlogService {
         const lodges: Lodge[] = await this.blogLodgeRepository.lodgesForBlog(id);
         const food: Food[] = await this.blogFoodRepository.foodsForBlog(id);
         const insights: BlogInsight[] = await this.blogInsightRepository.getByBlogId(id);
+        const creatorWithPassword = await this.userRepository.findById(blog.userId) as User;
+
+        const { password, ...creator } = creatorWithPassword;
 
         return {
             blog: new BlogResponseDto(blog),
             transports,
             lodges,
             food,
-            insights
+            insights,
+            creator
         };
     }
 

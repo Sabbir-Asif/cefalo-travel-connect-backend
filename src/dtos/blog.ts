@@ -22,7 +22,7 @@ export class CreateBlogDto {
             long: blogData.location_points.long
         }
         this.cover_image = blogData.cover_image,
-        this.description = blogData.description,
+            this.description = blogData.description,
             this.tags = blogData.tags
         this.images = blogData.images
         this.videos = blogData.videos
@@ -37,6 +37,7 @@ export class UpdateBlogDto {
         long: number;
     };
     cover_image?: string;
+    status?: Blog_Status;
     description?: string;
     tags?: string[];
     images?: string[];
@@ -52,8 +53,9 @@ export class UpdateBlogDto {
             }
         }
         this.cover_image = blogData.cover_image
-        this.description = blogData.description,
-            this.tags = blogData.tags,
+        this.description = blogData.description;
+        this.status = blogData.status as Blog_Status | undefined;
+        this.tags = blogData.tags,
             this.images = blogData.images,
             this.videos = blogData.videos
     }

@@ -127,6 +127,8 @@ export class TravelPlaceRepository implements ITravelPlaceRepository {
         tag?: string;
         sortBy?: 'name' | 'location_name' | 'created_at';
         order?: 'asc' | 'desc';
+        page?: number;
+        limit?: number;
     }): Promise<TravelPlace[]> {
         const {
             name,
@@ -134,7 +136,9 @@ export class TravelPlaceRepository implements ITravelPlaceRepository {
             description,
             tag,
             sortBy,
-            order = 'asc'
+            order = 'asc',
+            page = 1,
+            limit = 5,
         } = params;
 
         const query = db(this.tableName)
@@ -157,7 +161,7 @@ export class TravelPlaceRepository implements ITravelPlaceRepository {
         }
 
         if (tag) {
-            query.whereRaw(`tags @> ?::jsonb`, [JSON.stringify([tag])])
+            query.whereRaw(`tags @> ?::jsonb`, [JSON.stringify([tag])]);
         }
 
         if (sortBy === 'name' || sortBy === 'location_name' || sortBy === 'created_at') {
@@ -165,6 +169,8 @@ export class TravelPlaceRepository implements ITravelPlaceRepository {
         } else {
             query.orderBy('created_at', 'desc');
         }
+
+        query.limit(limit).offset((page - 1) * limit);
 
         const results = await query;
 
@@ -178,7 +184,8 @@ export class TravelPlaceRepository implements ITravelPlaceRepository {
                 },
                 created_at: new Date(place.created_at),
                 updated_at: new Date(place.updated_at)
-            }
+            };
         });
     }
+
 }

@@ -1,3 +1,4 @@
+import { UserRepository } from './../infrastructure/user-impl';
 import { NextFunction, Request, Response } from "express"
 import { CreateBlogSchema, UpdateBlogSchema } from "../schemas/blog"
 import { UnprocessableEntityException } from "../exceptions/validation"
@@ -23,13 +24,15 @@ const blogTransportRepository = new BlogTransportRepository();
 const blogLodgeRepository = new BlogLodgeRepository();
 const blogInsightRepository = new BlogInsightRepository();
 const blogFoodRepository = new BlogFoodRepository()
+const userRepository = new UserRepository()
 
 export let blogService = new BlogService(
     blogRepository,
     blogTransportRepository,
     blogLodgeRepository,
     blogInsightRepository,
-    blogFoodRepository
+    blogFoodRepository,
+    userRepository
 );
 
 export const __setBlogService = (svc: BlogService) => { blogService = svc; }
