@@ -141,9 +141,9 @@ export class BlogRepository implements IBlogRepository {
             description: row.description,
             cover_image: row.cover_image ?? null,
             status: row.status ?? Blog_Status.DRAFT,
-            tags: typeof row.tags === 'string' ? JSON.parse(row.tags) : [],
-            images: typeof row.images === 'string' ? JSON.parse(row.images) : [],
-            videos: typeof row.videos === 'string' ? JSON.parse(row.videos) : [],
+            tags:  row.tags,
+            images: row.images,
+            videos: row.videos,
             created_at: new Date(row.created_at),
             updated_at: new Date(row.updated_at),
         };

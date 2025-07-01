@@ -62,6 +62,7 @@ export class BlogService {
         }
 
         const updatedBlog = await this.blogRepository.update(id, data);
+        // console.log(updatedBlog);
 
         return new BlogResponseDto(updatedBlog);
     }

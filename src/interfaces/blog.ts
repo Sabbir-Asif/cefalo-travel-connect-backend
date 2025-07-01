@@ -34,6 +34,7 @@ export interface CreateBlog {
         lat: number;
         long: number;
     };
+    cover_image?: string | undefined;
     description: string;
     tags?: string[];
     images?: string[];

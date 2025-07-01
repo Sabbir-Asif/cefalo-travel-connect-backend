@@ -8,6 +8,7 @@ export class CreateBlogDto {
         lat: number;
         long: number;
     };
+    cover_image?: string | undefined;
     description: string;
     tags?: string[];
     images?: string[];
@@ -20,6 +21,7 @@ export class CreateBlogDto {
             lat: blogData.location_points.lat,
             long: blogData.location_points.long
         }
+        this.cover_image = blogData.cover_image,
         this.description = blogData.description,
             this.tags = blogData.tags
         this.images = blogData.images
@@ -34,6 +36,7 @@ export class UpdateBlogDto {
         lat: number;
         long: number;
     };
+    cover_image?: string;
     description?: string;
     tags?: string[];
     images?: string[];
@@ -48,6 +51,7 @@ export class UpdateBlogDto {
                 long: blogData.location_points.long
             }
         }
+        this.cover_image = blogData.cover_image
         this.description = blogData.description,
             this.tags = blogData.tags,
             this.images = blogData.images,
