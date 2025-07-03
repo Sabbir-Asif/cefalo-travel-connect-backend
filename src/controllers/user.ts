@@ -73,7 +73,19 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
 }
 
 export const me = async (req: Request, res: Response) => {
-    if(req.user) {
+    if (req.user) {
         res.send(req.user);
     }
+}
+
+export const searchUsers = async (req: Request, res: Response, next: NextFunction) => {
+    const { name, email, phone_number } = req.query;
+
+    const users: UserResponse[] = await userService.searchUsers({
+        name: typeof name === "string" ? name : undefined,
+        email: typeof email === "string" ? email : undefined,
+        phone_number: typeof phone_number === "string" ? phone_number : undefined
+    });
+
+    res.status(200).json(users);
 }
