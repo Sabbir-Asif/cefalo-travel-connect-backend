@@ -59,3 +59,13 @@ export const getMembersForTravelPlan = async (req: Request, res: Response) => {
     const members = await tourMemberService.getMembersForTravelPlan(travelplanId.data as UUID);
     res.status(200).json(members);
 };
+
+export const getTravelPlansForMember = async (req: Request, res: Response) => {
+    const userId = IdSchema.safeParse(req.params.id);
+    if(!userId.success) {
+        throw new UnprocessableEntityException(userId.error, "Invalid user ID!", ErrorCode.UNPROCESSABLE_ENTITY);
+    }
+
+    const travelPlans = await tourMemberService.getTravelPlansForMember(userId.data as UUID);
+    res.status(200).json(travelPlans);
+}

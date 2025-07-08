@@ -2,6 +2,7 @@ import { UUID } from "crypto";
 import { db } from "../configs/db";
 import { ITourMemberRepository } from "../repositories/tour-member";
 import { User } from "../interfaces/user";
+import { TravelPlan } from "../interfaces/travel-plan";
 
 export class TourMemberRepository implements ITourMemberRepository {
     private tableName = "tour_members";
@@ -33,6 +34,19 @@ export class TourMemberRepository implements ITourMemberRepository {
             ...user,
             createdAt: new Date(user.createdAt),
             updatedAt: new Date(user.updatedAt)
+        }));
+    }
+
+    async travelPlansForMember(userId: UUID): Promise<TravelPlan[]> {
+        const travelPlans = await db("tour_members")
+            .join("travel_plans", "tour_members.travelplan_id", "travel_plans.id")
+            .where("tour_members.user_id", userId)
+            .select("travel_plans.*");
+
+        return travelPlans.map(plan => ({
+            ...plan,
+            createdAt: new Date(plan.createdAt),
+            updatedAt: new Date(plan.updatedAt)
         }));
     }
 }

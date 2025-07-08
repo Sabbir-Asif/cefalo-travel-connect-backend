@@ -48,7 +48,7 @@ export async function sendVerificationEmail(to: string, name: string, token: str
 }
 
 export async function sendPasswordResetEmail(to: string, name: string, token: string) {
-    const resetUrl = `${process.env.APP_BASE_URL}/reset-password?token=${token}`;
+    const resetUrl = `${process.env.FRONTEND_RESET_URL}/confirm?token=${token}`;
 
     const htmlContent = `
     <p>Hello ${name},</p>

@@ -4,6 +4,7 @@ import { deleteUser, getAllUsers, getUserById, me, searchUsers, updateUser } fro
 import { authMiddleware } from '../middlewares/auth';
 import { getWishlistsByUserId } from '../controllers/wishlist';
 import { getBlogsUserReacted } from '../controllers/liked-blog';
+import { getTravelPlansForMember } from '../controllers/tour-member';
 
 export const userRouter : Router = Router();
 
@@ -15,5 +16,6 @@ userRouter.get('/',authMiddleware, errorHandler(getAllUsers));
 userRouter.get('/search', authMiddleware, errorHandler(searchUsers));
 userRouter.get('/me', authMiddleware, errorHandler(me));
 userRouter.get('/:id',authMiddleware, errorHandler(getUserById))
+userRouter.get('/:id/travel-plans', authMiddleware, errorHandler(getTravelPlansForMember));
 userRouter.put('/:id',authMiddleware, errorHandler(updateUser));
 userRouter.delete('/:id',authMiddleware, errorHandler(deleteUser));
