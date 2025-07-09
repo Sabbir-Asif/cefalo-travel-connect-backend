@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { UpdateBlogSchema } from "../schemas/blog";
 import { UUID } from "crypto";
+import { UserResponse } from "./user";
 
 export enum Blog_Status {
     DRAFT = "DRAFT",
@@ -12,6 +13,26 @@ export interface Blog {
     id: UUID;
     title: string;
     userId: UUID;
+    locationName: string;
+    location_points: {
+        lat: number;
+        long: number;
+    };
+    description: string;
+    cover_image: string | null;
+    status: Blog_Status;
+    tags: string[];
+    images: string[];
+    videos: string[];
+    created_at: Date;
+    updated_at: Date;
+}
+
+export interface BlogResponse {
+    id: UUID;
+    title: string;
+    userId: UUID;
+    user: UserResponse;
     locationName: string;
     location_points: {
         lat: number;

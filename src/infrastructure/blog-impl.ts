@@ -1,8 +1,9 @@
 import { UUID } from "crypto";
 import { db } from "../configs/db";
-import { CreateBlog, Blog, UpdateBlog, Blog_Status } from "../interfaces/blog";
+import { CreateBlog, Blog, UpdateBlog, Blog_Status, BlogResponse } from "../interfaces/blog";
 import { IBlogRepository } from "../repositories/blog";
 import { IdSchema } from "../schemas/id";
+import { UserResponseDto } from "../dtos/user";
 
 export class BlogRepository implements IBlogRepository {
     private tableName = 'blogs';
@@ -26,15 +27,20 @@ export class BlogRepository implements IBlogRepository {
         return this.mapRowToBlog(newBlog);
     }
 
-    async getAll(): Promise<Blog[]> {
-        const blogs = await db(this.tableName).select(
-            '*',
-            db.raw(`ST_X(location_points::geometry) as long`),
-            db.raw(`ST_Y(location_points::geometry) as lat`)
-        );
+    async getAll(): Promise<BlogResponse[]> {
+        const results = await db
+            .select(
+                "blogs.*",
+                db.raw("ST_X(blogs.location_points::geometry) as long"),
+                db.raw("ST_Y(blogs.location_points::geometry) as lat"),
+                db.raw("row_to_json(users.*) as user")
+            )
+            .from("blogs")
+            .leftJoin("users", "blogs.userId", "users.id");
 
-        return blogs.map((blog) => (this.mapRowToBlog(blog)));
+        return results.map(this.toBlogWithUser);
     }
+
 
     async getById(id: UUID): Promise<Blog | null> {
         const blog = await db(this.tableName)
@@ -141,12 +147,33 @@ export class BlogRepository implements IBlogRepository {
             description: row.description,
             cover_image: row.cover_image ?? null,
             status: row.status ?? Blog_Status.DRAFT,
-            tags:  row.tags,
+            tags: row.tags,
             images: row.images,
             videos: row.videos,
             created_at: new Date(row.created_at),
             updated_at: new Date(row.updated_at),
         };
     }
+
+    private toBlogWithUser = (row: any): BlogResponse => ({
+        id: row.id,
+        title: row.title,
+        userId: row.user_id,
+        user: new UserResponseDto(row.user),
+        locationName: row.location_name ?? '',
+        location_points: {
+            lat: parseFloat(row.lat),
+            long: parseFloat(row.long),
+        },
+        description: row.description,
+        cover_image: row.cover_image ?? null,
+        status: row.status ?? Blog_Status.DRAFT,
+        tags: row.tags,
+        images: row.images,
+        videos: row.videos,
+        created_at: new Date(row.created_at),
+        updated_at: new Date(row.updated_at),
+    });
+
 
 }

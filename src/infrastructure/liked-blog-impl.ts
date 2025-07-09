@@ -37,16 +37,19 @@ export class LikedBlogRepository implements ILikedBlogRepository {
         };
     }
 
-    async findByUserAndBlog(userId: UUID, blogId: UUID): Promise<LikedBlogResponse> {
-        const [record] = await db(this.tableName)
-            .where({ user_id: userId, blog_id: blogId })
-            .select("*");
+async findByUserAndBlog(userId: UUID, blogId: UUID): Promise<LikedBlogResponse | null> {
+    
+    const [record] = await db(this.tableName)
+        .where({ user_id: userId, blog_id: blogId })
+        .select("*");
 
-        return {
-            ...record,
-            created_at: new Date(record.created_at),
-        };
-    }
+    if (!record) return null;
+
+    return {
+        ...record,
+        created_at: new Date(record.created_at),
+    };
+}
 
 
     async usersForBlog(blogId: UUID): Promise<User[]> {

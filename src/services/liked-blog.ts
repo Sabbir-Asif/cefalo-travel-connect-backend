@@ -31,7 +31,6 @@ export class LikedBlogService {
         }
 
         const existing = await this.likedBlogRepository.findByUserAndBlog(data.user_id, data.blog_id);
-
         if (existing) {
             if (existing.reaction_name === data.reaction_name) {
                 return new LikedBlogResponseDto(existing);

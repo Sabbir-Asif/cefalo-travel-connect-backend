@@ -42,7 +42,7 @@ export class BlogService {
 
         const blogs = await this.blogRepository.getAll();
 
-        return blogs.map(blog => new BlogResponseDto(blog));
+        return blogs;
     }
 
     async getBlogById(id: UUID): Promise<Blog> {

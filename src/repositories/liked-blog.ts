@@ -8,7 +8,7 @@ export interface ILikedBlogRepository {
     create(data: LikedBlog): Promise<LikedBlogResponse>;
     delete(userId: UUID, blogId: UUID): Promise<number>;
     update(data: LikedBlog): Promise<LikedBlogResponse>;
-    findByUserAndBlog(userId: UUID, blogId: UUID): Promise<LikedBlogResponse>;
+    findByUserAndBlog(userId: UUID, blogId: UUID): Promise<LikedBlogResponse | null>;
     usersForBlog(blogId: UUID): Promise<User[]>;
     blogsForUser(userId: UUID): Promise<Blog[]>;
 }
