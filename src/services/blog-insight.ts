@@ -43,7 +43,7 @@ export class BlogInsightService {
 
         const insights = await this.blogInsightRepository.getByBlogId(blogId);
 
-        return insights.map((insight) => new BlogInsightResponseDto(insight));
+        return insights;
     }
 
     async getInsightById(id: UUID): Promise<BlogInsight> {

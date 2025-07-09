@@ -1,6 +1,6 @@
 import { UUID } from "crypto";
 import { db } from "../configs/db";
-import { BlogInsight, CreateBlogInsight, UpdateBlogInsight } from "../interfaces/blog-insight";
+import { BlogInsight, BlogInsightResponse, CreateBlogInsight, UpdateBlogInsight } from "../interfaces/blog-insight";
 import { IBlogInsightRepository } from "../repositories/blog-insight";
 
 export class BlogInsightRepository implements IBlogInsightRepository {
@@ -32,10 +32,15 @@ export class BlogInsightRepository implements IBlogInsightRepository {
         }));
     }
 
-    async getByBlogId(blogId: UUID): Promise<BlogInsight[]> {
-        const insights = await db(this.tableName)
-            .where({ blog_id: blogId })
-            .select("*");
+    async getByBlogId(blogId: UUID): Promise<BlogInsightResponse[]> {
+        const insights = await db
+            .select(
+                "blog_insights.*",
+                db.raw("row_to_json(users.*) as user")
+            )
+            .from("blog_insights")
+            .leftJoin("users", "blog_insights.user_id", "users.id")
+            .where("blog_insights.blog_id", blogId);
 
         return insights.map(insight => ({
             ...insight,
@@ -43,6 +48,7 @@ export class BlogInsightRepository implements IBlogInsightRepository {
             updated_at: new Date(insight.updated_at),
         }));
     }
+
 
     async getById(id: UUID): Promise<BlogInsight | null> {
         const insight = await db(this.tableName).where({ id }).first("*");
@@ -102,7 +108,7 @@ export class BlogInsightRepository implements IBlogInsightRepository {
             query.where("blog_id", blog_id);
         }
 
-         if (user_id) {
+        if (user_id) {
             query.where("user_id", user_id);
         }
 

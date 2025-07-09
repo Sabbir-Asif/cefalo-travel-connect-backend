@@ -139,7 +139,7 @@ export class BlogRepository implements IBlogRepository {
             id: row.id,
             title: row.title,
             userId: row.userId,
-            locationName: row.locationName ?? '',
+            locationName: row["locationName"] ?? '',
             location_points: {
                 lat: parseFloat(row.lat),
                 long: parseFloat(row.long),
@@ -160,7 +160,7 @@ export class BlogRepository implements IBlogRepository {
         title: row.title,
         userId: row.user_id,
         user: new UserResponseDto(row.user),
-        locationName: row.location_name ?? '',
+        locationName: row["locationName"] ?? '',
         location_points: {
             lat: parseFloat(row.lat),
             long: parseFloat(row.long),
