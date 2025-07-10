@@ -3,7 +3,7 @@ import { authMiddleware } from "../middlewares/auth";
 import { errorHandler } from "../middlewares/error-handler";
 import { createTravelPlan, deleteTravelPlan, getAllTravelPlans, getTravelPlanById, searchTravelPlans, updateTravelPlan } from "../controllers/travel-plan";
 import { getDiscussionsByTravelPlanId } from "../controllers/discussion";
-import { tourTransportRouter } from "./tour-transport";
+import { tourTransportRouter } from "./tour-transport.router";
 import { createTourLodge, deleteTourLodge, getLodgesForTravelPlan } from "../controllers/tour-lodge";
 import { createTourMember, deleteTourMember, getMembersForTravelPlan } from "../controllers/tour-member";
 

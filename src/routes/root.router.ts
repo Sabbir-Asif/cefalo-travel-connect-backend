@@ -1,16 +1,16 @@
 import { Router } from "express";
-import { authRouter } from "./auth";
-import { userRouter } from "./user";
-import { blogRouter } from "./blog";
-import { transportRouter } from "./transport";
-import { lodgeRouter } from "./lodge";
-import { travelPlaceRouter } from "./travel-place";
-import { foodRouter } from "./food";
-import { travelPlanRouter } from "./travel-plan";
-import { wishlistRouter } from "./wishlist";
-import { travelRequestRouter } from "./travel-request";
-import emailVerificationRouter from "./email-verification";
-import { discussionRouter } from "./discussion";
+import { authRouter } from "./auth.router";
+import { userRouter } from "./user.router";
+import { blogRouter } from "./blog.router";
+import { transportRouter } from "./transport.router";
+import { lodgeRouter } from "./lodge.router";
+import { travelPlaceRouter } from "./travel-place.router";
+import { foodRouter } from "./food.router";
+import { travelPlanRouter } from "./travel-plan.router";
+import { wishlistRouter } from "./wishlist.router";
+import { travelRequestRouter } from "./travel-request.router";
+import emailVerificationRouter from "./email-verification.router";
+import { discussionRouter } from "./discussion.router";
 
 export const rootRouter: Router = Router();
 

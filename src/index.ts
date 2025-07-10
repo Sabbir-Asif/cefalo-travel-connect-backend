@@ -1,7 +1,7 @@
 import express, { Express } from 'express';
 import cors from "cors";
 import { PORT } from './configs/secrets';
-import { rootRouter } from './routes/root';
+import { rootRouter } from './routes/root.router';
 import { globalErrorHandler } from './middlewares/error';
 import cookieParser from 'cookie-parser';
 import { Database } from './utils/database';

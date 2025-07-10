@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/auth";
 import { errorHandler } from "../middlewares/error-handler";
-import { createDiscussion, getDiscussionById, getDiscussionsByTravelPlanId, deleteDiscussion, searchDiscussions } from "../controllers/discussion";
+import { createDiscussion, getDiscussionById, deleteDiscussion, searchDiscussions } from "../controllers/discussion";
 
 export const discussionRouter: Router = Router();
 

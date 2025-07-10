@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { login, logout, refreshAccessToken, signup } from "../controllers/auth";
 import { errorHandler } from "../middlewares/error-handler";
-import { passwordResetRouter } from "./password-reset";
+import { passwordResetRouter } from "./password-reset.router";
 import { authMiddleware } from "../middlewares/auth";
 
 export const authRouter : Router = Router();
