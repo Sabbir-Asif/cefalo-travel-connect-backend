@@ -5,6 +5,7 @@ import { PasswordResetService } from "../services/password-reset";
 import { InitiatePasswordResetSchema, CompletePasswordResetSchema } from "../schemas/password-reset";
 import { UnprocessableEntityException } from "../exceptions/validation";
 import { ErrorCode } from "../exceptions/root";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 const passwordResetRepository = new PasswordResetRepository();
 const userRepository = new UserRepository();
@@ -21,7 +22,7 @@ export const requestPasswordReset = async (req: Request, res: Response) => {
 
   const { email } = parsed.data;
   await passwordResetService.initiateReset(email);
-  res.status(200).json({ message: "Password reset email sent" });
+  res.status(HttpStatusCode.OK).json({ message: "Password reset email sent" });
 };
 
 export const resetPassword = async (req: Request, res: Response) => {
@@ -32,5 +33,5 @@ export const resetPassword = async (req: Request, res: Response) => {
 
   const { token, password } = parsed.data;
   await passwordResetService.resetPassword(token, password);
-  res.status(200).json({ message: "Password reset successful" });
+  res.status(HttpStatusCode.OK).json({ message: "Password reset successful" });
 };

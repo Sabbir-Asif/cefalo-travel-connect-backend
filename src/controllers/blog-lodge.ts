@@ -8,6 +8,7 @@ import { IdSchema } from "../schemas/id";
 import { UUID } from "crypto";
 import { BlogLodgeDto } from "../dtos/blog/blog-lodge";
 import { BlogLodge } from "../interfaces/blog-lodge";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 const blogLodgeRepository = new BlogLodgeRepository();
 const blogLodgeService = new BlogLodgeService(blogLodgeRepository);
@@ -21,7 +22,7 @@ export const createBlogLodge = async (req: Request, res: Response) => {
   const { blog_id, lodge_id } = new BlogLodgeDto(parsed.data as BlogLodge);
   const result = await blogLodgeService.createBlogLodge(blog_id, lodge_id);
 
-  res.status(201).json(result);
+  res.status(HttpStatusCode.CREATED).json(result);
 };
 
 export const deleteBlogLodge = async (req: Request, res: Response) => {
@@ -37,7 +38,7 @@ export const deleteBlogLodge = async (req: Request, res: Response) => {
 
   const deleted = await blogLodgeService.deleteBlogLodge(blogId.data as UUID, lodgeId.data as UUID);
   
-  res.status(204).json({ deleted });
+  res.status(HttpStatusCode.NO_CONTENT).json({ deleted });
 };
 
 export const getLodgesForBlog = async (req: Request, res: Response) => {
@@ -48,5 +49,5 @@ export const getLodgesForBlog = async (req: Request, res: Response) => {
 
   const lodges = await blogLodgeService.getLodgesForBlog(parsedId.data as UUID);
 
-  res.status(200).json(lodges);
+  res.status(HttpStatusCode.OK).json(lodges);
 };

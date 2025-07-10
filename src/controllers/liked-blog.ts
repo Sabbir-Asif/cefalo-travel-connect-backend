@@ -13,6 +13,7 @@ import { LikedBlogRepository } from "../infrastructure/liked-blog-impl";
 import { UserRepository } from "../infrastructure/user-impl";
 import { BlogRepository } from "../infrastructure/blog-impl";
 import { LikedBlogService } from "../services/liked-blog";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 const likedBlogRepository = new LikedBlogRepository();
 const userRepository = new UserRepository();
@@ -43,7 +44,7 @@ export const reactToBlog = async (req: Request, res: Response, next: NextFunctio
     const data = new LikedBlogDto(createData);
 
     const response = await likedBlogService.reactToBlog(data);
-    res.status(200).json(response);
+    res.status(HttpStatusCode.OK).json(response);
 };
 
 export const removeReaction = async (req: Request, res: Response, next: NextFunction) => {
@@ -63,7 +64,7 @@ export const removeReaction = async (req: Request, res: Response, next: NextFunc
     const blogId = parsedBlogId.data as UUID;
 
     await likedBlogService.removeReaction(userId, blogId);
-    res.status(204).send();
+    res.status(HttpStatusCode.NO_CONTENT).send();
 };
 
 export const getUsersWhoReacted = async (req: Request, res: Response, next: NextFunction) => {
@@ -75,7 +76,7 @@ export const getUsersWhoReacted = async (req: Request, res: Response, next: Next
 
     const blogId = parsedBlogId.data as UUID;
     const users = await likedBlogService.getUsersWhoReacted(blogId);
-    res.status(200).json(users);
+    res.status(HttpStatusCode.OK).json(users);
 };
 
 export const getBlogsUserReacted = async (req: Request, res: Response, next: NextFunction) => {
@@ -87,5 +88,5 @@ export const getBlogsUserReacted = async (req: Request, res: Response, next: Nex
 
     const userId = parsedUserId.data as UUID;
     const blogs = await likedBlogService.getBlogsUserReacted(userId);
-    res.status(200).json(blogs);
+    res.status(HttpStatusCode.OK).json(blogs);
 };

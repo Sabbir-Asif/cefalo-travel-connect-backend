@@ -10,6 +10,7 @@ import { BlogService } from "../services/blog"
 import { UnauthorizedException } from "../exceptions/unauthorized"
 import { IdSchema } from "../schemas/id"
 import { UUID } from "crypto"
+import { HttpStatusCode } from "../interfaces/status-code"
 
 
 const blogRepository = new BlogRepository();
@@ -34,13 +35,13 @@ export const createBlog = async (req: Request, res: Response, next: NextFunction
 
     const blog: Blog = await blogService.createBlog(userId, blogCreateDto);
 
-    res.status(201).json(blog);
+    res.status(HttpStatusCode.CREATED).json(blog);
 }
 
 export const getAllBlogs = async (req: Request, res: Response, next: NextFunction) => {
     const blogs: Blog[] = await blogService.getAllBlogs();
 
-    res.status(200).json(blogs);
+    res.status(HttpStatusCode.OK).json(blogs);
 }
 
 export const getBlogById = async (req: Request, res: Response, next: NextFunction) => {
@@ -55,7 +56,7 @@ export const getBlogById = async (req: Request, res: Response, next: NextFunctio
 
     const blog = await blogService.getBlogById(blogId);
 
-    res.status(200).json(blog);
+    res.status(HttpStatusCode.OK).json(blog);
 };
 
 export const updateBlog = async (req: Request, res: Response, next: NextFunction) => {
@@ -87,7 +88,7 @@ export const updateBlog = async (req: Request, res: Response, next: NextFunction
 
     const blog: Blog = await blogService.updateBlog(blogId, userId, blogUpdateDto);
 
-    res.status(200).json(blog);
+    res.status(HttpStatusCode.OK).json(blog);
 }
 
 export const deleteBlog = async (req: Request, res: Response, next: NextFunction) => {
@@ -111,7 +112,7 @@ export const deleteBlog = async (req: Request, res: Response, next: NextFunction
 
     const count = await blogService.deleteBlog(blogId, userId);
 
-    res.status(204).json({ count });
+    res.status(HttpStatusCode.NO_CONTENT).json({ count });
 }
 
 export const searchBlogs = async (req: Request, res: Response, next: NextFunction) => {
@@ -119,5 +120,5 @@ export const searchBlogs = async (req: Request, res: Response, next: NextFunctio
 
     const blogs = await blogService.searchBlogs(queryParams);
 
-    res.status(200).json(blogs);
+    res.status(HttpStatusCode.OK).json(blogs);
 };

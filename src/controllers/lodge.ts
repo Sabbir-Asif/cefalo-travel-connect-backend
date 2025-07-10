@@ -9,6 +9,7 @@ import { LodgeRepository } from '../infrastructure/lodge-impl';
 import { IdSchema } from '../schemas/id';
 import { BadRequestException } from '../exceptions/bad-request';
 import { UUID } from 'crypto';
+import { HttpStatusCode } from '../interfaces/status-code';
 
 const lodgeRespository = new LodgeRepository();
 export const lodgeService = new LodgeService(lodgeRespository);
@@ -23,13 +24,13 @@ export const createLodge = async (req: Request, res: Response) => {
 
     const lodge : Lodge = await lodgeService.createLodge(lodgeCreateDto);
 
-    res.status(201).json(lodge);
+    res.status(HttpStatusCode.CREATED).json(lodge);
 }
 
 export const getAllLodges = async (req: Request, res: Response) => {
     const lodges: Lodge[] = await lodgeService.getAllLodges();
 
-    res.status(200).json(lodges);
+    res.status(HttpStatusCode.OK).json(lodges);
 }
 
 export const getLodgeById = async (req: Request, res: Response) => {
@@ -43,7 +44,7 @@ export const getLodgeById = async (req: Request, res: Response) => {
 
     const lodge = await lodgeService.getLodgeById(lodgeId);
 
-    res.status(200).json(lodge);
+    res.status(HttpStatusCode.OK).json(lodge);
 }
 
 export const updateLodge = async (req: Request, res: Response) => {
@@ -65,7 +66,7 @@ export const updateLodge = async (req: Request, res: Response) => {
 
     const lodge: Lodge = await lodgeService.updateLodge(lodgeId, lodgeUpdateDto);
 
-    res.status(200).json(lodge);
+    res.status(HttpStatusCode.OK).json(lodge);
 }
 
 export const deleteLodge = async (req: Request, res: Response) => {
@@ -79,13 +80,13 @@ export const deleteLodge = async (req: Request, res: Response) => {
 
     await lodgeService.deleteLodge(lodgeId);
 
-    res.status(204).json({success : true});
+    res.status(HttpStatusCode.NO_CONTENT).json({success : true});
 }
 
 export const getLodgeLocationNames = async (req: Request, res: Response) => {
     const locations = await lodgeService.getAllLocations();
 
-    res.status(200).json(locations);
+    res.status(HttpStatusCode.OK).json(locations);
 }
 
 export const searchLodge = async (req: Request, res: Response) => {
@@ -93,5 +94,5 @@ export const searchLodge = async (req: Request, res: Response) => {
 
     const results = await lodgeService.searchLodge(queryParams);
 
-    res.status(200).json(results);
+    res.status(HttpStatusCode.OK).json(results);
 }

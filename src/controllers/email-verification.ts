@@ -8,6 +8,7 @@ import { UnauthorizedException } from "../exceptions/unauthorized";
 import { ErrorCode } from "../exceptions/root";
 import { UUID } from "crypto";
 import { InitiateVerificationSchema } from "../schemas/email-verification";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 const emailVerificationRepository = new EmailVerificationRepository();
 const userRepository = new UserRepository();
@@ -27,7 +28,7 @@ export const initiateVerification = async (req: Request, res: Response) => {
 
     await emailVerificationService.initiateVerification(userId as UUID, email, name);
 
-    res.status(200).json({ message: "Verification email sent" });
+    res.status(HttpStatusCode.OK).json({ message: "Verification email sent" });
 };
 
 export const verifyEmail = async (req: Request, res: Response) => {
@@ -39,7 +40,7 @@ export const verifyEmail = async (req: Request, res: Response) => {
     try {
         await emailVerificationService.verifyEmail(token);
 
-        res.status(200).send(`
+        res.status(HttpStatusCode.OK).send(`
         <html>
           <head><title>Email Verified</title></head>
           <body style="font-family: sans-serif; text-align: center; padding: 50px;">
@@ -49,7 +50,7 @@ export const verifyEmail = async (req: Request, res: Response) => {
         </html>
       `);
     } catch (err) {
-        res.status(400).send(`
+        res.status(HttpStatusCode.BAD_REQUEST).send(`
         <html>
           <head><title>Verification Failed</title></head>
           <body style="font-family: sans-serif; text-align: center; padding: 50px;">

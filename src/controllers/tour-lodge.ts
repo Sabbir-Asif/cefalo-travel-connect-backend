@@ -7,6 +7,7 @@ import { UnprocessableEntityException } from "../exceptions/validation";
 import { ErrorCode } from "../exceptions/root";
 import { UUID } from "crypto";
 import { TourLodgeDto } from "../dtos/travel-plan/tour-lodge";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 const tourLodgeRepository = new TourLodgeRepository();
 const tourLodgeService = new TourLodgeService(tourLodgeRepository);
@@ -21,7 +22,7 @@ export const createTourLodge = async (req: Request, res: Response) => {
   const { travelplan_id, lodge_id } = dto;
   const result = await tourLodgeService.createTourLodge(travelplan_id, lodge_id);
 
-  res.status(201).json(result);
+  res.status(HttpStatusCode.CREATED).json(result);
 };
 
 export const deleteTourLodge = async (req: Request, res: Response) => {
@@ -36,7 +37,7 @@ export const deleteTourLodge = async (req: Request, res: Response) => {
   }
 
   const deleted = await tourLodgeService.deleteTourLodge(travelplanId.data as UUID, lodgeId.data as UUID);
-  res.status(204).json({ deleted });
+  res.status(HttpStatusCode.NO_CONTENT).json({ deleted });
 };
 
 export const getLodgesForTravelPlan = async (req: Request, res: Response) => {
@@ -47,5 +48,5 @@ export const getLodgesForTravelPlan = async (req: Request, res: Response) => {
 
   const lodges = await tourLodgeService.getLodgesForTravelPlan(parsedId.data as UUID);
 
-  res.status(200).json(lodges);
+  res.status(HttpStatusCode.OK).json(lodges);
 };

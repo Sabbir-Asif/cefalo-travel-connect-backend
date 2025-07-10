@@ -9,6 +9,7 @@ import { BadRequestException } from "../exceptions/bad-request";
 import { ErrorCode } from "../exceptions/root";
 import { UUID } from "crypto";
 import { CreateDiscussion } from "../interfaces/discussion";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 const discussionRepo = new DiscussionRepository();
 export const discussionService = new DiscussionService(discussionRepo);
@@ -30,7 +31,7 @@ export const createDiscussion = async (req: Request, res: Response) => {
 
   const discussion = await discussionService.create(senderId, inputData);
 
-  res.status(201).json(discussion);
+  res.status(HttpStatusCode.CREATED).json(discussion);
 };
 
 export const getDiscussionById = async (req: Request, res: Response) => {
@@ -43,7 +44,7 @@ export const getDiscussionById = async (req: Request, res: Response) => {
   const discussionId = parsedId.data as UUID;
   const discussion = await discussionService.getById(discussionId);
 
-  res.status(200).json(discussion);
+  res.status(HttpStatusCode.OK).json(discussion);
 };
 
 export const getDiscussionsByTravelPlanId = async (req: Request, res: Response) => {
@@ -56,7 +57,7 @@ export const getDiscussionsByTravelPlanId = async (req: Request, res: Response) 
   const travelPlanUUID = parsedId.data as UUID;
   const discussions = await discussionService.getByTravelPlanId(travelPlanUUID);
 
-  res.status(200).json(discussions);
+  res.status(HttpStatusCode.OK).json(discussions);
 };
 
 export const deleteDiscussion = async (req: Request, res: Response) => {
@@ -77,10 +78,10 @@ export const deleteDiscussion = async (req: Request, res: Response) => {
 
   await discussionService.delete(discussionId, userId);
   
-  res.status(204).json({ success: true });
+  res.status(HttpStatusCode.NO_CONTENT).json({ success: true });
 };
 
 export const searchDiscussions = async (req: Request, res: Response) => {
   const discussions = await discussionService.search(req.query);
-  res.status(200).json(discussions);
+  res.status(HttpStatusCode.OK).json(discussions);
 };

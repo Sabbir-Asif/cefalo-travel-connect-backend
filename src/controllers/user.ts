@@ -9,6 +9,7 @@ import { UpdateUserDto } from '../dtos/user';
 import { IdSchema } from '../schemas/id';
 import { BadRequestException } from '../exceptions/bad-request';
 import { UUID } from 'crypto';
+import { HttpStatusCode } from '../interfaces/status-code';
 
 const userRepository = new UserRepository();
 export const userService = new UserService(userRepository);
@@ -25,13 +26,13 @@ export const getUserById = async (req: Request, res: Response, next: NextFunctio
 
     const user: UserResponse = await userService.getUserById(userId);
 
-    res.status(200).json(user);
+    res.status(HttpStatusCode.OK).json(user);
 }
 
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     const users: UserResponse[] = await userService.getAllUsers();
 
-    res.status(200).json(users);
+    res.status(HttpStatusCode.OK).json(users);
 }
 
 export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
@@ -53,7 +54,7 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
 
     const user = await userService.updateUser(userId, updatedFields)
 
-    res.status(200).json(user);
+    res.status(HttpStatusCode.OK).json(user);
 }
 
 export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
@@ -67,5 +68,5 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
     const userId = parsed.data as UUID;
     await userService.deleteUser(userId);
 
-    res.status(204).json({ success: true });
+    res.status(HttpStatusCode.NO_CONTENT).json({ success: true });
 }

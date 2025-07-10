@@ -10,6 +10,7 @@ import { ErrorCode } from "../exceptions/root";
 import { CreateTourTransport, UpdateTourTransport } from "../interfaces/tour-transport";
 import { UUID } from "crypto";
 import { CreateTourTransportDto } from "../dtos/travel-plan/tour-transport";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 const tourTransportRepo = new TourTransportRepository();
 export const tourTransportService = new TourTransportService(tourTransportRepo);
@@ -32,13 +33,13 @@ export const createTourTransport = async (req: Request, res: Response) => {
   const userId = parsedUserId.data as UUID;
 
   const created = await tourTransportService.create(userId, tourTransportCreateDto as CreateTourTransport);
-  res.status(201).json(created);
+  res.status(HttpStatusCode.CREATED).json(created);
 };
 
 export const getAllTourTransports = async (_req: Request, res: Response) => {
   const tourTransports = await tourTransportService.getAll();
 
-  res.status(200).json(tourTransports);
+  res.status(HttpStatusCode.OK).json(tourTransports);
 };
 
 export const getTourTransportById = async (req: Request, res: Response) => {
@@ -49,7 +50,7 @@ export const getTourTransportById = async (req: Request, res: Response) => {
 
   const id = parsedId.data as UUID;
   const result = await tourTransportService.getById(id);
-  res.status(200).json(result);
+  res.status(HttpStatusCode.OK).json(result);
 };
 
 export const updateTourTransport = async (req: Request, res: Response) => {
@@ -74,7 +75,7 @@ export const updateTourTransport = async (req: Request, res: Response) => {
 
   const updatedTourTransport = await tourTransportService.update(id, parsedUserId.data as UUID, updateData);
 
-  res.status(200).json(updatedTourTransport);
+  res.status(HttpStatusCode.OK).json(updatedTourTransport);
 };
 
 export const deleteTourTransport = async (req: Request, res: Response) => {
@@ -90,10 +91,10 @@ export const deleteTourTransport = async (req: Request, res: Response) => {
   }
 
   await tourTransportService.delete(parsedId.data as UUID, parsedUserId.data as UUID);
-  res.status(204).json({ success: true });
+  res.status(HttpStatusCode.NO_CONTENT).json({ success: true });
 };
 
 export const searchTourTransports = async (req: Request, res: Response) => {
   const results = await tourTransportService.search(req.query);
-  res.status(200).json(results);
+  res.status(HttpStatusCode.OK).json(results);
 };

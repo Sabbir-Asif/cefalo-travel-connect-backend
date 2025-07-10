@@ -7,6 +7,7 @@ import { ErrorCode } from "../exceptions/root";
 import { IdSchema } from "../schemas/id";
 import { UUID } from "crypto";
 import { TourMemberDto } from "../dtos/travel-plan/tour-member";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 const tourMemberRepository = new TourMemberRepository();
 export const tourMemberService = new TourMemberService(tourMemberRepository);
@@ -19,7 +20,7 @@ export const createTourMember = async (req: Request, res: Response) => {
 
     const { travelplan_id, user_id } = new TourMemberDto(parsed.data as TourMemberDto);
     const result = await tourMemberService.createTourMember(travelplan_id, user_id);
-    res.status(201).json(result);
+    res.status(HttpStatusCode.CREATED).json(result);
 };
 
 export const deleteTourMember = async (req: Request, res: Response) => {
@@ -34,7 +35,7 @@ export const deleteTourMember = async (req: Request, res: Response) => {
     }
 
     const deleted = await tourMemberService.deleteTourMember(travelplanId.data as UUID, userId.data as UUID);
-    res.status(204).json({ deleted });
+    res.status(HttpStatusCode.NO_CONTENT).json({ success: true });
 };
 
 export const getMembersForTravelPlan = async (req: Request, res: Response) => {
@@ -45,5 +46,5 @@ export const getMembersForTravelPlan = async (req: Request, res: Response) => {
     }
 
     const members = await tourMemberService.getMembersForTravelPlan(travelplanId.data as UUID);
-    res.status(200).json(members);
+    res.status(HttpStatusCode.OK).json(members);
 };

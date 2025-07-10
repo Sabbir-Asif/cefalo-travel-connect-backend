@@ -8,6 +8,7 @@ import { BlogTransport } from "../interfaces/blog-transport";
 import { IdSchema } from "../schemas/id";
 import { UUID } from "crypto";
 import { BlogTransportDto } from "../dtos/blog/blog-transport";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 const blogTransportRepository = new BlogTransportRepository();
 const blogTransportSercive = new BlogTransportService(blogTransportRepository);
@@ -24,7 +25,7 @@ export const createBlogtransport = async (req: Request, res: Response) => {
 
     const blogTransport : BlogTransport = await blogTransportSercive.createBlogTransport(blogTransportCreateDto.blog_id, blogTransportCreateDto.transport_id);
 
-    res.status(201).json(blogTransport);
+    res.status(HttpStatusCode.CREATED).json(blogTransport);
 }
 
 export const getTransportsForBlog = async (req: Request, res: Response) => {
@@ -38,7 +39,7 @@ export const getTransportsForBlog = async (req: Request, res: Response) => {
     
     const transports = await blogTransportSercive.getTransportsForBlog(blogId);
 
-    res.status(200).json(transports);
+    res.status(HttpStatusCode.OK).json(transports);
 }
 
 export const deleteBlogTransport = async (req: Request, res: Response) => {
@@ -56,5 +57,5 @@ export const deleteBlogTransport = async (req: Request, res: Response) => {
     }
     const deletedCount = await blogTransportSercive.deleteBlogTransport(parsedBlogId.data as UUID, parsedTransportId.data as UUID);
 
-    res.status(204).json(deletedCount);
+    res.status(HttpStatusCode.NO_CONTENT).json(deletedCount);
 }

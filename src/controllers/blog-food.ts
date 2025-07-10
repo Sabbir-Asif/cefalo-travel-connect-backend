@@ -6,6 +6,7 @@ import { BlogFoodSchema } from "../schemas/blog-foods";
 import { BlogFoodService } from "../services/blog-food";
 import { Request, Response } from "express";
 import { IdSchema } from "../schemas/id";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 const blogFoodRepository = new BlogFoodRepository();
 const blogFoodService = new BlogFoodService(blogFoodRepository);
@@ -19,7 +20,7 @@ export const createBlogFood = async (req: Request, res: Response) => {
     const { blog_id, food_id } = parsed.data;
     const result = await blogFoodService.createBlogfood(blog_id as UUID, food_id as UUID);
 
-   res.status(201).json(result);
+   res.status(HttpStatusCode.CREATED).json(result);
 }
 
 export const deleteBlogFood = async (req: Request, res: Response) => {
@@ -34,7 +35,7 @@ export const deleteBlogFood = async (req: Request, res: Response) => {
 
     const deletedCount = await blogFoodService.deleteBlogFood(blogId.data as UUID, foodId.data as UUID);
 
-    res.status(204).json({ deletedCount });
+    res.status(HttpStatusCode.NO_CONTENT).json({ deletedCount });
 };
 
 export const getFoodsForBlog = async (req: Request, res: Response) => {
@@ -45,5 +46,5 @@ export const getFoodsForBlog = async (req: Request, res: Response) => {
 
     const foods = await blogFoodService.getFoodsForBlog(parsedId.data as UUID);
 
-    res.status(200).json(foods);
+    res.status(HttpStatusCode.OK).json(foods);
 }

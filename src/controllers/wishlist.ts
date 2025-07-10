@@ -10,6 +10,7 @@ import { ErrorCode } from "../exceptions/root";
 import { UUID } from "crypto";
 import { CreateWishlistDto, UpdateWishlistDto } from "../dtos/wishlist";
 import { CreateWishlist, UpdateWishlist } from "../interfaces/wishlist";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 const wishlistRepository = new WishlistRepository();
 const wishlistService = new WishlistService(wishlistRepository);
@@ -32,13 +33,13 @@ export const createWishlist = async (req: Request, res: Response) => {
 
   const wishlist = await wishlistService.createWishlist(userId, wishlistDto);
 
-  res.status(201).json(wishlist);
+  res.status(HttpStatusCode.CREATED).json(wishlist);
 };
 
 export const getAllWishlists = async (req: Request, res: Response) => {
   const wishlists = await wishlistService.getAllWishlists();
 
-  res.status(200).json(wishlists);
+  res.status(HttpStatusCode.OK).json(wishlists);
 };
 
 export const getWishlistById = async (req: Request, res: Response) => {
@@ -52,7 +53,7 @@ export const getWishlistById = async (req: Request, res: Response) => {
 
   const wishlist = await wishlistService.getWishlistById(wishlistId);
 
-  res.status(200).json(wishlist);
+  res.status(HttpStatusCode.OK).json(wishlist);
 };
 
 export const updateWishlist = async (req: Request, res: Response) => {
@@ -85,7 +86,7 @@ export const updateWishlist = async (req: Request, res: Response) => {
 
   const updatedWishlist = await wishlistService.updateWishlist(wishlistId, userId, wishlistUpdateDto);
 
-  res.status(200).json(updatedWishlist);
+  res.status(HttpStatusCode.OK).json(updatedWishlist);
 };
 
 export const deleteWishlist = async (req: Request, res: Response) => {
@@ -106,12 +107,12 @@ export const deleteWishlist = async (req: Request, res: Response) => {
   const userId = parsedUserId.data as UUID;
 
   await wishlistService.deleteWishlist(wishlistId, userId);
-  res.status(204).json({ success: true });
+  res.status(HttpStatusCode.NO_CONTENT).json({ success: true });
 };
 
 export const searchWishlists = async (req: Request, res: Response) => {
   const wishlists = await wishlistService.searchWishlists(req.query);
-  res.status(200).json(wishlists);
+  res.status(HttpStatusCode.OK).json(wishlists);
 };
 
 export const getWishlistsByUserId = async (req: Request, res: Response) => {
@@ -125,7 +126,7 @@ export const getWishlistsByUserId = async (req: Request, res: Response) => {
 
   const wishlists = await wishlistService.getWishlistsByUserId(userId);
 
-  res.status(200).json(wishlists);
+  res.status(HttpStatusCode.OK).json(wishlists);
 };
 
 export const getMatchingUsers = async (req: Request, res: Response) => {
@@ -144,5 +145,5 @@ export const getMatchingUsers = async (req: Request, res: Response) => {
     offset
   });
 
-  res.status(200).json(users);
+  res.status(HttpStatusCode.OK).json(users);
 };

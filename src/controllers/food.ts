@@ -9,6 +9,7 @@ import { BadRequestException } from "../exceptions/bad-request";
 import { CreateFoodDto, UpdateFoodDto } from "../dtos/food";
 import { CreateFood, Food, UpdateFood } from "../interfaces/food";
 import { UUID } from "crypto";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 const foodRepository = new FoodRepository();
 export const foodService = new FoodService(foodRepository);
@@ -22,12 +23,12 @@ export const createFood = async (req: Request, res: Response) => {
   const foodCreateDto: CreateFood = new CreateFoodDto(parsed.data);
   const food: Food = await foodService.createFood(foodCreateDto);
 
-  res.status(201).json(food);
+  res.status(HttpStatusCode.CREATED).json(food);
 };
 
 export const getAllFoods = async (req: Request, res: Response) => {
   const foods: Food[] = await foodService.getAllFoods();
-  res.status(200).json(foods);
+  res.status(HttpStatusCode.OK).json(foods);
 };
 
 export const getFoodById = async (req: Request, res: Response) => {
@@ -41,7 +42,7 @@ export const getFoodById = async (req: Request, res: Response) => {
 
   const food = await foodService.getFoodById(foodId);
 
-  res.status(200).json(food);
+  res.status(HttpStatusCode.OK).json(food);
 };
 
 export const updateFood = async (req: Request, res: Response) => {
@@ -62,7 +63,7 @@ const id = req.params.id;
   const updateFoodDto: UpdateFood = new UpdateFoodDto(parsed.data);
   const updatedFood = await foodService.updateFood(foodId, updateFoodDto);
 
-  res.status(200).json(updatedFood);
+  res.status(HttpStatusCode.OK).json(updatedFood);
 };
 
 export const deleteFood = async (req: Request, res: Response) => {
@@ -76,11 +77,11 @@ export const deleteFood = async (req: Request, res: Response) => {
 
   await foodService.deleteFood(foodId);
   
-  res.status(204).json({ success: true });
+  res.status(HttpStatusCode.NO_CONTENT).json({ success: true });
 };
 
 export const searchFoods = async (req: Request, res: Response) => {
   const queryParams = req.query;
   const foods = await foodService.searchFoods(queryParams);
-  res.status(200).json(foods);
+  res.status(HttpStatusCode.OK).json(foods);
 };

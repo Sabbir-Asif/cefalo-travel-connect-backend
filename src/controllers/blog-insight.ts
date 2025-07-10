@@ -10,6 +10,7 @@ import { BadRequestException } from "../exceptions/bad-request";
 import { ErrorCode } from "../exceptions/root";
 import { CreateBlogInsightDto, UpdateBlogInsightDto } from "../dtos/blog/blog-insight";
 import { CreateBlogInsight, UpdateBlogInsight } from "../interfaces/blog-insight";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 const blogInsightRepository = new BlogInsightRepository();
 export const blogInsightService = new BlogInsightService(blogInsightRepository);
@@ -39,13 +40,13 @@ export const createBlogInsight = async (req: Request, res: Response, next: NextF
 
     const insight = await blogInsightService.createInsight(userId, blogId, createBlogInsightDto);
 
-    res.status(201).json(insight);
+    res.status(HttpStatusCode.CREATED).json(insight);
 };
 
 export const getAllBlogInsights = async (req: Request, res: Response) => {
     const insights = await blogInsightService.getAllInsights();
     
-    res.status(200).json(insights);
+    res.status(HttpStatusCode.OK).json(insights);
 };
 
 export const getBlogInsightById = async (req: Request, res: Response) => {
@@ -58,7 +59,7 @@ export const getBlogInsightById = async (req: Request, res: Response) => {
     const insightId = parsedId.data as UUID;
     const insight = await blogInsightService.getInsightById(insightId);
     
-    res.status(200).json(insight);
+    res.status(HttpStatusCode.OK).json(insight);
 };
 
 export const getBlogInsightsByBlogId = async (req: Request, res: Response) => {
@@ -72,7 +73,7 @@ export const getBlogInsightsByBlogId = async (req: Request, res: Response) => {
     const blogId = parsedId.data as UUID;
     const insights = await blogInsightService.getInsightByBlogId(blogId);
 
-    res.status(200).json(insights);
+    res.status(HttpStatusCode.OK).json(insights);
 };
 
 export const updateBlogInsight = async (req: Request, res: Response) => {
@@ -100,7 +101,7 @@ export const updateBlogInsight = async (req: Request, res: Response) => {
 
     const updated = await blogInsightService.updateInsight(insightId, userId, blogInsightUpdateDto);
 
-    res.status(200).json(updated);
+    res.status(HttpStatusCode.OK).json(updated);
 };
 
 export const deleteBlogInsight = async (req: Request, res: Response) => {
@@ -121,10 +122,10 @@ export const deleteBlogInsight = async (req: Request, res: Response) => {
     const userId = parsedUserId.data as UUID;
     await blogInsightService.deleteInsight(insightId, userId);
     
-    res.status(204).json({ success: true });
+    res.status(HttpStatusCode.NO_CONTENT).json({ success: true });
 };
 
 export const searchBlogInsights = async (req: Request, res: Response) => {
     const insights = await blogInsightService.searchInsights(req.query);
-    res.status(200).json(insights);
+    res.status(HttpStatusCode.OK).json(insights);
 };

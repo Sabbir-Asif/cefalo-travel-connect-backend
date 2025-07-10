@@ -10,6 +10,7 @@ import { UUID } from "crypto";
 import { CreateTravelPlace, TravelPlace, UpdateTravelPlace } from "../interfaces/travel-place";
 import { CreateTravelPlaceDto, UpdateTravelPlaceDto } from "../dtos/travel-place";
 import { BadRequestException } from "../exceptions/bad-request";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 const travelPlaceRepository = new TravelPlaceRepository();
 const travelPlaceService = new TravelPlaceService(travelPlaceRepository);
@@ -33,13 +34,13 @@ export const createTravelPlace = async (req: Request, res: Response) => {
 
     const travelPlace: TravelPlace = await travelPlaceService.createTravelPlace(userId, travelPlaceCreateDto);
 
-    res.status(201).json(travelPlace);
+    res.status(HttpStatusCode.CREATED).json(travelPlace);
 }
 
 export const getAllTravelPlace = async (req: Request, res: Response) => {
     const travelPlaces: TravelPlace[] = await travelPlaceService.getAllTravelPlaces();
 
-    res.status(200).json(travelPlaces);
+    res.status(HttpStatusCode.OK).json(travelPlaces);
 }
 
 export const getTravelPlaceById = async (req: Request, res: Response) => {
@@ -54,7 +55,7 @@ export const getTravelPlaceById = async (req: Request, res: Response) => {
 
     const travelPlace = await travelPlaceService.getTravelPlaceById(travelPlaceId);
 
-    res.status(200).json(travelPlace);
+    res.status(HttpStatusCode.OK).json(travelPlace);
 }
 
 export const updateTravelPlace = async (req: Request, res: Response) => {
@@ -83,7 +84,7 @@ export const updateTravelPlace = async (req: Request, res: Response) => {
 
     const updatedTravelPlace: TravelPlace = await travelPlaceService.updateTravelPlace(travelPlaceId, userId, travelPlaceUpdateDto);
 
-    res.status(200).json(updatedTravelPlace);
+    res.status(HttpStatusCode.OK).json(updatedTravelPlace);
 
 }
 
@@ -106,7 +107,7 @@ export const deleteTravelPlace = async (req: Request, res: Response) => {
 
     await travelPlaceService.deleteTravelPlace(travelPlaceId, userId);
 
-    res.status(204).json({success: true});
+    res.status(HttpStatusCode.NO_CONTENT).json({success: true});
 }
 
 export const searchTravelPlaces = async (req: Request, res: Response) => {
@@ -114,5 +115,5 @@ export const searchTravelPlaces = async (req: Request, res: Response) => {
 
     const travelPlaces = await travelPlaceService.searchTravelPlaces(queryParmas);
 
-    res.status(200).json(travelPlaces);
+    res.status(HttpStatusCode.OK).json(travelPlaces);
 }

@@ -13,6 +13,7 @@ import { TokenService } from "../services/token";
 import { NextFunction } from "connect";
 import { BadRequestException } from "../exceptions/bad-request";
 import { IS_PRODUCTION, REFRESH_TOKEN_COOKIE_NAME, REFRESH_TOKEN_EXPIRES_DAYS } from "../configs/secrets";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 const userRepository = new UserRepository();
 const authService = new AuthService(userRepository);
@@ -31,7 +32,7 @@ export const signup = async (req: Request, res: Response) => {
 
     const user: UserResponse = await authService.signup(userCreateDto);
 
-    res.status(201).json(user);
+    res.status(HttpStatusCode.CREATED).json(user);
 }
 
 export const login = async (req: Request, res: Response) => {
@@ -77,7 +78,7 @@ export const refreshAccessToken = async (req: Request, res: Response, next: Next
         maxAge: REFRESH_TOKEN_EXPIRES_DAYS * 24 * 60 * 60 * 1000,
     });
 
-    res.status(200).json({ accessToken: newAccessToken });
+    res.status(HttpStatusCode.OK).json({ accessToken: newAccessToken });
 
 }
 
@@ -96,6 +97,6 @@ export const logout = async (req: Request, res: Response, next: NextFunction) =>
         expires: new Date(0),
     });
 
-    res.status(204).send();
+    res.status(HttpStatusCode.NO_CONTENT).send();
     
 }

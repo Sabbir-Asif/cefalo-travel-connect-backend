@@ -20,7 +20,7 @@ export const UserUpdateSchema = z.object({
     phone_number: z.string().regex(bdPhoneRegex, { message: 'Invalid Bangladeshi phone number' }).optional(),
     is_verified: z.boolean().optional(),
     password: z.string().min(6).optional(),
-    bio: z.string().nullable().optional()
+    bio: z.string().max(50).nullable().optional()
 }).refine((data) => Object.keys(data).length > 0, {
     message: 'At least one field must be provided for update.'
 });

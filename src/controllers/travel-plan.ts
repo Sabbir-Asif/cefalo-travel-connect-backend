@@ -10,6 +10,7 @@ import { BadRequestException } from "../exceptions/bad-request";
 import { UUID } from "crypto";
 import { CreateTravelPlan, TravelPlan, TravelPlanStatus, UpdateTravelPlan } from "../interfaces/travel-plan";
 import { CreateTravelPlanDto, UpdateTravelPlanDto } from "../dtos/travel-plan/travel-plan";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 const travelPlanRepository = new TravelPlanRepository();
 export const travelPlanService = new TravelPlanService(travelPlanRepository);
@@ -36,13 +37,13 @@ export const createTravelPlan = async (req: Request, res: Response) => {
 
     const travelPlan: TravelPlan = await travelPlanService.createTravelPlan(userId, travelPlanDto);
 
-    res.status(201).json(travelPlan);
+    res.status(HttpStatusCode.CREATED).json(travelPlan);
 };
 
 export const getAllTravelPlans = async (req: Request, res: Response) => {
     const travelPlans = await travelPlanService.getAllTravelPlans();
 
-    res.status(200).json(travelPlans);
+    res.status(HttpStatusCode.OK).json(travelPlans);
 };
 
 export const getTravelPlanById = async (req: Request, res: Response) => {
@@ -55,7 +56,7 @@ export const getTravelPlanById = async (req: Request, res: Response) => {
     const travelPlanId = parsedId.data as UUID;
     const travelPlan = await travelPlanService.getTravelPlanById(travelPlanId);
 
-    res.status(200).json(travelPlan);
+    res.status(HttpStatusCode.OK).json(travelPlan);
 };
 
 export const updateTravelPlan = async (req: Request, res: Response) => {
@@ -86,7 +87,7 @@ export const updateTravelPlan = async (req: Request, res: Response) => {
     });
     const updatedTravelPlan = await travelPlanService.updateTravelPlan(travelPlanId, userId, travelPlanUpdateDto);
 
-    res.status(200).json(updatedTravelPlan);
+    res.status(HttpStatusCode.OK).json(updatedTravelPlan);
 };
 
 export const deleteTravelPlan = async (req: Request, res: Response) => {
@@ -106,11 +107,11 @@ export const deleteTravelPlan = async (req: Request, res: Response) => {
     const userId = parsedUserId.data as UUID;
     await travelPlanService.deleteTravelPlan(travelPlanId, userId);
 
-    res.status(204).json({ success: true });
+    res.status(HttpStatusCode.NO_CONTENT).json({ success: true });
 };
 
 export const searchTravelPlans = async (req: Request, res: Response) => {
     const queryParams = req.query;
     const travelPlans = await travelPlanService.searchTravelPlans(queryParams);
-    res.status(200).json(travelPlans);
+    res.status(HttpStatusCode.OK).json(travelPlans);
 };

@@ -9,6 +9,7 @@ import { CreateTransportDto, UpdateTransportDto } from "../dtos/transport";
 import { BadRequestException } from "../exceptions/bad-request";
 import { UUID } from "crypto";
 import { IdSchema } from "../schemas/id";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 
 const transportRepository = new TransportRepository();
@@ -25,13 +26,13 @@ export const getTransportById = async (req: Request, res: Response) => {
 
     const transport = await transportService.getTransportById(transportId);
 
-    res.status(200).json(transport);
+    res.status(HttpStatusCode.OK).json(transport);
 }
 
 export const getAllTransports = async (req: Request, res: Response) => {
     const transports: Transport[] = await transportService.getAllTransports();
 
-    res.status(200).json(transports);
+    res.status(HttpStatusCode.OK).json(transports);
 }
 
 export const createTransport = async (req: Request, res: Response) => {
@@ -47,7 +48,7 @@ export const createTransport = async (req: Request, res: Response) => {
 
     const transport: Transport = await transportService.createTransport(transportCreateDto);
 
-    res.status(201).json(transport);
+    res.status(HttpStatusCode.CREATED).json(transport);
 }
 
 export const updateTransport = async (req: Request, res: Response) => {
@@ -74,7 +75,7 @@ export const updateTransport = async (req: Request, res: Response) => {
 
     const transport: Transport = await transportService.updateTransport(transportId, transportUpdateDto as UpdateTransport);
 
-    res.status(200).json(transport);
+    res.status(HttpStatusCode.OK).json(transport);
 }
 
 export const deleteTransport = async (req: Request, res: Response) => {
@@ -88,7 +89,7 @@ export const deleteTransport = async (req: Request, res: Response) => {
     const transportId = parsedId.data as UUID;
     const deletedCount = await transportService.deleteTransport(transportId);
 
-    res.status(204).json(deletedCount);
+    res.status(HttpStatusCode.NO_CONTENT).json(deletedCount);
 }
 
 export const getAllStartingLocations = async (req: Request, res: Response) => {
@@ -98,7 +99,7 @@ export const getAllStartingLocations = async (req: Request, res: Response) => {
 
 export const getAllDestinationLocations = async (req: Request, res: Response) => {
     const locations = await transportService.getAllDestinationLocations();
-    res.status(200).json(locations);
+    res.status(HttpStatusCode.OK).json(locations);
 };
 
 export const searchTransports = async (req: Request, res: Response) => {
@@ -106,6 +107,6 @@ export const searchTransports = async (req: Request, res: Response) => {
 
     const results = await transportService.searchTransports(queryParams);
 
-    res.status(200).json(results);
+    res.status(HttpStatusCode.OK).json(results);
 };
 

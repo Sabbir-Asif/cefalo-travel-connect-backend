@@ -10,6 +10,7 @@ import { TravelRequestRepository } from "../infrastructure/travel-request-impl";
 import { CreateTravelRequestSchema, UpdateTravelRequestSchema } from "../schemas/travel-request";
 import { CreateTravelRequest, UpdateTravelRequest, TravelRequest } from "../interfaces/travel-request";
 import { CreateTravelRequestDto, UpdateTravelRequestDto } from "../dtos/travel-request";
+import { HttpStatusCode } from "../interfaces/status-code";
 
 const travelRequestRepository = new TravelRequestRepository();
 export const travelRequestService = new TravelRequestService(travelRequestRepository);
@@ -33,13 +34,13 @@ export const createTravelRequest = async (req: Request, res: Response) => {
 
     const newRequest: TravelRequest = await travelRequestService.createTravelRequest(userFrom, travelRequestDto);
 
-    res.status(201).json(newRequest);
+    res.status(HttpStatusCode.CREATED).json(newRequest);
 };
 
 export const getAllTravelRequests = async (_req: Request, res: Response) => {
     const travelRequests = await travelRequestService.getAllTravelRequests();
     
-    res.status(200).json(travelRequests);
+    res.status(HttpStatusCode.OK).json(travelRequests);
 };
 
 export const getTravelRequestById = async (req: Request, res: Response) => {
@@ -52,7 +53,7 @@ export const getTravelRequestById = async (req: Request, res: Response) => {
     const travelRequestId = parsedId.data as UUID;
     const travelRequest = await travelRequestService.getTravelRequestById(travelRequestId);
 
-    res.status(200).json(travelRequest);
+    res.status(HttpStatusCode.OK).json(travelRequest);
 };
 
 export const updateTravelRequest = async (req: Request, res: Response) => {
@@ -81,7 +82,7 @@ export const updateTravelRequest = async (req: Request, res: Response) => {
     const travelRequestDto = new UpdateTravelRequestDto(updateData);
     const updatedRequest = await travelRequestService.updateTravelRequest(travelRequestId, userId, travelRequestDto);
 
-    res.status(200).json(updatedRequest);
+    res.status(HttpStatusCode.OK).json(updatedRequest);
 };
 
 export const deleteTravelRequest = async (req: Request, res: Response) => {
@@ -102,11 +103,11 @@ export const deleteTravelRequest = async (req: Request, res: Response) => {
 
     await travelRequestService.deleteTravelRequest(travelRequestId, userId);
 
-    res.status(204).json({ success: true });
+    res.status(HttpStatusCode.NO_CONTENT).json({ success: true });
 };
 
 export const searchTravelRequests = async (req: Request, res: Response) => {
     const queryParams = req.query;
     const travelRequests = await travelRequestService.searchTravelRequests(queryParams);
-    res.status(200).json(travelRequests);
+    res.status(HttpStatusCode.OK).json(travelRequests);
 };
