@@ -1,11 +1,7 @@
 import { z } from 'zod';
+import { LocationPointSchema } from './location';
 
 export const TravelPlanStatusEnum = z.enum(['PENDING', 'ACTIVE', 'COMPLETED', 'CANCELLED']);
-
-const LocationPointSchema = z.object({
-  lat: z.number().min(-90).max(90),
-  long: z.number().min(-180).max(180),
-});
 
 export const CreateTravelPlanSchema = z.object({
   title: z.string().min(1, 'Title is required'),

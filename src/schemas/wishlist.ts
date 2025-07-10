@@ -1,11 +1,8 @@
 import { z } from 'zod';
+import { LocationPointSchema } from './location';
 
 export const WishlistStatusEnum = z.enum(['PUBLIC', 'PRIVATE']);
 
-const LocationPointSchema = z.object({
-  lat: z.number().min(-90).max(90),
-  long: z.number().min(-180).max(180),
-});
 
 export const CreateWishlistSchema = z.object({
   title: z.string().min(1, 'Title is required'),
