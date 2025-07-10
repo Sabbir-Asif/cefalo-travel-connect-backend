@@ -1,6 +1,8 @@
 export class HttpException extends Error {
     message: string;
     errorCode: ErrorCode;
+    title: string;
+    description: string;
     statusCode: number;
     errors: any;
 
@@ -8,6 +10,8 @@ export class HttpException extends Error {
         super(message);
         this.message = message;
         this.errorCode = errorCode;
+        this.title = "Error";
+        this.description = "Error performing operation!"
         this.statusCode = statusCode;
         this.errors = errors;
     }
