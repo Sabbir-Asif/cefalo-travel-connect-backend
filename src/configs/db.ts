@@ -1,4 +1,4 @@
-import knex from 'knex';
+import knex, { Knex } from 'knex';
 import dotenv from 'dotenv';
 import { PG_DATABASE_NAME, PG_PASSWORD, PG_PORT, PG_USER } from './secrets';
 
@@ -21,4 +21,8 @@ const dbConfig = {
     }
 }
 
-export const db = knex(dbConfig);
+export function createDbConnection(): Knex {
+  return knex(dbConfig);
+}
+
+export const db = createDbConnection();

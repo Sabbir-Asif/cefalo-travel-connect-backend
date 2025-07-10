@@ -4,18 +4,17 @@ import { rootRouter } from './routes/root';
 import { db } from './configs/db';
 import { errorMiddleware } from './middlewares/error';
 import cookieParser from 'cookie-parser';
+import { Database } from './utils/database';
 
 const app: Express = express();
+const database = new Database();
 app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api',rootRouter);
 app.use(errorMiddleware);
 
-app.listen(PORT, ()=> {
+app.listen(PORT, async ()=> {
     console.log(`server is running on port ${PORT}`);
+     await database.connect();
 })
-
-db.raw('SELECT 1')
-.then(() => console.log('Database connected successfully'))
-.catch(err => console.error('Database connection failed', err));

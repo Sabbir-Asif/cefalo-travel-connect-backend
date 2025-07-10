@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "start": "npx nodemon",
+    "dev": "npx nodemon",
+    "build": "tsc",
     "mk:migrate": "knex migrate:make --knexfile knexfile.cjs --env development",
     "migrate:latest": "npx knex migrate:latest --knexfile knexfile.cjs --env development"
   },
