@@ -1,5 +1,5 @@
 import { UUID } from "crypto";
-import { Blog, Blog_Status, CreateBlog, UpdateBlog } from "../interfaces/blog";
+import { Blog, Blog_Status, CreateBlog, UpdateBlog } from "../../interfaces/blog";
 
 export class CreateBlogDto {
     title: string;

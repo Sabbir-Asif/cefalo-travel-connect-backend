@@ -8,7 +8,7 @@ import { UnprocessableEntityException } from "../exceptions/validation";
 import { UnauthorizedException } from "../exceptions/unauthorized";
 import { BadRequestException } from "../exceptions/bad-request";
 import { ErrorCode } from "../exceptions/root";
-import { CreateBlogInsightDto, UpdateBlogInsightDto } from "../dtos/blog-insight";
+import { CreateBlogInsightDto, UpdateBlogInsightDto } from "../dtos/blog/blog-insight";
 import { CreateBlogInsight, UpdateBlogInsight } from "../interfaces/blog-insight";
 
 const blogInsightRepository = new BlogInsightRepository();

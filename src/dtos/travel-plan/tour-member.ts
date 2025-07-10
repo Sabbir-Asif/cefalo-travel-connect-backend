@@ -1,5 +1,5 @@
 import { UUID } from "crypto";
-import { TourMember } from "../interfaces/tour-member";
+import { TourMember } from "../../interfaces/tour-member";
 
 export class TourMemberDto {
     travelplan_id: UUID;

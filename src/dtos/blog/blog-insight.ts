@@ -1,5 +1,5 @@
 import { UUID } from "crypto";
-import { BlogInsight, CreateBlogInsight, UpdateBlogInsight } from "../interfaces/blog-insight";
+import { BlogInsight, CreateBlogInsight, UpdateBlogInsight } from "../../interfaces/blog-insight";
 
 export class CreateBlogInsightDto {
   label: string;

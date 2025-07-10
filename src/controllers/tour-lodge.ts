@@ -6,7 +6,7 @@ import { IdSchema } from "../schemas/id";
 import { UnprocessableEntityException } from "../exceptions/validation";
 import { ErrorCode } from "../exceptions/root";
 import { UUID } from "crypto";
-import { TourLodgeDto } from "../dtos/tour-lodge";
+import { TourLodgeDto } from "../dtos/travel-plan/tour-lodge";
 
 const tourLodgeRepository = new TourLodgeRepository();
 const tourLodgeService = new TourLodgeService(tourLodgeRepository);

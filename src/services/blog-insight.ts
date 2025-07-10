@@ -1,7 +1,7 @@
 import { UUID } from "crypto";
 import { IBlogInsightRepository } from "../repositories/blog-insight";
 import { BlogInsight, CreateBlogInsight, UpdateBlogInsight } from "../interfaces/blog-insight";
-import { BlogInsightResponseDto } from "../dtos/blog-insight";
+import { BlogInsightResponseDto } from "../dtos/blog/blog-insight";
 import { NotFoundException } from "../exceptions/not-found";
 import { ErrorCode } from "../exceptions/root";
 import { blogService } from "../controllers/blog";

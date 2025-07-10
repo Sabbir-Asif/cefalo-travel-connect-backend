@@ -1,6 +1,6 @@
 import { UUID } from "crypto";
 import { IBlogTransportRepository } from "../repositories/blog-transport";
-import { BlogTransportDto } from "../dtos/blog-transport";
+import { BlogTransportDto } from "../dtos/blog/blog-transport";
 import { TransportResponseDto } from "../dtos/transport";
 
 export class BlogTransportService {

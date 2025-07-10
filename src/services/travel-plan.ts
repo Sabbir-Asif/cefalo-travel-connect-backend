@@ -5,7 +5,7 @@ import { userService } from "../controllers/user";
 import { NotFoundException } from "../exceptions/not-found";
 import { ForbiddenException } from "../exceptions/forbidden";
 import { ErrorCode } from "../exceptions/root";
-import { TravelPlanResponseDto } from "../dtos/travel-plan";
+import { TravelPlanResponseDto } from "../dtos/travel-plan/travel-plan";
 import { Role } from "../interfaces/user";
 
 export class TravelPlanService {

@@ -1,7 +1,7 @@
 import { UUID } from "crypto";
 import { CreateTourTransport, UpdateTourTransport } from "../interfaces/tour-transport";
 import { ITourTransportRepository } from "../repositories/tour-transport";
-import { TourTransportWithTransportDto } from "../dtos/tour-transport";
+import { TourTransportWithTransportDto } from "../dtos/travel-plan/tour-transport";
 import { NotFoundException } from "../exceptions/not-found";
 import { ErrorCode } from "../exceptions/root";
 import { travelPlanService } from "../controllers/travel-plan";

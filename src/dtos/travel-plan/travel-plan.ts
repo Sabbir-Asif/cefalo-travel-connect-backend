@@ -1,6 +1,5 @@
 import { UUID } from "crypto";
-import { CreateTravelPlan, TravelPlan, UpdateTravelPlan } from "../interfaces/travel-plan";
-import { TravelPlanStatus } from "../interfaces/travel-plan";
+import { CreateTravelPlan, TravelPlan, TravelPlanStatus, UpdateTravelPlan } from "../../interfaces/travel-plan";
 
 export class CreateTravelPlanDto {
     title: string;

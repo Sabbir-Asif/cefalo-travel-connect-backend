@@ -4,7 +4,7 @@ import { blogService } from "../controllers/blog";
 import { NotFoundException } from "../exceptions/not-found";
 import { ErrorCode } from "../exceptions/root";
 import { foodService } from "../controllers/food";
-import { BlogFoodDto } from "../dtos/blog-food";
+import { BlogFoodDto } from "../dtos/blog/blog-food";
 import { FoodResponseDto } from "../dtos/food";
 
 export class BlogFoodService {

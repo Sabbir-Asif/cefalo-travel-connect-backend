@@ -9,7 +9,7 @@ import { UnauthorizedException } from "../exceptions/unauthorized";
 import { BadRequestException } from "../exceptions/bad-request";
 import { UUID } from "crypto";
 import { CreateTravelPlan, TravelPlan, TravelPlanStatus, UpdateTravelPlan } from "../interfaces/travel-plan";
-import { CreateTravelPlanDto, UpdateTravelPlanDto } from "../dtos/travel-plan";
+import { CreateTravelPlanDto, UpdateTravelPlanDto } from "../dtos/travel-plan/travel-plan";
 
 const travelPlanRepository = new TravelPlanRepository();
 export const travelPlanService = new TravelPlanService(travelPlanRepository);

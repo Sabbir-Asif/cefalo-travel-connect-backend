@@ -1,6 +1,6 @@
 import { UUID } from "crypto";
 import { IBlogLodgeRepository } from "../repositories/blog-lodge";
-import { BlogLodgeDto } from "../dtos/blog-lodge";
+import { BlogLodgeDto } from "../dtos/blog/blog-lodge";
 import { LodgeResponseDto } from "../dtos/lodge";
 import { blogService } from "../controllers/blog";
 import { NotFoundException } from "../exceptions/not-found";

@@ -1,6 +1,6 @@
 import { UUID } from "crypto";
 import { userService } from "../controllers/user";
-import { BlogResponseDto } from "../dtos/blog";
+import { BlogResponseDto } from "../dtos/blog/blog";
 import { ForbiddenException } from "../exceptions/forbidden";
 import { NotFoundException } from "../exceptions/not-found";
 import { ErrorCode } from "../exceptions/root";

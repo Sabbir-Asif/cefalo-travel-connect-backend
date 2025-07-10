@@ -7,7 +7,7 @@ import { ErrorCode } from "../exceptions/root";
 import { BlogTransport } from "../interfaces/blog-transport";
 import { IdSchema } from "../schemas/id";
 import { UUID } from "crypto";
-import { BlogTransportDto } from "../dtos/blog-transport";
+import { BlogTransportDto } from "../dtos/blog/blog-transport";
 
 const blogTransportRepository = new BlogTransportRepository();
 const blogTransportSercive = new BlogTransportService(blogTransportRepository);

@@ -6,7 +6,7 @@ import { UnprocessableEntityException } from "../exceptions/validation";
 import { ErrorCode } from "../exceptions/root";
 import { IdSchema } from "../schemas/id";
 import { UUID } from "crypto";
-import { TourMemberDto } from "../dtos/tour-member";
+import { TourMemberDto } from "../dtos/travel-plan/tour-member";
 
 const tourMemberRepository = new TourMemberRepository();
 export const tourMemberService = new TourMemberService(tourMemberRepository);

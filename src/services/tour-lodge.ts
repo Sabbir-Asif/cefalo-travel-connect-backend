@@ -1,6 +1,6 @@
 import { UUID } from "crypto";
 import { ITourLodgeRepository } from "../repositories/tour-lodge";
-import { TourLodgeDto } from "../dtos/tour-lodge";
+import { TourLodgeDto } from "../dtos/travel-plan/tour-lodge";
 import { LodgeResponseDto } from "../dtos/lodge";
 import { NotFoundException } from "../exceptions/not-found";
 import { ErrorCode } from "../exceptions/root";

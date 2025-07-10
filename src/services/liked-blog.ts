@@ -9,7 +9,7 @@ import { ErrorCode } from "../exceptions/root";
 import { LikedBlogResponseDto } from "../dtos/liked-blog";
 import { User, UserResponse } from "../interfaces/user";
 import { Blog } from "../interfaces/blog";
-import { BlogResponseDto } from '../dtos/blog';
+import { BlogResponseDto } from '../dtos/blog/blog';
 
 export class LikedBlogService {
     constructor(

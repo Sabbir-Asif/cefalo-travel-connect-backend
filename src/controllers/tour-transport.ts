@@ -9,7 +9,7 @@ import { UnauthorizedException } from "../exceptions/unauthorized";
 import { ErrorCode } from "../exceptions/root";
 import { CreateTourTransport, UpdateTourTransport } from "../interfaces/tour-transport";
 import { UUID } from "crypto";
-import { CreateTourTransportDto } from "../dtos/tour-transport";
+import { CreateTourTransportDto } from "../dtos/travel-plan/tour-transport";
 
 const tourTransportRepo = new TourTransportRepository();
 export const tourTransportService = new TourTransportService(tourTransportRepo);

@@ -1,5 +1,5 @@
 import { UUID } from "crypto";
-import { TourLodge } from "../interfaces/tour-lodge";
+import { TourLodge } from "../../interfaces/tour-lodge";
 
 export class TourLodgeDto {
   travelplan_id: UUID;

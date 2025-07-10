@@ -1,6 +1,6 @@
 import { UUID } from "crypto";
-import { CreateTourTransport, TourTransport, TourTransportWithTransport } from "../interfaces/tour-transport";
-import { TransportResponseDto } from "./transport";
+import { CreateTourTransport, TourTransport, TourTransportWithTransport } from "../../interfaces/tour-transport";
+import { TransportResponseDto } from "../transport";
 
 export class TourTransportResponseDto {
   id: UUID;

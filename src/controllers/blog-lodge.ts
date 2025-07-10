@@ -6,7 +6,7 @@ import { UnprocessableEntityException } from "../exceptions/validation";
 import { ErrorCode } from "../exceptions/root";
 import { IdSchema } from "../schemas/id";
 import { UUID } from "crypto";
-import { BlogLodgeDto } from "../dtos/blog-lodge";
+import { BlogLodgeDto } from "../dtos/blog/blog-lodge";
 import { BlogLodge } from "../interfaces/blog-lodge";
 
 const blogLodgeRepository = new BlogLodgeRepository();
