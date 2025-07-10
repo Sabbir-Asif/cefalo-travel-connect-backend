@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/auth";
-import { errorHandler } from "../global-error-handler";
+import { errorHandler } from "../middlewares/error-handler";
 import { createTransport, deleteTransport, getAllDestinationLocations, getAllStartingLocations, getAllTransports, getTransportById, searchTransports, updateTransport } from "../controllers/transport";
 
 export const transportRouter : Router = Router();

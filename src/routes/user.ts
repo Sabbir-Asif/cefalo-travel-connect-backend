@@ -1,4 +1,4 @@
-import { errorHandler } from './../global-error-handler';
+import { errorHandler } from '../middlewares/error-handler';
 import { Router } from "express";
 import { deleteUser, getAllUsers, getUserById, updateUser } from "../controllers/user";
 import { authMiddleware } from '../middlewares/auth';

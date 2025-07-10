@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { initiateVerification, verifyEmail } from "../controllers/email-verification";
-import { errorHandler } from "../global-error-handler";
+import { errorHandler } from "../middlewares/error-handler";
 
 const emailVerificationRouter : Router = Router();
 

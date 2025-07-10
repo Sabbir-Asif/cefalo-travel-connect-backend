@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/auth";
-import { errorHandler } from "../global-error-handler";
+import { errorHandler } from "../middlewares/error-handler";
 import { createFood, deleteFood, getAllFoods, getFoodById, searchFoods, updateFood } from "../controllers/food";
 
 export const foodRouter : Router = Router();

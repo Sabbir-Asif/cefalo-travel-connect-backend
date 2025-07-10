@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/auth";
-import { errorHandler } from "../global-error-handler";
+import { errorHandler } from "../middlewares/error-handler";
 import { createTourTransport, getAllTourTransports, getTourTransportById, updateTourTransport, deleteTourTransport, searchTourTransports } from "../controllers/tour-transport";
 
 export const tourTransportRouter: Router = Router();

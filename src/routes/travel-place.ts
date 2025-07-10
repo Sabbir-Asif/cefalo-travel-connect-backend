@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/auth";
-import { errorHandler } from "../global-error-handler";
+import { errorHandler } from "../middlewares/error-handler";
 import { createTravelPlace, deleteTravelPlace, getAllTravelPlace, getTravelPlaceById, searchTravelPlaces, updateTravelPlace } from "../controllers/travel-place";
 
 export const travelPlaceRouter : Router = Router();

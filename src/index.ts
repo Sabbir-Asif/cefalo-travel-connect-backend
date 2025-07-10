@@ -2,7 +2,7 @@ import express, { Express } from 'express';
 import cors from "cors";
 import { PORT } from './configs/secrets';
 import { rootRouter } from './routes/root';
-import { errorMiddleware } from './middlewares/error';
+import { globalErrorHandler } from './middlewares/error';
 import cookieParser from 'cookie-parser';
 import { Database } from './utils/database';
 import { corsOptions } from './configs/cors';
@@ -18,9 +18,12 @@ app.use(cors(corsOptions));
 
 
 app.use('/api', rootRouter);
-app.use(errorMiddleware);
+app.use(globalErrorHandler);
+
+(async () => {
+    await database.connect();
+})();
 
 app.listen(PORT, async () => {
     console.log(`server is running on port ${PORT}`);
-    await database.connect();
 })

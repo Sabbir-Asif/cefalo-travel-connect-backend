@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { createBlog, deleteBlog, getAllBlogs, getBlogById, searchBlogs, updateBlog } from "../controllers/blog";
-import { errorHandler } from "../global-error-handler";
+import { errorHandler } from "../middlewares/error-handler";
 import { authMiddleware } from "../middlewares/auth";
 import { createBlogtransport, deleteBlogTransport, getTransportsForBlog } from "../controllers/blog-transport";
 import { createBlogInsight, deleteBlogInsight, getAllBlogInsights, getBlogInsightById, getBlogInsightsByBlogId, searchBlogInsights, updateBlogInsight } from "../controllers/blog-insight";

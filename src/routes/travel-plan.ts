@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/auth";
-import { errorHandler } from "../global-error-handler";
+import { errorHandler } from "../middlewares/error-handler";
 import { createTravelPlan, deleteTravelPlan, getAllTravelPlans, getTravelPlanById, searchTravelPlans, updateTravelPlan } from "../controllers/travel-plan";
 import { getDiscussionsByTravelPlanId } from "../controllers/discussion";
 import { tourTransportRouter } from "./tour-transport";

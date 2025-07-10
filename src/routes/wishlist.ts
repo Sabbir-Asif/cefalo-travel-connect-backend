@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/auth";
-import { errorHandler } from "../global-error-handler";
+import { errorHandler } from "../middlewares/error-handler";
 import { createWishlist, deleteWishlist, getAllWishlists, getMatchingUsers, getWishlistById, searchWishlists, updateWishlist } from "../controllers/wishlist";
 
 export const wishlistRouter : Router = Router();

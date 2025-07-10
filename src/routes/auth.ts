@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { login, logout, refreshAccessToken, signup } from "../controllers/auth";
-import { errorHandler } from "../global-error-handler";
+import { errorHandler } from "../middlewares/error-handler";
 import { passwordResetRouter } from "./password-reset";
 import { authMiddleware } from "../middlewares/auth";
 
