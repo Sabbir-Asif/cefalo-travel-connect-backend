@@ -9,7 +9,9 @@ import { corsOptions } from './configs/cors';
 
 const app: Express = express();
 const database = new Database();
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(cors(corsOptions));
