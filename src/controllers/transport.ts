@@ -1,0 +1,115 @@
+import { Request, Response } from "express";
+import { TransportRepository } from "../infrastructure/transport-impl";
+import { TransportService } from "../services/transport";
+import { CreateTransportSchema, UpdateTransportSchema } from "../schemas/transport";
+import { UnprocessableEntityException } from "../exceptions/validation";
+import { ErrorCode } from "../exceptions/root";
+import { CreateTransport, Transport, TransportType, UpdateTransport } from "../interfaces/transport";
+import { CreateTransportDto, UpdateTransportDto } from "../dtos/transport";
+import { BadRequestException } from "../exceptions/bad-request";
+import { UUID } from "crypto";
+import { IdSchema } from "../schemas/id";
+
+
+const transportRepository = new TransportRepository();
+let transportService = new TransportService(transportRepository);
+
+export const __setTransportService = (svc: TransportService) => {
+    transportService = svc;
+}
+
+export const getTransportById = async (req: Request, res: Response) => {
+    const Id = req.params.id;
+    const parsedId = IdSchema.safeParse(Id);
+    if (!parsedId.success ) {
+        throw new BadRequestException('Invalid transport id!', ErrorCode.INVALID_TRANSPORT_ID);
+    }
+
+    const transportId = parsedId.data as UUID;
+
+    const transport = await transportService.getTransportById(transportId);
+
+    res.status(200).json(transport);
+}
+
+export const getAllTransports = async (req: Request, res: Response) => {
+    const transports: Transport[] = await transportService.getAllTransports();
+
+    res.status(200).json(transports);
+}
+
+export const createTransport = async (req: Request, res: Response) => {
+    const parsed = CreateTransportSchema.safeParse(req.body);
+    if (!parsed.success) {
+        throw new UnprocessableEntityException(parsed.error, "Validation Error!", ErrorCode.UNPROCESSABLE_ENTITY);
+    }
+
+    const transportCreateDto: CreateTransport = new CreateTransportDto({
+        ...parsed.data,
+        type: parsed.data.type as TransportType
+    });
+
+    const transport: Transport = await transportService.createTransport(transportCreateDto);
+
+    res.status(201).json(transport);
+}
+
+export const updateTransport = async (req: Request, res: Response) => {
+    
+    const Id = req.params.id;
+    const parsedId = IdSchema.safeParse(Id);
+
+    if (!parsedId.success ) {
+        throw new BadRequestException('Invalid transport id!', ErrorCode.INVALID_TRANSPORT_ID);
+    }
+
+    const transportId = parsedId.data as UUID;
+
+    const parsed = UpdateTransportSchema.safeParse(req.body);
+
+    if (!parsed.success) {
+        throw new UnprocessableEntityException(parsed.error, "Validation error!", ErrorCode.UNPROCESSABLE_ENTITY);
+    }
+
+    const transportUpdateDto = new UpdateTransportDto({
+        ...parsed.data,
+        type: parsed.data.type as TransportType | undefined
+    });
+
+    const transport: Transport = await transportService.updateTransport(transportId, transportUpdateDto as UpdateTransport);
+
+    res.status(200).json(transport);
+}
+
+export const deleteTransport = async (req: Request, res: Response) => {
+    
+    const Id = req.params.id;
+    const parsedId = IdSchema.safeParse(Id);
+    if (!parsedId.success ) {
+        throw new BadRequestException('Invalid transport id!', ErrorCode.INVALID_TRANSPORT_ID);
+    }
+
+    const transportId = parsedId.data as UUID;
+    const deletedCount = await transportService.deleteTransport(transportId);
+
+    res.status(204).json(deletedCount);
+}
+
+export const getAllStartingLocations = async (req: Request, res: Response) => {
+    const locations = await transportService.getAllStartingLocations();
+    res.status(200).json(locations);
+};
+
+export const getAllDestinationLocations = async (req: Request, res: Response) => {
+    const locations = await transportService.getAllDestinationLocations();
+    res.status(200).json(locations);
+};
+
+export const searchTransports = async (req: Request, res: Response) => {
+    const queryParams = req.query;
+
+    const results = await transportService.searchTransports(queryParams);
+
+    res.status(200).json(results);
+};
+
