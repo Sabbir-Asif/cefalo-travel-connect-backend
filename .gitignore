@@ -3,4 +3,5 @@ package-lock.json
 .env
 keys
 coverage
+dist
 src/configs/keys.ts

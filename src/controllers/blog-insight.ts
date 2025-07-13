@@ -17,8 +17,7 @@ export const blogInsightService = new BlogInsightService(blogInsightRepository);
 
 export const createBlogInsight = async (req: Request, res: Response, next: NextFunction) => {
 
-    const blogIdParam = req.params.blogId;
-    const parsedBlogId = IdSchema.safeParse(blogIdParam);
+    const parsedBlogId = IdSchema.safeParse(req.params.blogId);
     if (!parsedBlogId.success) {
         throw new BadRequestException('Invalid blog Id!', ErrorCode.INVALID_BLOG_ID);
     }
@@ -29,13 +28,11 @@ export const createBlogInsight = async (req: Request, res: Response, next: NextF
         throw new UnprocessableEntityException(parsed.error, "Validation error!", ErrorCode.UNPROCESSABLE_ENTITY);
     }
 
-    const rawUserId = req.user?.id;
-    const parsedUserId = IdSchema.safeParse(rawUserId);
-    if (!parsedUserId.success) {
+    const userId = req.user?.id;
+    if (!userId) {
         throw new UnauthorizedException("User not found!", ErrorCode.USER_NOTFOUND);
     }
 
-    const userId = parsedUserId.data as UUID;
     const createBlogInsightDto: CreateBlogInsight = new CreateBlogInsightDto(parsed.data);
 
     const insight = await blogInsightService.createInsight(userId, blogId, createBlogInsightDto);
@@ -63,9 +60,8 @@ export const getBlogInsightById = async (req: Request, res: Response) => {
 };
 
 export const getBlogInsightsByBlogId = async (req: Request, res: Response) => {
-    
-    const blogIdParam = req.params.blogId;
-    const parsedId = IdSchema.safeParse(blogIdParam);
+
+    const parsedId = IdSchema.safeParse(req.params.blogId);
     if (!parsedId.success) {
         throw new BadRequestException('Invalid blog ID!', ErrorCode.INVALID_BLOG_ID);
     }
@@ -77,9 +73,8 @@ export const getBlogInsightsByBlogId = async (req: Request, res: Response) => {
 };
 
 export const updateBlogInsight = async (req: Request, res: Response) => {
-    
-    const insightIdParam = req.params.id;
-    const parsedId = IdSchema.safeParse(insightIdParam);
+
+    const parsedId = IdSchema.safeParse(req.params.id);
     if (!parsedId.success) {
         throw new BadRequestException('Invalid insight ID!', ErrorCode.INVALID_BLOG_INSIGHT_ID);
     }
@@ -90,13 +85,11 @@ export const updateBlogInsight = async (req: Request, res: Response) => {
         throw new UnprocessableEntityException(parsed.error, "Validation error!", ErrorCode.UNPROCESSABLE_ENTITY);
     }
 
-    const rawUserId = req.user?.id;
-    const parsedUserId = IdSchema.safeParse(rawUserId);
-    if (!parsedUserId.success) {
+    const userId = req.user?.id;
+    if (!userId) {
         throw new UnauthorizedException("User not found!", ErrorCode.USER_NOTFOUND);
     }
 
-    const userId = parsedUserId.data as UUID;
     const blogInsightUpdateDto: UpdateBlogInsight = new UpdateBlogInsightDto(parsed.data);
 
     const updated = await blogInsightService.updateInsight(insightId, userId, blogInsightUpdateDto);
@@ -106,8 +99,7 @@ export const updateBlogInsight = async (req: Request, res: Response) => {
 
 export const deleteBlogInsight = async (req: Request, res: Response) => {
     
-    const insightIdParam = req.params.id;
-    const parsedId = IdSchema.safeParse(insightIdParam);
+    const parsedId = IdSchema.safeParse(req.params.id);
     if (!parsedId.success) {
         throw new BadRequestException('Invalid insight ID!', ErrorCode.INVALID_BLOG_INSIGHT_ID);
     }
