@@ -1,4 +1,4 @@
-import express, {Express} from 'express';
+import express, { Express } from 'express';
 import { PORT } from './configs/secrets';
 import { rootRouter } from './routes/root';
 import { db } from './configs/db';
@@ -15,13 +15,13 @@ app.use(cors({
   credentials: true,
 }));
 
-app.use('/api',rootRouter);
+app.use('/api', rootRouter);
 app.use(errorMiddleware);
 
-app.listen(PORT, ()=> {
-    console.log(`server is running on port ${PORT}`);
+app.listen(PORT, () => {
+  console.log(`server is running on port ${PORT}`);
 })
 
 db.raw('SELECT 1')
-.then(() => console.log('Database connected successfully'))
-.catch(err => console.error('Database connection failed', err));
+  .then(() => console.log('Database connected successfully'))
+  .catch(err => console.error('Database connection failed', err));
