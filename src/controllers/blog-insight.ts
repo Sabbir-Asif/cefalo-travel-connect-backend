@@ -30,7 +30,7 @@ export const createBlogInsight = async (req: Request, res: Response, next: NextF
 
     const userId = req.user?.id;
     if (!userId) {
-        throw new UnauthorizedException("User not found!", ErrorCode.USER_NOTFOUND);
+        throw new UnauthorizedException("You need to Sign in to use this!", ErrorCode.USER_NOTFOUND);
     }
 
     const createBlogInsightDto: CreateBlogInsight = new CreateBlogInsightDto(parsed.data);
@@ -87,7 +87,7 @@ export const updateBlogInsight = async (req: Request, res: Response) => {
 
     const userId = req.user?.id;
     if (!userId) {
-        throw new UnauthorizedException("User not found!", ErrorCode.USER_NOTFOUND);
+        throw new UnauthorizedException("You need to Sign in to use this!", ErrorCode.USER_NOTFOUND);
     }
 
     const blogInsightUpdateDto: UpdateBlogInsight = new UpdateBlogInsightDto(parsed.data);
@@ -108,7 +108,7 @@ export const deleteBlogInsight = async (req: Request, res: Response) => {
     const rawUserId = req.user?.id;
     const parsedUserId = IdSchema.safeParse(rawUserId);
     if (!parsedUserId.success) {
-        throw new UnauthorizedException("User not found!", ErrorCode.USER_NOTFOUND);
+        throw new UnauthorizedException("You need to Sign in to use this!", ErrorCode.USER_NOTFOUND);
     }
 
     const userId = parsedUserId.data as UUID;
