@@ -14,7 +14,7 @@ export const passwordResetService = new PasswordResetService(
   userRepository
 );
 
-export const requestPasswordReset = async (req: Request, res: Response) => {
+export const requestPasswordForget = async (req: Request, res: Response) => {
   const parsed = InitiatePasswordResetSchema.safeParse(req.body);
   if (!parsed.success) {
     throw new UnprocessableEntityException(parsed.error,"Validation failed",ErrorCode.UNPROCESSABLE_ENTITY);
@@ -25,7 +25,7 @@ export const requestPasswordReset = async (req: Request, res: Response) => {
   res.status(HttpStatusCode.OK).json({ message: "Password reset email sent" });
 };
 
-export const resetPassword = async (req: Request, res: Response) => {
+export const forgetPassword = async (req: Request, res: Response) => {
   const parsed = CompletePasswordResetSchema.safeParse(req.body);
   if (!parsed.success) {
     throw new UnprocessableEntityException(parsed.error,"Validation failed",ErrorCode.UNPROCESSABLE_ENTITY);

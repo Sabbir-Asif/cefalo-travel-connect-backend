@@ -12,7 +12,7 @@ import { UUID } from "crypto";
 import { TokenService } from "../services/token";
 import { NextFunction } from "connect";
 import { BadRequestException } from "../exceptions/bad-request";
-import { REFRESH_TOKEN_COOKIE_NAME, REFRESH_TOKEN_EXPIRES_DAYS } from "../configs/secrets";
+import { IS_PRODUCTION, REFRESH_TOKEN_COOKIE_NAME, REFRESH_TOKEN_EXPIRES_DAYS } from "../configs/secrets";
 import { HttpStatusCode } from "../interfaces/status-code";
 
 const userRepository = new UserRepository();
@@ -37,6 +37,30 @@ export const signup = async (req: Request, res: Response) => {
     res.status(HttpStatusCode.CREATED).json(user);
 }
 
+export const login = async (req: Request, res: Response) => {
+    const parsed = LoginSchema.safeParse(req.body);
+    if (!parsed.success) {
+        throw new UnprocessableEntityException(parsed.error, 'Validation error!', ErrorCode.UNPROCESSABLE_ENTITY);
+    }
+
+    const { email, password } = parsed.data;
+
+    const result = await authService.login(email, password);
+
+    const refreshTokenObj = await refreshTokenService.issue(result.user.id);
+
+    res.cookie(REFRESH_TOKEN_COOKIE_NAME as string, refreshTokenObj.token, {
+        httpOnly: true,
+        secure: IS_PRODUCTION,
+        sameSite: 'strict',
+        maxAge: REFRESH_TOKEN_EXPIRES_DAYS * 24 * 60 * 60 * 1000,
+    });
+
+    res.json({
+        accessToken: result.token,
+        user: result.user,
+    });
+}
 
 export const refreshAccessToken = async (req: Request, res: Response, next: NextFunction) => {
     const refreshToken = req.cookies[REFRESH_TOKEN_COOKIE_NAME as string];
